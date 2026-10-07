@@ -32,7 +32,7 @@ and takes full responsibility for its contents.}\\[2pt]\small Pathway\\[2pt]
 \maketitle
 
 \begin{abstract}
-In this note, we extend the matrix-multiplication analysis of~\cite{openai-2026-matrix-nine-fourths} to
+In this note, we extend the matrix-multiplication analysis in~\cite{openai-2026-matrix-nine-fourths} to
 rectangular products and prove
 \[
  \omega(1,k,1)\le
@@ -43,7 +43,7 @@ rectangular products and prove
 \]
 In particular, $\omega(1,\frac{1}{2},1)=2$ and the dual exponent satisfies
 $\alpha\ge \frac{1}{2}$. We use the shared-leg entropy inequality and
-polynomial-multiplication degenerations of OpenAI, retaining two-leg
+polynomial-multiplication degenerations from~\cite{openai-2026-matrix-nine-fourths}, retaining two-leg
 symmetry and the orientation of each sector. Logarithmic averaging
 produces homogeneous auxiliary profiles. Their powered versions have
 a common asymptotic slope, and bounding their intercepts gives the
@@ -60,7 +60,7 @@ $O(n^{2.4999})$ running time.
 
 The motivation for this note is to gather, in one place, useful bounds
 and algorithmic consequences of the groundbreaking matrix-multiplication
-result of~\cite{openai-2026-matrix-nine-fourths}, with a focus on
+result in~\cite{openai-2026-matrix-nine-fourths}, with a focus on
 rectangular products.
 
 \paragraph{Complexity convention.}
@@ -73,7 +73,7 @@ for all-pairs problems, including shortest paths, lowest common ancestors,
 and Hamming distance. Its exponents depend on the shape of the product;
 an improvement for square matrices need not give a comparable
 improvement for every rectangular shape.
-OpenAI~\cite{openai-2026-matrix-nine-fourths} proved the square bound
+The analysis in~\cite{openai-2026-matrix-nine-fourths} establishes the square bound
 $\omega\le9/4$ using a shared-leg entropy inequality and degenerations
 of polynomial-multiplication tensors. We extend that analysis to
 rectangular products by retaining the orientation information lost
@@ -202,11 +202,10 @@ $r+s-1$ over $\CC$: interpolation at $r+s-1$ distinct points gives
 the upper bound, and the output flattening gives the lower bound.
 A smaller pair of input lengths gives a restriction.
 
-The following results are Corollary~3.2 and the constructions in the
-proofs of Lemmas~4.1 and~4.2 of
-OpenAI~\cite{openai-2026-matrix-nine-fourths}, pp.~5--8.
+The following results restate Corollary~3.2 and the constructions in the
+proofs of Lemmas~4.1 and~4.2 of~\cite[pp.~5--8]{openai-2026-matrix-nine-fourths}.
 
-\begin{lemma}[OpenAI]\label{lem:openai-inputs}
+\begin{lemma}[{\cite{openai-2026-matrix-nine-fourths}}]\label{lem:openai-inputs}
 The following statements hold for every leg permutation.
 \begin{enumerate}
 \item If a tensor has matched sectors $T_h$ sharing leg $i$, with

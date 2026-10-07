@@ -13,8 +13,9 @@ $$
 \end{cases}
 $$
 
-The tensor constructions and entropy inequality are taken from OpenAI's
-nine-fourths paper; partial symmetrization adapts its averaging argument.
+The tensor constructions and entropy inequality are taken from the recent
+nine-fourths matrix-multiplication result by OpenAI; partial symmetrization
+adapts the averaging argument in that work.
 The additional analysis uses logarithmic homogenization and bounds on
 profile slopes and intercepts to derive $b\le4a(1-a)$. Consequences include
 $\alpha\ge\frac{1}{2}$ and exponent **2.5** for Zwick's directed
