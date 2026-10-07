@@ -17,14 +17,13 @@
 \newcommand{\arank}{\widetilde{\operatorname{rank}}}
 \newcommand{\vd}{V_{\mathrm d}}
 \newcommand{\ud}{U_{\mathrm d}}
-\newcommand{\eps}{\varepsilon}
 \newcommand{\degen}{\unrhd}
 \newcommand{\cmm}[3]{\langle #1,#2,#3\rangle}
 \DeclareMathOperator{\MM}{MM}
 
 \title{Rectangular matrix multiplication from shared-leg entropy}
-\author{Przemysław Uznański\thanks{This note was obtained with the assistance
-of OpenAI Codex (GPT-6.1). The author has read and analyzed this note in full
+\author{Przemysław Uznański\thanks{This note, its proofs, analysis and writeup
+were obtained fully through OpenAI Codex (GPT-6.1). The author has read and analyzed this note in full
 and takes full responsibility for its contents.}\\[2pt]\small Pathway}
 \date{October 7, 2026}
 
@@ -50,10 +49,23 @@ a common asymptotic slope, and bounding their intercepts gives the
 spectral constraint $b\le 4a(1-a)$. This yields the rectangular curve
 by tensor-spectrum duality. As an application, Zwick's algorithm
 \cite{zwick-2002-bridging-sets} for all-pairs shortest paths in directed
-unweighted graphs runs in $O_\eps(n^{2.5+\eps})$ time for every $\eps>0$.
+unweighted graphs runs in $O(n^{2.5})$ time.
+Combining the rectangular bound with the $(\min,+)$-product improvement
+of Alman and Vassilevska Williams~\cite{alman-williams-2026} further gives
+$O(n^{2.4999})$ running time.
 \end{abstract}
 
 \section{Introduction}\label{sec:statement}
+
+The motivation for this note is to gather, in one place, useful bounds
+and algorithmic consequences of the groundbreaking matrix-multiplication
+result of~\cite{openai-2026-matrix-nine-fourths}, with a focus on
+rectangular products.
+
+\paragraph{Complexity convention.}
+Throughout this note, all complexity bounds suppress a $+o(1)$ term
+in the exponent: $O(n^c)$ denotes $n^{c+o(1)}$. All shape parameters
+are fixed.
 
 Rectangular matrix multiplication is a basic ingredient in algorithms
 for all-pairs problems, including shortest paths, lowest common ancestors,
@@ -67,36 +79,34 @@ rectangular products by retaining the orientation information lost
 under full leg symmetrization.
 
 For fixed nonnegative real $u,v,w$, let $\omega(u,v,w)$ be the infimum
-of the exponents $e$ for which, for every $\eps>0$, multiplying an
+of the exponents $e$ for which multiplying an
 $\lceil n^u\rceil\times\lceil n^v\rceil$ matrix by a
 $\lceil n^v\rceil\times\lceil n^w\rceil$ matrix uses
-$O_{u,v,w,\eps}(n^{e+\eps})$ arithmetic operations over $\CC$.
-Write $f(k)=\omega(1,k,1)$ and
-$\alpha=\sup\{k\ge0:f(k)=2\}$.
+$O(n^e)$ arithmetic operations over $\CC$, with the convention above.
+Write $\omega(k)=\omega(1,k,1)$ and
+$\alpha=\sup\{k\ge0:\omega(k)=2\}$.
 
 \begin{theorem}\label{thm:curve}
 For every fixed real $k\ge0$,
 \begin{equation}\label{eq:curve}
- f(k)\le F(k):=
+ \omega(k)\le
  \begin{cases}
  2,&0\le k\le \frac{1}{2},\\[2pt]
  1+k+\dfrac1{4k},&k\ge\frac{1}{2}.
  \end{cases}
 \end{equation}
-Consequently $f(k)=2$ for $0\le k\le\frac{1}{2}$, $\alpha\ge\frac{1}{2}$, and
-$f(2)\le25/8$.
+Consequently $\omega(k)=2$ for $0\le k\le\frac{1}{2}$, $\alpha\ge\frac{1}{2}$, and
+$\omega(2)\le3.125$.
 \end{theorem}
 
-Applying the square bound to square blocks gives only
-$f(k)\le2+k/4$ for $0\le k\le1$ and $f(k)\le k+5/4$ for $k\ge1$.
-Theorem~\ref{thm:curve} instead gives exponent two for inner dimension
-up to $n^{\frac{1}{2}}$, and an upper bound within $1/(4k)$ of the input-size
+Theorem~\ref{thm:curve} gives exponent two for inner dimension
+up to $n^{0.5}$, and an upper bound within $1/(4k)$ of the input-size
 lower bound $1+k$ for $k\ge1$.
 
 \begin{figure}[tbp]
  \centering
  \includegraphics[width=0.86\linewidth]{figures/rectangular-exponent-curve.pdf}
- \caption{The upper bound $F(k)$ from Theorem~\ref{thm:curve} for
+ \caption{The upper bound on $\omega(k)$ from Theorem~\ref{thm:curve} for
  $0\le k\le2$, together with the size lower bound
  $\max\{2,1+k\}$. The bounds coincide for
  $0\le k\le\frac{1}{2}$.}
@@ -107,18 +117,55 @@ Our proof bounds the dot-product parameters of every tensor character.
 After averaging over the interchange of two legs, these parameters
 have the form $(a_0,a_0,b_0)$, and the rectangular objective is
 $2a_0+kb_0$. We prove the parabolic constraint
-$b_0\le4a_0(1-a_0)$. The main step is a logarithmic homogenization of
-two oriented polynomial-multiplication profiles. Their coupled
-tripling inequalities force a common asymptotic slope and control
-the intercepts, producing the parameter constraint. Optimizing the
-rectangular objective then proves the theorem.
+$b_0\le4a_0(1-a_0)$.
+
+\paragraph{Relation to the preceding analysis.}
+The tensor constructions and shared-leg entropy inequality are taken
+directly from~\cite{openai-2026-matrix-nine-fourths}.
+Lemma~\ref{lem:openai-inputs} restates its Corollary~3.2 and the
+constructions in the proofs of its Lemmas~4.1 and~4.2, with oriented
+notation. The partial symmetrization in Section~\ref{sec:discrete}
+adapts its six-permutation geometric averaging to two permutations.
+The powered concavity and coupled tripling inequalities in
+Lemma~\ref{lem:discrete} are direct consequences of those same
+constructions, retaining the two distinct orientations.
+
+The additional analytic arguments relative to that paper are the
+simultaneous logarithmic homogenization of the two profiles
+(Lemma~\ref{lem:homogeneous}) and their common-slope and intercept
+analysis (Lemma~\ref{lem:intercepts}), which yields the parabolic
+parameter bound (Proposition~\ref{prop:cap}). The underlying tools,
+including geometric averaging, compactness, and concavity, are
+standard. These arguments extend the original use of concavity and
+tripling to constrain two parameters. Once this constraint is
+established, Section~\ref{sec:exponents} obtains the curve by elementary
+optimization and standard tensor-spectrum duality;
+Section~\ref{sec:general} optimizes the permuted constraints for three
+unequal dimensions;
+Section~\ref{sec:applications} substitutes it into known algorithmic
+tradeoffs. Thus the contribution is the rectangular bound and the
+coupled-profile analysis leading to it; the tensor constructions and
+the application algorithms are inherited.
 
 \section{Tensor characters and polynomial multiplication}\label{sec:discrete}
 
-We use the standard tensor-spectrum formulation. A character $\lambda$
-is normalized, additive on direct sums, multiplicative on tensor
-products, and monotone under restriction and degeneration. For the
-oriented dot-product tensors
+We view a tensor as a trilinear form in three groups of variables,
+called its \emph{legs}. A \emph{restriction} applies linear substitutions
+independently on the three legs; a \emph{degeneration} is a limit of
+such restrictions.
+
+A \emph{tensor character} assigns each tensor $T$ a nonnegative real
+number $\lambda(T)$, with
+\[
+ \lambda(xyz)=1,\qquad
+ \lambda(S\oplus T)=\lambda(S)+\lambda(T),\qquad
+ \lambda(S\otimes T)=\lambda(S)\lambda(T).
+\]
+Here $\oplus$ uses disjoint variable groups and $\otimes$ is the
+Kronecker product. A character is also monotone: if $T$ restricts or
+degenerates to $S$, then $\lambda(S)\le\lambda(T)$. The collection of
+these characters is the \emph{tensor spectrum}.
+For the oriented dot-product tensors
 \[
  B_X(q)=x\sum_{j=1}^q y_jz_j,
 \]
@@ -126,6 +173,8 @@ and its leg permutations $B_Y(q),B_Z(q)$, write
 \begin{equation}\label{eq:dot-parameters}
  \lambda(B_i(q))=q^{p_i},\qquad 0\le p_i\le1.
 \end{equation}
+The \emph{rank} of a tensor is the minimum number of products of
+three linear forms, one in each leg, whose sum equals that tensor.
 Characters are positive on nonzero tensors and bounded above by rank.
 The matrix-multiplication tensor
 $\cmm{A}{B}{C}=\sum_{u,v,w}x_{uv}y_{vw}z_{wu}$ has character value
@@ -178,6 +227,11 @@ one copy of $C_{ik}(r,s)$, where $k$ is the remaining leg.
 
 \subsection{Partial symmetrization}
 
+We adapt the geometric averaging in
+\cite[Section~4]{openai-2026-matrix-nine-fourths}, retaining only the
+interchange of $X,Y$. The use of a common probability vector before
+geometric averaging is also taken from that argument.
+
 Fix a character $\lambda$. Let $\tau$ exchange $X,Y$, and define
 \begin{equation}\label{eq:partial-symmetry}
  M(T)=\sqrt{\lambda(T)\lambda(T^\tau)},\qquad
@@ -201,7 +255,7 @@ inequalities.
 
 \subsection{Discrete profiles}
 
-Set
+A \emph{profile} here is a function of the two input lengths. Set
 \begin{equation}\label{eq:discrete-profiles}
  \vd(r,s)=M(C_{XY}(r,s)),\qquad
  \ud(r,s)=M(C_{XZ}(r,s)).
@@ -280,6 +334,8 @@ values gives the upper bound in \eqref{eq:ratio}. Use
 
 \section{Homogeneous auxiliary profiles}\label{sec:homogeneous}
 
+The proof of~\cite[Lemma~5.1]{openai-2026-matrix-nine-fourths} uses a
+discrete recurrence along the diagonal of one fully symmetrized profile.
 We construct homogeneous auxiliary profiles from the discrete values
 in \eqref{eq:discrete-profiles}, preserving powered concavity and
 the tripling inequalities.
@@ -320,11 +376,20 @@ each compact rectangle, uniformly in $t\ge0$.
 They also bound an averaged difference between two nearby points by a
 constant times their log-coordinate distance plus $O(1/T)$.
 Interpolating integer log profiles changes the averages by $O(1/T)$
-and gives uniformly Lipschitz approximations. A diagonal
-Arzel\`a--Ascoli extraction therefore gives locally uniform limits
-$v,u$ along a sequence $T\to\infty$ for which also
+and gives uniformly Lipschitz approximations. Applying Arzel\`a--Ascoli
+on expanding compact rectangles and taking a diagonal subsequence gives
+locally uniform limits $v,u$ along a common sequence
+$T_j\to\infty$.\footnote{On each rectangle $K_j=[1/j,j]^2$, the
+interpolated profiles are uniformly bounded and have a common Lipschitz
+bound, so Arzel\`a--Ascoli gives a subsequence on which both converge
+uniformly. Choose nested subsequences for $K_1,K_2,\ldots$, then take
+the $j$-th term of the $j$-th subsequence. The resulting sequence
+converges uniformly on every compact subset of $(0,\infty)^2$;
+the $O(1/T)$ interpolation error gives the same limits for the original
+profiles.}
+Passing to a further subsequence, the bounded scalars also satisfy
 \[
- \delta_T=\frac{L_V(1,1;T)}{T}\longrightarrow\delta.
+ \delta_{T_j}=\frac{L_V(1,1;T_j)}{T_j}\longrightarrow\delta.
 \]
 All comparison constants here may depend on the fixed character.
 
@@ -540,10 +605,10 @@ attaining \eqref{eq:optimizer}.
 
 For rational $k\ge0$, choose arbitrarily large integers $q$ with
 $q^k$ integral. The preceding bound on every character and
-\eqref{eq:duality} give
-$\arank(\cmm{q}{q^k}{q})\le q^{F(k)}$.
-Tensor-power rank decompositions yield arithmetic algorithms with
-exponent at most $F(k)$: choose a tensor power with rank within an
+\eqref{eq:duality} give the same upper bound on
+$\log_q\arank(\cmm{q}{q^k}{q})$.
+Tensor-power rank decompositions yield algorithms with
+this exponent bound: choose a tensor power with rank within an
 arbitrary exponent slack and recurse with that fixed rectangular
 decomposition. Additions are covered by its rank and flattening
 dimensions. Padding from these base sizes to arbitrary $n$ costs only
@@ -551,9 +616,10 @@ a constant factor for each fixed algorithm.
 
 For real $k$, approximate from above by rational inner exponents and
 pad. Equivalently, inner-dimension blocking gives
-$f(k+h)\le f(k)+h$ for $h\ge0$. Continuity of $F$ and the arbitrary
-$\eps$ convention complete the extension to all real $k$.
-The output flattening has rank $n^2$, giving $f(k)\ge2$ and proving
+$\omega(k+h)\le \omega(k)+h$ for $h\ge0$. Continuity of the right-hand side
+of \eqref{eq:curve} and the exponent convention complete the extension
+to all real $k$.
+The output flattening has rank $n^2$, giving $\omega(k)\ge2$ and proving
 equality when $k\le\frac{1}{2}$ and the claim about $\alpha$.
 \end{proof}
 
@@ -561,18 +627,60 @@ Some values of the bound in Theorem~\ref{thm:curve} are:
 \begin{center}
 \begin{tabular}{ccccccc}
 \toprule
-$k$ & $\frac{1}{2}$ & $3/5$ & $4/5$ & $1$ & $3/2$ & $2$\\
+$k$ & $0.5$ & $0.6$ & $0.8$ & $1$ & $1.5$ & $2$\\
 \midrule
-$F(k)$ & $2$ & $121/60$ & $169/80$ & $9/4$ & $8/3$ & $25/8$\\
+$\omega(k)\le$ & $2$ & $2.0166\ldots$ & $2.1125$ & $2.25$ & $2.6666\ldots$ & $3.125$\\
 \bottomrule
 \end{tabular}
 \end{center}
-The exponent convention gives an $O_\eps(n^{2+\eps})$ arithmetic
-algorithm at $k=\frac{1}{2}$ for every $\eps>0$.
+The exponent convention gives an $O(n^2)$-time
+algorithm at $k=\frac{1}{2}$.
+
+\section{Three unequal dimensions}\label{sec:general}
+
+Permuting the parabolic character constraint gives a bound for general
+$\omega(a,b,c)$ by a further elementary optimization.
+
+\begin{corollary}\label{cor:general-exponents}
+For every fixed $a\ge b\ge c\ge0$,
+\begin{equation}\label{eq:general-exponents}
+ \omega(a,b,c)\le
+ \begin{cases}
+ a+b,&b\ge2c,\\[2pt]
+ a+b+\dfrac{(2c-b)^2}{4(a+c-b)},&b<2c.
+ \end{cases}
+\end{equation}
+When $b\ge2c$, equality holds by the size lower bound.
+\end{corollary}
+
+\begin{proof}
+Corollary~\ref{cor:character-cap}, applied after each leg permutation,
+gives $p_i\le2(p_j+p_\ell)-(p_j+p_\ell)^2$ for distinct $i,j,\ell$.
+Reorder the parameters so that the character objective is
+$ap_1+bp_2+cp_3$, and put $S=p_1+p_2+p_3$.
+If $S\le2$, this objective is at most $a+b$, since $0\le p_i\le1$.
+Otherwise the constraints give $S\le3(S-p_i)-(S-p_i)^2\le9/4$.
+Writing $d=\sqrt{9-4S}\in[0,1]$, they imply
+\[
+ \frac{3-2d-d^2}{4}\le p_i\le\frac{3+2d-d^2}{4}.
+\]
+Consequently,
+\[
+ ap_1+bp_2+cp_3
+ =bS+(a-b)p_1-(b-c)p_3
+ \le\frac{3(a+b+c)}4+\frac{a-c}{2}d
+       -\frac{a+c-b}{4}d^2.
+\]
+For $b\ge2c$, the quadratic is maximized on $[0,1]$ at $d=1$.
+For $b<2c$, its maximum is at $d=(a-c)/(a+c-b)$; here $c>0$
+and the denominator is positive. These two maxima give
+\eqref{eq:general-exponents} by tensor-spectrum duality, with the same
+rounding and exponent convention as in Theorem~\ref{thm:curve}.
+\end{proof}
 
 \section{Applications}\label{sec:applications}
 
-Theorem~\ref{thm:curve} gives the following bounds through standard
+Theorem~\ref{thm:curve} and Corollary~\ref{cor:general-exponents} give the following bounds through standard
 rectangular-multiplication balances. All bounds use arithmetic
 operations, with graph operations and symbol comparisons also charged.
 
@@ -580,26 +688,57 @@ operations, with graph operations and symbol comparisons also charged.
 \item \textbf{One lowest common ancestor per pair in a DAG.}
 Grandoni et al.\ \cite[Theorem~4.2 of the published version]
 {grandoni-et-al-2021-all-pairs-lca} obtain exponent $1+2x$ from the
-balance $f(x)=3x$. Theorem~\ref{thm:curve} permits
+balance $\omega(x)=3x$. Theorem~\ref{thm:curve} permits
 $x=(1+\sqrt3)/4$, giving
-$O_\eps(n^{(3+\sqrt3)/2+\eps})$ time for finding one lowest common
+$O(n^{(3+\sqrt3)/2})$ time for finding one lowest common
 ancestor for every pair in an $n$-vertex DAG. The exponent is
-$(3+\sqrt3)/2=2.3660254037\ldots$.
+$(3+\sqrt3)/2\approx2.36603$.
 
 \item \textbf{Exact all-pairs Hamming distance.}
 For $n$ vectors of length $n$ over an unrestricted alphabet, the
-standard balance, obtained via dominance products
-\cite[Proposition~2.1]{yuster-2009-permutations-dominance}, is
-$\rho=f(4-\rho)$.
+reduction to dominance products~\cite{labib-uznanski-wolleb-graf-2019}
+and Yuster's tradeoff
+\cite[Proposition~2.1]{yuster-2009-permutations-dominance} give the balance
+$\rho=\omega(4-\rho)$.
 Theorem~\ref{thm:curve} gives
-$\rho=(13-\sqrt7)/4=2.5885621722\ldots$ and running time
-$O_\eps(n^{\rho+\eps})$ for computing every exact Hamming distance.
+$\rho=(13-\sqrt7)/4\approx2.58856$ and running time
+$O(n^\rho)$ for computing every exact Hamming distance.
 
 \item \textbf{The standard unweighted APSP balance.}
 Zwick's deterministic algorithm for directed unweighted APSP
 \cite[Section~6]{zwick-2002-bridging-sets} has exponent $2+\mu$,
-where $f(\mu)\le1+2\mu$. Here $F(\frac{1}{2})=2=1+2(\frac{1}{2})$,
-so it gives $O_\eps(n^{2.5+\eps})$ arithmetic time.
+where $\omega(\mu)\le1+2\mu$. Here $\omega(\frac{1}{2})=2=1+2(\frac{1}{2})$,
+so it gives $O(n^{2.5})$ running time.
+Combining the full curve with the deterministic $(\min,+)$-product
+algorithm and APSP reduction of Alman and Vassilevska Williams
+\cite[Theorems~22 and~33--34]{alman-williams-2026} further gives
+$O(n^{2.4999})$ running time.
+\item \textbf{Minimum and maximum witnesses.}
+For two Boolean $n\times n$ matrices, a minimum (maximum) witness for
+entry $(i,j)$ is the least (greatest) index $k$ with $A_{ik}=B_{kj}=1$.
+The standard blocking algorithm
+\cite[Section~2.1]{cohen-yuster-2014-minimum-witnesses} takes
+$O(n^{1-r+\omega(r)}+n^{2+r})$ time.
+Taking $r=\frac{1}{2}$ gives $O(n^{2.5})$ time for all witnesses.
+
+\item \textbf{Sparse matrix multiplication.}
+For two $n\times n$ matrices with at most $m$ nonzero entries each,
+the sparse--dense decomposition of Yuster and Zwick
+\cite[Section~3]{yuster-zwick-2005-sparse} gives
+$O(m^2/n^r+n^{\omega(r)})$ time for $0\le r\le1$.
+Thus $m\le n^{1.25}$ permits $O(n^2)$ time.
+
+\item \textbf{Dynamic matrix inverse and reachability.}
+Substituting Corollary~\ref{cor:general-exponents} into van den
+Brand--Nanongkai--Saranurak's tradeoff
+\cite[Theorem~4.2]{van-den-brand-nanongkai-saranurak-2019} and minimizing
+$\max\{u+v,\omega(1,u,v)-u,\omega(v)-v\}$ over $0\le u\le v\le1$
+gives $O(n^{1.31125})$ worst-case time per entry update and query for
+maintaining the inverse of a nonsingular $n\times n$ matrix, after
+$O(n^{2.25})$ preprocessing.
+The associated Monte Carlo reduction gives the same bounds for directed
+reachability under edge updates, with $O(1)$ query time for a fixed pair
+\cite[Corollary~C.12 and Theorem~C.16]{van-den-brand-nanongkai-saranurak-2019}.
 \end{enumerate}
 
 \bibliographystyle{plain}

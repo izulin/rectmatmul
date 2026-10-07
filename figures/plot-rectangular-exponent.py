@@ -35,7 +35,7 @@ def main():
 
     fig, ax = plt.subplots(figsize=(6.0, 3.25), layout="constrained")
     blue = "#245c9b"
-    ax.plot(k, upper, color=blue, lw=2.3, label=r"Upper bound $F(k)$", zorder=3)
+    ax.plot(k, upper, color=blue, lw=2.3, label=r"Upper bound on $\omega(k)$", zorder=3)
     ax.plot(
         k,
         lower,
@@ -47,7 +47,7 @@ def main():
     )
     ax.scatter([0.5, 1, 2], [2, 2.25, 3.125], s=23, color=blue, zorder=5)
     ax.annotate(
-        r"$F(\frac{1}{2})=2$",
+        r"$\omega(\frac{1}{2})=2$",
         xy=(0.5, 2),
         xytext=(-6, 22),
         textcoords="offset points",
@@ -55,7 +55,7 @@ def main():
         color=blue,
     )
     ax.annotate(
-        r"$F(1)=2.25$",
+        r"$\omega(1)\leq2.25$",
         xy=(1, 2.25),
         xytext=(-12, 18),
         textcoords="offset points",
@@ -63,7 +63,7 @@ def main():
         color=blue,
     )
     ax.annotate(
-        r"$F(2)=3.125$",
+        r"$\omega(2)\leq3.125$",
         xy=(2, 3.125),
         xytext=(-10, 13),
         textcoords="offset points",

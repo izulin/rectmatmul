@@ -13,11 +13,14 @@ $$
 \end{cases}
 $$
 
-The proof uses logarithmic averaging of oriented profiles to derive
-the constraint $b\le4a(1-a)$. Consequences include
+The tensor constructions and entropy inequality are taken from OpenAI's
+nine-fourths paper; partial symmetrization adapts its averaging argument.
+The additional analysis uses logarithmic homogenization and bounds on
+profile slopes and intercepts to derive $b\le4a(1-a)$. Consequences include
 $\alpha\ge\frac{1}{2}$ and exponent **2.5** for Zwick's directed
-unweighted APSP algorithm. Applications to all-pairs LCA and Hamming
-distance are also recorded.
+unweighted APSP algorithm, improved to **2.4999** when combined with
+Alman--Vassilevska Williams. Applications also include all-pairs LCA,
+Hamming distance, minimum/maximum witnesses, and sparse multiplication.
 
 [Read the note](main.pdf) · [LaTeX source](main.tex)
 
