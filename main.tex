@@ -48,7 +48,10 @@ symmetry and the orientation of each sector. Logarithmic averaging
 produces homogeneous auxiliary profiles. Their powered versions have
 a common asymptotic slope, and bounding their intercepts gives the
 spectral constraint $b\le 4a(1-a)$. This yields the rectangular curve
-by tensor-spectrum duality. As an application, Zwick's algorithm
+by tensor-spectrum duality. Keeping all three character parameters
+distinct gives a stronger bound for $\omega(a,b,c)$, with exact exponent
+$a+b$ whenever $a\ge b\ge c\ge0$ and $c(a+b)\le ab$.
+As an application, Zwick's algorithm
 \cite{zwick-2002-bridging-sets} for all-pairs shortest paths in directed
 unweighted graphs runs in $O(n^{2.5})$ time.
 Combining the rectangular bound with the $(\min,+)$-product improvement
@@ -119,6 +122,11 @@ After averaging over the interchange of two legs, these parameters
 have the form $(a_0,a_0,b_0)$, and the rectangular objective is
 $2a_0+kb_0$. We prove the parabolic constraint
 $b_0\le4a_0(1-a_0)$.
+Keeping all three parameters distinct gives the joint constraint
+$\sum_i\arccos\sqrt{p_i}\ge\pi/2$. Its optimization yields the
+general bound in Corollary~\ref{cor:general-exponents}, including
+the exact size exponent $a+b$ for $a\ge b\ge c\ge0$ with
+$c(a+b)\le ab$.
 
 \paragraph{Relation to the preceding analysis.}
 The tensor constructions and shared-leg entropy inequality are taken
@@ -140,10 +148,13 @@ including geometric averaging, compactness, and concavity, are
 standard. These arguments extend the original use of concavity and
 tripling to constrain two parameters. Once this constraint is
 established, Section~\ref{sec:exponents} obtains the curve by elementary
-optimization and standard tensor-spectrum duality;
-Section~\ref{sec:general} optimizes the permuted constraints for three
-unequal dimensions;
-Section~\ref{sec:applications} substitutes it into known algorithmic
+optimization and standard tensor-spectrum duality.
+Section~\ref{sec:general} extends the same homogenization and
+common-slope arguments to three distinct profiles. Its additional step
+couples their six intercept ratios to obtain the angular character
+constraint in Proposition~\ref{prop:angular-cap}; optimizing that
+constraint gives a stronger bound for three unequal dimensions.
+Section~\ref{sec:applications} substitutes these bounds into known algorithmic
 tradeoffs. Thus the contribution is the rectangular bound and the
 coupled-profile analysis leading to it; the tensor constructions and
 the application algorithms are inherited.
@@ -638,45 +649,153 @@ algorithm at $k=\frac{1}{2}$.
 
 \section{Three unequal dimensions}\label{sec:general}
 
-Permuting the parabolic character constraint gives a bound for general
-$\omega(a,b,c)$ by a further elementary optimization.
+Keeping the three character parameters distinct preserves information
+that is lost under partial symmetrization. We first derive their joint
+constraint, then optimize it for general matrix dimensions.
+
+\begin{proposition}[Angular character constraint]\label{prop:angular-cap}
+Every tensor character with dot-product parameters $p_1,p_2,p_3$ satisfies
+\begin{equation}\label{eq:angular-cap}
+ \sum_{i=1}^3\arccos\sqrt{p_i}\ge\frac{\pi}{2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+If some $p_i=0$, its summand is already $\pi/2$. Assume all three
+parameters are positive and put
+$F^{\mathrm d}_{ij}(r,s)=\lambda(C_{ij}(r,s))$.
+Lemma~\ref{lem:openai-inputs} gives powered concavity in $s$ with
+power $1/p_i$, powered concavity in $r$ with power $1/p_j$, and
+\[
+ F^{\mathrm d}_{ij}(r,3s+r-1)^{1/p_i}
+ \ge2F^{\mathrm d}_{ij}(r,s)^{1/p_i}
+       +F^{\mathrm d}_{ik}(r,s)^{1/p_i}.
+\]
+Here and below $i,j,k$ are distinct. Input interchange gives
+$F^{\mathrm d}_{ij}(r,s)=F^{\mathrm d}_{ji}(s,r)$.
+The proof of Lemma~\ref{lem:comparisons} gives
+\[
+ \left(\frac{F^{\mathrm d}_{ik}(n,n)}
+ {F^{\mathrm d}_{ij}(n,n)}\right)^{1/p_i}
+ \le2+\frac{2}{n-1}\qquad(n\ge2),
+\]
+and the reverse comparison follows by exchanging $j,k$. Thus all three
+diagonal orientations are comparable by constants independent of $n$.
+
+Apply the proof of Lemma~\ref{lem:homogeneous} simultaneously to these
+profiles, using $F^{\mathrm d}_{12}$ for their common normalization.
+The coordinate comparisons and bounded orientation ratios give one
+common degree $\delta$, with $\max_i p_i\le\delta\le1$.
+Raising the profiles to $1/\delta$ gives degree-one functions $F_{ij}$
+and parameters $q_i=p_i/\delta\in(0,1]$. They satisfy
+$F_{ij}(r,s)=F_{ji}(s,r)$, the corresponding powered concavities, and
+\begin{equation}\label{eq:general-tripling}
+ F_{ij}(r,3s+r)^{1/q_i}
+ \ge2F_{ij}(r,s)^{1/q_i}+F_{ik}(r,s)^{1/q_i}.
+\end{equation}
+
+For fixed $i$, let $P_{ij}(s)=F_{ij}(1,s)^{1/q_i}$.
+The common-slope argument in Lemma~\ref{lem:intercepts}, through
+\eqref{eq:sum-majorant}, uses only concavity and coupled tripling.
+It therefore gives a common slope $L_i>0$ and finite nonnegative
+intercepts $C_{ij},C_{ik}$ satisfying $C_{ij}+C_{ik}\le L_i$.
+With $c_{ij}=C_{ij}/L_i$, we have
+\begin{equation}\label{eq:intercept-budgets}
+ c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
+\end{equation}
+Moreover $P'_{ij}\ge L_i$ almost everywhere and
+$P_{ij}(s)\le L_i(s+c_{ij})$. Homogeneity, input interchange, and
+Euler's identity consequently give
+\[
+ 1\ge\frac{q_i s}{s+c_{ij}r}
+       +\frac{q_j r}{r+c_{ji}s}.
+\]
+As before, continuity extends this inequality from almost every ratio
+to every positive ratio. With $t=r/s$, it is equivalent to
+\[
+ (1-q_j)c_{ij}t^2+
+ (1-q_i-q_j+c_{ij}c_{ji})t+(1-q_i)c_{ji}\ge0
+ \qquad(t>0).
+\]
+For a quadratic $At^2+Bt+C$ with $A,C\ge0$, nonnegativity on $t>0$
+is equivalent to $B\ge-2\sqrt{AC}$, including zero coefficients by
+limits. Hence
+\begin{equation}\label{eq:intercept-products}
+ \sqrt{c_{ij}c_{ji}}\ge K_{ij}:=
+ \left(\sqrt{q_iq_j}-\sqrt{(1-q_i)(1-q_j)}\right)_+,
+\end{equation}
+where $(z)_+=\max\{z,0\}$.
+
+Let $K$ be the symmetric matrix with these off-diagonal entries and
+zero diagonal. For every vector $x\ge0$, weighted AM--GM and
+\eqref{eq:intercept-budgets} give
+\begin{equation}\label{eq:angular-quadratic-form}
+ x^{\mathsf T}Kx
+ \le\sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
+ \le\sum_{i<j}(c_{ij}x_i^2+c_{ji}x_j^2)
+ \le\sum_i x_i^2.
+\end{equation}
+Put $\theta_i=\arccos\sqrt{q_i}$. If $\sum_i\theta_i<\pi/2$,
+increase all three angles by the same positive amount to obtain
+$\phi_i>0$ with sum $\pi/2$. The matrix $K'$ with zero diagonal and
+$K'_{ij}=\cos(\phi_i+\phi_j)=\sin\phi_k$ is strictly smaller than $K$
+off the diagonal. But the positive vector $x_i=\cos\phi_i$ satisfies
+\[
+ (K'x)_i=\sin\phi_k\cos\phi_j+\sin\phi_j\cos\phi_k
+ =\cos\phi_i=x_i,
+\]
+contradicting \eqref{eq:angular-quadratic-form}. Thus
+$\sum_i\arccos\sqrt{q_i}\ge\pi/2$. Finally $p_i=\delta q_i\le q_i$,
+so the same inequality holds for the original parameters $p_i$.
+\end{proof}
 
 \begin{corollary}\label{cor:general-exponents}
 For every fixed $a\ge b\ge c\ge0$,
 \begin{equation}\label{eq:general-exponents}
  \omega(a,b,c)\le
  \begin{cases}
- a+b,&b\ge2c,\\[2pt]
- a+b+\dfrac{(2c-b)^2}{4(a+c-b)},&b<2c.
+ a+b,&c(a+b)\le ab,\\[4pt]
+ \dfrac{a+b+c}{2}
+ +\dfrac{1}{4}\left(\dfrac{ab}{c}+\dfrac{ac}{b}+\dfrac{bc}{a}\right),
+ &c(a+b)>ab.
  \end{cases}
 \end{equation}
-When $b\ge2c$, equality holds by the size lower bound.
+When $c(a+b)\le ab$, equality holds by the size lower bound.
 \end{corollary}
 
 \begin{proof}
-Corollary~\ref{cor:character-cap}, applied after each leg permutation,
-gives $p_i\le2(p_j+p_\ell)-(p_j+p_\ell)^2$ for distinct $i,j,\ell$.
 Reorder the parameters so that the character objective is
-$ap_1+bp_2+cp_3$, and put $S=p_1+p_2+p_3$.
-If $S\le2$, this objective is at most $a+b$, since $0\le p_i\le1$.
-Otherwise the constraints give $S\le3(S-p_i)-(S-p_i)^2\le9/4$.
-Writing $d=\sqrt{9-4S}\in[0,1]$, they imply
+$ap_1+bp_2+cp_3$, and write $p_i=\cos^2\theta_i$ with
+$\theta_i\in[0,\pi/2]$. By Proposition~\ref{prop:angular-cap}, their
+sum is at least $\pi/2$. Since the objective decreases with each angle,
+its maximum over this region occurs on $\sum_i\theta_i=\pi/2$.
+If a weight is zero, the maximum is $a+b$. Assume $a,b,c>0$.
+
+On any boundary edge, the other two angles sum to $\pi/2$, so their
+contribution is a convex combination of the corresponding two weights.
+The largest boundary value is therefore $a+b$. At an interior stationary
+point, the multiplier equations are
 \[
- \frac{3-2d-d^2}{4}\le p_i\le\frac{3+2d-d^2}{4}.
+ a\sin(2\theta_1)=b\sin(2\theta_2)=c\sin(2\theta_3).
 \]
-Consequently,
+The angles $2\theta_i$ form a triangle with sides proportional to
+$1/a,1/b,1/c$. Such a triangle exists uniquely exactly when
+$1/c<1/a+1/b$, or $c(a+b)>ab$. The cosine rule gives
 \[
- ap_1+bp_2+cp_3
- =bS+(a-b)p_1-(b-c)p_3
- \le\frac{3(a+b+c)}4+\frac{a-c}{2}d
-       -\frac{a+c-b}{4}d^2.
+ \cos(2\theta_1)=\frac{c}{2b}+\frac{b}{2c}-\frac{bc}{2a^2},
 \]
-For $b\ge2c$, the quadratic is maximized on $[0,1]$ at $d=1$.
-For $b<2c$, its maximum is at $d=(a-c)/(a+c-b)$; here $c>0$
-and the denominator is positive. These two maxima give
-\eqref{eq:general-exponents} by tensor-spectrum duality, with the same
-rounding and exponent convention as in Theorem~\ref{thm:curve}.
+and cyclic variants. Using $p_i=(1+\cos(2\theta_i))/2$ yields the
+second branch of \eqref{eq:general-exponents}. It exceeds $a+b$ by
+$\bigl(c(a+b)-ab\bigr)^2/(4abc)>0$.
+Thus it is the global maximum when the triangle exists; otherwise the
+maximum is the boundary value $a+b$. At $c(a+b)=ab$, the branches agree.
+Tensor-spectrum duality gives the exponent bound, with the same
+rounding argument as in Theorem~\ref{thm:curve}.
 \end{proof}
+
+For $a,b>0$, the size-optimal range is $c\le ab/(a+b)$.
+When two dimensions are equal, \eqref{eq:general-exponents} recovers
+Theorem~\ref{thm:curve} by homogeneity and permutation.
 
 \section{Applications}\label{sec:applications}
 
@@ -731,9 +850,10 @@ Thus $m\le n^{1.25}$ permits $O(n^2)$ time.
 \item \textbf{Dynamic matrix inverse and reachability.}
 Substituting Corollary~\ref{cor:general-exponents} into van den
 Brand--Nanongkai--Saranurak's tradeoff
-\cite[Theorem~4.2]{van-den-brand-nanongkai-saranurak-2019} and minimizing
-$\max\{u+v,\omega(1,u,v)-u,\omega(v)-v\}$ over $0\le u\le v\le1$
-gives $O(n^{1.31125})$ worst-case time per entry update and query for
+\cite[Theorem~4.2]{van-den-brand-nanongkai-saranurak-2019}, with
+$u=0.50323551$ and $v=0.80667763$ in
+$\max\{u+v,\omega(1,u,v)-u,\omega(v)-v\}$,
+gives $O(n^{1.30992})$ worst-case time per entry update and query for
 maintaining the inverse of a nonsingular $n\times n$ matrix, after
 $O(n^{2.25})$ preprocessing.
 The associated Monte Carlo reduction gives the same bounds for directed

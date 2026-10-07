@@ -17,7 +17,10 @@ The tensor constructions and entropy inequality are taken from the recent
 nine-fourths matrix-multiplication result by OpenAI; partial symmetrization
 adapts the averaging argument in that work.
 The additional analysis uses logarithmic homogenization and bounds on
-profile slopes and intercepts to derive $b\le4a(1-a)$. Consequences include
+profile slopes and intercepts to derive $b\le4a(1-a)$. Keeping all three
+parameters distinct gives stronger bounds for $\omega(a,b,c)$, including
+the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c(a+b)\le ab$.
+Consequences include
 $\alpha\ge\frac{1}{2}$ and exponent **2.5** for Zwick's directed
 unweighted APSP algorithm, improved to **2.4999** when combined with
 Alman--Vassilevska Williams. Applications also include all-pairs LCA,
