@@ -1,0 +1,13 @@
+# LaTeX build intermediates
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+
+# Python caches
+__pycache__/
+*.py[cod]
