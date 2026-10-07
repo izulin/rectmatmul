@@ -30,7 +30,7 @@ Build from this directory with TeX Live and `latexmk`:
 latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-The bibliography uses the `alpha` style and is inlined in `main.tex`;
+The bibliography uses the `plain` style and is inlined in `main.tex`;
 no BibTeX step or external bibliography file is needed.
 
 The included figure, `rectangular-exponent-curve.pdf`, is beside `main.tex`.
