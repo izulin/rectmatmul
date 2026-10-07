@@ -81,7 +81,8 @@ def main():
     ax.legend(loc="upper left", frameon=False)
 
     for extension in ["pdf", "svg", "png"]:
-        path = output / f"rectangular-exponent-curve.{extension}"
+        directory = output.parent if extension == "pdf" else output
+        path = directory / f"rectangular-exponent-curve.{extension}"
         fig.savefig(path, dpi=200)
         if extension == "svg":
             path.write_text(

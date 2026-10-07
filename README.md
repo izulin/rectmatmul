@@ -33,5 +33,6 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 The bibliography uses the `alpha` style and is inlined in `main.tex`;
 no BibTeX step or external bibliography file is needed.
 
-The curve figure and its plotting source are in `figures/`;
-regenerating it requires Python, Matplotlib, and NumPy.
+The included figure, `rectangular-exponent-curve.pdf`, is beside `main.tex`.
+Its plotting source and SVG/PNG versions are in `figures/`;
+regenerating the figure requires Python, Matplotlib, and NumPy.
