@@ -30,8 +30,8 @@ Build from this directory with TeX Live and `latexmk`:
 latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 ```
 
-The bibliography is inlined in `main.tex`; no BibTeX step or external
-bibliography file is needed.
+The bibliography uses the `alpha` style and is inlined in `main.tex`;
+no BibTeX step or external bibliography file is needed.
 
 The curve figure and its plotting source are in `figures/`;
 regenerating it requires Python, Matplotlib, and NumPy.
