@@ -42,8 +42,8 @@ rectangular products and prove
 In particular, $\omega(1,\frac{1}{2},1)=2$ and the dual exponent satisfies
 $\alpha\ge \frac{1}{2}$. A Hermite-interpolation degeneration gives
 ordinary homogeneous limits of convolution character profiles.
-The shared-leg entropy inequality and polynomial-multiplication
-degenerations from~\cite{openai-2026-matrix-nine-fourths} constrain their
+The shared-leg entropy inequality and degenerations of convolution
+tensors from~\cite{openai-2026-matrix-nine-fourths} constrain their
 slopes and intercepts, yielding
 $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the three dot-product exponents
 of every tensor character. Tensor-spectrum duality then gives both the
@@ -76,7 +76,7 @@ an improvement for square matrices need not give a comparable
 improvement for every rectangular shape.
 The analysis in~\cite{openai-2026-matrix-nine-fourths} establishes the square bound
 $\omega\le2.25$ using a shared-leg entropy inequality and degenerations
-of polynomial-multiplication tensors. We extend that analysis to
+of convolution tensors. We extend that analysis to
 rectangular products by retaining the orientation information lost
 under full leg symmetrization.
 
@@ -134,7 +134,7 @@ Corollary~\ref{cor:general-exponents}; Theorem~\ref{thm:curve} follows
 by setting two dimension exponents equal.
 
 \paragraph{Relation to the preceding analysis.}
-The shared-leg entropy inequality, determinant filtration, and
+The shared-leg entropy inequality, determinant construction, and
 three-sector degeneration in Lemma~\ref{lem:openai-inputs} are inherited
 from Corollary~3.2 and the proofs of Lemmas~4.1 and~4.2
 of~\cite{openai-2026-matrix-nine-fourths}.
@@ -154,7 +154,7 @@ the constraint and applies standard tensor-spectrum duality.
 Section~\ref{sec:applications} substitutes the resulting bounds into
 known algorithmic tradeoffs.
 
-\section{Tensor characters and polynomial multiplication}\label{sec:discrete}
+\section{Tensor characters and convolution}\label{sec:discrete}
 
 We view a tensor as a trilinear form in three groups of variables,
 called its \emph{legs}. A \emph{restriction} applies linear substitutions
@@ -200,20 +200,27 @@ We use the standard duality
 \end{equation}
 as stated, for example, in \cite[Section~4.1, p.~18]
 {christandl-vrana-zuiddam-2021-irreversibility}.
+Thus it suffices to upper-bound the value of every character on the
+relevant matrix-multiplication tensor. Section~\ref{sec:exponents}
+converts the resulting asymptotic-rank bound into a running-time
+exponent by taking tensor powers.
 
-For distinct tensor legs $i,j$, put the polynomial-multiplication tensor
+For distinct tensor legs $i,j$, define the \emph{convolution tensor}
 \[
  C_{ij}(r,s)=\sum_{h=0}^{r-1}\sum_{\ell=0}^{s-1}
                  x_h^{(i)}x_\ell^{(j)}x_{h+\ell}^{(k)}
 \]
-on input legs $i,j$ and the remaining output leg $k$. Its rank is
+on input legs $i,j$ and the remaining output leg $k$. It represents
+multiplication of two polynomials through convolution of their coefficient
+vectors. Its rank is
 $r+s-1$ over $\CC$: interpolation at $r+s-1$ distinct points gives
 the upper bound, and the output flattening gives the lower bound.
 A smaller pair of input lengths gives a restriction.
 
 We call the blocks $T_h$ \emph{matched sectors sharing the $X$-leg} if
-$T=\sum_h T_h$ with $T_h\in X\otimes Y_h\otimes Z_h$, where the $Y_h$
-are pairwise disjoint coordinate spaces, as are the $Z_h$.
+$T=\sum_h T_h$ and the blocks may share $X$-variables, but use
+pairwise disjoint sets of $Y$-variables and pairwise disjoint sets
+of $Z$-variables.
 
 The following results restate Corollary~3.2 and the constructions in the
 proofs of Lemmas~4.1 and~4.2 of~\cite[pp.~5--8]{openai-2026-matrix-nine-fourths}.
@@ -229,7 +236,7 @@ vector $q$,
  \qquad H(q)=-\sum_hq_h\log q_h.
 \end{equation}
 The same inequality applies to a degeneration onto such sectors.
-\item The determinant filtration of $C_{ij}(r,s)\otimes B_i(2)$,
+\item The determinant construction for $C_{ij}(r,s)\otimes B_i(2)$,
 recapped in Appendix~\ref{app:determinant-filtration}, yields for $s\ge2$
 two matched sectors
 $C_{ij}(r,s+1)$ and $C_{ij}(r,s-1)$ sharing leg $i$.
@@ -273,7 +280,7 @@ bound gives
 \begin{equation}\label{eq:profile-rank}
  1\le f_{ij}(r,s)\le r+s-1.
 \end{equation}
-Interchanging the two polynomial inputs gives the same tensor, so
+Interchanging the two inputs gives the same tensor, so
 $f_{ij}(r,s)=f_{ji}(s,r)$.
 
 \begin{lemma}[Powered concavity and tripling]\label{lem:discrete}
@@ -288,7 +295,7 @@ $r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
 \end{lemma}
 
 \begin{proof}
-The determinant filtration and \eqref{eq:optimized-entropy} give, for
+The determinant construction and \eqref{eq:optimized-entropy} give, for
 $s\ge2$,
 \[
 \begin{aligned}
@@ -331,10 +338,12 @@ basis $u_{h,i}(t)$ for polynomials of degree less than $R$, specified by
  \pmod{(t-\alpha_\ell)^{r_\ell}},\qquad 0\le i<r_h.
 \]
 Choose the analogous basis $v_{h,j}(t)$ for the second input, using
-the orders $s_h$. On the output retain the Taylor coefficient
-functionals at $\alpha_h$ of orders $0\le k\le r_h+s_h-2$.
-These $R+S-m$ functionals are independent by Hermite interpolation,
-since the output polynomials have degree less than $R+S-1$.
+the orders $s_h$. For the output polynomial $W(t)$, retain the
+coefficients $[z^k]W(\alpha_h+z)$ for $0\le k\le r_h+s_h-2$;
+here $[z^k]$ means the coefficient of $z^k$.
+These $R+S-m$ values can be specified independently: Hermite
+interpolation realizes any such list with a polynomial of degree
+less than $R+S-m$, which fits the output degree bound $R+S-1$.
 
 In these fixed coordinates, scale each tensor variable by
 $\varepsilon$ raised to its weight, where
@@ -370,9 +379,13 @@ For every $r,s>0$, the limit
  g_{ij}(r,s)=\lim_{n\to\infty}
  \frac{f_{ij}(\lfloor nr\rfloor,\lfloor ns\rfloor)}{n}
 \end{equation}
-exists, locally uniformly on the positive quadrant. The profiles
-$g_{ij}$ are nondecreasing, concave, and homogeneous of degree one,
-with
+exists, uniformly for $r,s\in[u,v]$ for every fixed $0<u<v$.
+The profiles $g_{ij}$ are nondecreasing and concave, and are homogeneous
+of degree one, meaning
+\[
+ g_{ij}(tr,ts)=t\,g_{ij}(r,s)\qquad(t>0).
+\]
+They also satisfy
 \begin{equation}\label{eq:limit-rank}
  \min\{r,s\}\le g_{ij}(r,s)\le r+s,
  \qquad g_{ij}(r,s)=g_{ji}(s,r).
@@ -403,17 +416,27 @@ floored pair in \eqref{eq:ordinary-limit} between
 $\lfloor n/q\rfloor(a,b)$ and $(\lfloor n/q\rfloor+1)(a,b)$.
 Hence the limit is $g_{ij}(a,b)/q$. Superadditivity passes to rational
 pairs, and rational homogeneity makes the limit concave there.
-Local boundedness and the concave secant inequalities give local
-Lipschitz bounds, so it extends uniquely to a continuous concave
-function on the positive quadrant.
 
-On a compact rectangle, choose a finite rational grid on which the
-oscillation between neighboring corners is arbitrarily small.
-Convergence at the grid points and coordinatewise monotonicity squeeze
-the normalized discrete profiles between these corner values. This
-proves locally uniform convergence in \eqref{eq:ordinary-limit}.
+To handle real lengths, first bound how much the limit can change
+between nearby rational points. Fix rational $0<u<v$ and write
+$g=g_{ij}$. For rational $r,r',s\in[u,v]$ with $r<r'$, concavity gives
+\[
+ 0\le\frac{g(r',s)-g(r,s)}{r'-r}
+ \le\frac{g(r,s)-g(u/2,s)}{r-u/2}\le\frac{4v}{u},
+\]
+using $0\le g(r,s)\le r+s\le2v$. The same bound holds in the other
+coordinate. Thus changing the two coordinates by a total of $\eta$
+changes $g$ by at most $4v\eta/u$. Approximating real lengths by
+rationals therefore defines a unique continuous extension of $g$.
+
+Now cover any fixed rectangle with a fine rational grid. The slope
+bound makes the limit values at neighboring corners arbitrarily close.
+Both the normalized discrete profiles and $g$ lie between their values
+at the lower and upper grid corners. Convergence at the finitely many
+corners therefore gives uniform convergence throughout the rectangle.
 Homogeneity, monotonicity, input interchange, and
-\eqref{eq:limit-rank} follow from their rational counterparts.
+concavity, as well as \eqref{eq:limit-rank}, pass from rational to real
+lengths by continuity.
 
 For powered concavity, first take rational lengths and a rational
 interpolation coefficient. Clear denominators and apply the discrete
@@ -490,8 +513,14 @@ By homogeneity and input interchange, at differentiability points
  \partial_s\log g_{ij}(r,s)\ge\frac{p_i}{s+c_{ij}r},\qquad
  \partial_r\log g_{ij}(r,s)\ge\frac{p_j}{r+c_{ji}s}.
 \]
-The profiles are locally Lipschitz, so Euler's identity applies almost
-everywhere. Continuity of the resulting bound then gives
+The profiles are locally Lipschitz and hence differentiable almost
+everywhere. At such a point, differentiating
+$g_{ij}(tr,ts)=t\,g_{ij}(r,s)$ at $t=1$ and dividing by $g_{ij}(r,s)$ gives
+\[
+ r\,\partial_r\log g_{ij}(r,s)+s\,\partial_s\log g_{ij}(r,s)=1.
+\]
+Combining the two derivative bounds and using continuity to include
+all positive $r,s$ gives
 \begin{equation}\label{eq:euler-bound}
  1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
  \qquad(r,s>0).
@@ -589,8 +618,6 @@ each exponent from above by rationals and pad. The optimized bound
 is continuous in the weights, as the maximum of these linear
 objectives over a fixed compact set, completing the proof.
 \end{proof}
-
-For $a,b>0$, the size-optimal range is $c\le ab/(a+b)$.
 
 \begin{proof}[Proof of Theorem~\ref{thm:curve}]
 Apply Corollary~\ref{cor:general-exponents} to the sorted dimensions
@@ -764,72 +791,67 @@ Uri Zwick.
 \clearpage
 \appendix
 \numberwithin{equation}{section}
-\section{The determinant filtration}\label{app:determinant-filtration}
+\section{The determinant construction}\label{app:determinant-filtration}
 
-We recap the classical determinant construction underlying the degree-one
-Clebsch--Gordan formula
+We recap the determinant construction used in
+\cite[Lemma~4.1]{openai-2026-matrix-nine-fourths} as an explicit change of
+basis for pairs of univariate polynomials. Its classical form is the
+degree-one Clebsch--Gordan formula
 \cite[Theorem~2.6.3, pp.~56--57 of the author version]{kowalski-2014-representation-theory}.
-Its use for the tensor degeneration in Lemma~\ref{lem:openai-inputs}
-follows \cite[Lemma~4.1]{openai-2026-matrix-nine-fourths}.
 
-Fix $r\ge1$ and $s\ge2$.
-Let $\mathcal V_e$ be the homogeneous polynomials of degree $e$ in $u,v$,
-so $\dim\mathcal V_e=e+1$, and put
-$\mathcal U_e=\mathcal V_e\otimes\operatorname{span}(u',v')$.
-The tensor $C_{XY}(r,s)\otimes B_X(2)$ represents multiplication
+Fix $r\ge1$ and $s\ge2$. The tensor $C_{XY}(r,s)\otimes B_X(2)$
+computes
 \[
- \mathcal V_{r-1}\times\mathcal U_{s-1}
- \longrightarrow\mathcal U_{r+s-2},\qquad (f,g)\longmapsto fg.
+ (f,(a,b))\longmapsto(fa,fb),\qquad
+ \deg f<r,\quad\deg a,\deg b<s.
 \]
-Tensoring with $B_X(2)$ doubles the second-input and output spaces.
+Thus tensoring with $B_X(2)$ means multiplying two polynomials by the
+same $f$. We will choose fixed bases in which this computation splits,
+in the limit, into multiplication with input lengths $s+1$ and $s-1$.
 
-Set $D=uv'-vu'$, the determinant of the columns $(u,v)$ and $(u',v')$.
-For $e\ge1$, substitution $(u',v')=(u,v)$ defines a surjective map
-$\rho_e:\mathcal U_e\to\mathcal V_{e+1}$: every output monomial is the
-image of a monomial ending in $u'$ or $v'$. Its kernel contains
-$D\mathcal V_{e-1}$. Multiplication by $D$ is injective, and
-\[
- \dim\ker\rho_e=2(e+1)-(e+2)=e=\dim(D\mathcal V_{e-1}),
-\]
-so this is the entire kernel. A \emph{filtration} is a chain of nested
-subspaces; here it is
+For $e\ge1$, consider pairs $(a,b)$ with $\deg a,\deg b\le e$.
+The polynomial $a+tb$ has degree at most $e+1$, and
 \begin{equation}\label{eq:determinant-filtration}
- 0\subset D\mathcal V_{e-1}\subset\mathcal U_e,
- \qquad
- \mathcal U_e/(D\mathcal V_{e-1})\cong\mathcal V_{e+1}.
+ a+tb=0\quad\Longleftrightarrow\quad
+ (a,b)=(-th,h)\quad\text{for some }\deg h\le e-1.
 \end{equation}
-Thus the kernel and quotient at $e=s-1$ have dimensions $s-1$ and $s+1$.
+Use the following basis, arranged in two blocks:
+\[
+ \underbrace{(t^j,0)\ (0\le j\le e),\ (0,t^e)}_{e+2\text{ vectors}},
+ \qquad
+ \underbrace{(-t^{j+1},t^j)\ (0\le j<e)}_{e\text{ vectors}}.
+\]
+The first block maps under $(a,b)\mapsto a+tb$ to
+$1,t,\ldots,t^{e+1}$. Every pair mapping to zero is a unique linear
+combination of the second block, by \eqref{eq:determinant-filtration}.
+These vectors therefore form a basis. At $e=s-1$, the two blocks
+have sizes $s+1$ and $s-1$.
 
-To make the construction explicit, use the following basis of
-$\mathcal U_e$: first the quotient lifts
+Choose these bases for both the second-input pairs ($e=s-1$) and
+the output pairs ($e=r+s-2$). Multiplication by every $f$ satisfies
 \[
- u^{e-j}v^j u'\quad(0\le j\le e),\qquad v^e v',
+ fa+t(fb)=f(a+tb),\qquad
+ f(-th,h)=(-t(fh),fh).
 \]
-followed by the kernel basis
-$D u^{e-1-j}v^j$ for $0\le j<e$.
-The quotient images, and the kernel elements after division by $D$,
-are the standard monomial bases. Choose these bases at both
-$e=s-1$ and $e=r+s-2$.
-For every $f\in\mathcal V_{r-1}$,
-\[
- \rho_{r+s-2}(fg)=f\rho_{s-1}(g),\qquad f(Dg)=D(fg).
-\]
-Consequently, multiplication by $f$ has the block matrix
+The first identity says that the first block undergoes ordinary
+multiplication by $f$; the second says the same for the second block
+and shows that it contributes nothing to the first. Consequently,
+the matrix of multiplication by $f$ has the form
 \begin{equation}\label{eq:determinant-blocks}
  \begin{pmatrix}M_f^+&0\\ R_f&M_f^-\end{pmatrix},
  \qquad
  \begin{aligned}
- M_f^+&:\mathcal V_s\longrightarrow\mathcal V_{r+s-1},\\
- M_f^-&:\mathcal V_{s-2}\longrightarrow\mathcal V_{r+s-3},
+ M_f^+&:\CC^{s+1}\longrightarrow\CC^{r+s},\\
+ M_f^-&:\CC^{s-1}\longrightarrow\CC^{r+s-2},
  \end{aligned}
 \end{equation}
-where $M_f^+$ and $M_f^-$ are ordinary multiplication by $f$.
-The bases are fixed independently of $f$, so this block structure holds
-for the whole tensor.
+where $M_f^+,M_f^-$ are the usual coefficient matrices for multiplying
+by $f$. The bases are fixed independently of $f$, so this block
+structure holds for the whole tensor.
 
-Scale the second-input kernel coordinates by $\varepsilon^{-1}$ and
-the output-dual kernel coordinates by $\varepsilon$, leaving the
-other coordinates unchanged. On every multiplication matrix this gives
+Scale the variables in the second block on the second-input leg by
+$\varepsilon^{-1}$, and those in the second block on the output leg
+by $\varepsilon$. On every multiplication matrix this gives
 \[
  \begin{pmatrix}I&0\\0&\varepsilon I\end{pmatrix}
  \begin{pmatrix}M_f^+&0\\R_f&M_f^-\end{pmatrix}

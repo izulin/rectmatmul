@@ -13,7 +13,7 @@ $$
 \end{cases}
 $$
 
-The shared-leg entropy inequality, determinant filtration, and three-sector
+The shared-leg entropy inequality, determinant construction, and three-sector
 degeneration come from the recent nine-fourths result by OpenAI.
 The note adds a Hermite-interpolation degeneration, uses superadditivity
 to obtain ordinary scaling limits, and couples the profile slopes and
