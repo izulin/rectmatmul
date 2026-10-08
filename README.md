@@ -3,7 +3,7 @@
 Przemysław Uznański — Pathway
 
 This note extends the shared-leg entropy analysis to rectangular
-matrix multiplication over the complex numbers, proving
+matrix multiplication over fields of characteristic zero, proving
 
 $$
 \omega(1,k,1)\le
@@ -13,13 +13,14 @@ $$
 \end{cases}
 $$
 
-The tensor constructions and entropy inequality are taken from the recent
-nine-fourths matrix-multiplication result by OpenAI; partial symmetrization
-adapts the averaging argument in that work.
-The additional analysis uses logarithmic homogenization and bounds on
-profile slopes and intercepts to derive $b\le4a(1-a)$. Keeping all three
-parameters distinct gives stronger bounds for $\omega(a,b,c)$, including
-the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c(a+b)\le ab$.
+The shared-leg entropy inequality, determinant filtration, and three-sector
+degeneration come from the recent nine-fourths result by OpenAI.
+The note adds a Hermite-interpolation degeneration, uses superadditivity
+to obtain ordinary scaling limits, and couples the profile slopes and
+intercepts to prove $\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
+Optimizing this constraint gives bounds for $\omega(a,b,c)$, including
+the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c(a+b)\le ab$;
+the displayed rectangular curve follows as a corollary.
 Consequences include
 $\alpha\ge\frac{1}{2}$ and exponent **2.5** for Zwick's directed
 unweighted APSP algorithm, improved to **2.4999** when combined with

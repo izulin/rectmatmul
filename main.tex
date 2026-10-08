@@ -15,8 +15,6 @@
 \newcommand{\CC}{\mathbb C}
 \newcommand{\rank}{\operatorname{rank}}
 \newcommand{\arank}{\widetilde{\operatorname{rank}}}
-\newcommand{\vd}{V_{\mathrm d}}
-\newcommand{\ud}{U_{\mathrm d}}
 \newcommand{\degen}{\unrhd}
 \newcommand{\cmm}[3]{\langle #1,#2,#3\rangle}
 \DeclareMathOperator{\MM}{MM}
@@ -38,18 +36,18 @@ rectangular products and prove
  \omega(1,k,1)\le
  \begin{cases}
  2,&0\le k\le \frac{1}{2},\\
- 1+k+1/(4k),&k\ge \frac{1}{2}.
+ 1+k+\frac{1}{4k},&k\ge \frac{1}{2}.
  \end{cases}
 \]
 In particular, $\omega(1,\frac{1}{2},1)=2$ and the dual exponent satisfies
-$\alpha\ge \frac{1}{2}$. We use the shared-leg entropy inequality and
-polynomial-multiplication degenerations from~\cite{openai-2026-matrix-nine-fourths}, retaining two-leg
-symmetry and the orientation of each sector. Logarithmic averaging
-produces homogeneous auxiliary profiles. Their powered versions have
-a common asymptotic slope, and bounding their intercepts gives the
-spectral constraint $b\le 4a(1-a)$. This yields the rectangular curve
-by tensor-spectrum duality. Keeping all three character parameters
-distinct gives a stronger bound for $\omega(a,b,c)$, with exact exponent
+$\alpha\ge \frac{1}{2}$. A Hermite-interpolation degeneration gives
+ordinary homogeneous limits of convolution character profiles.
+The shared-leg entropy inequality and polynomial-multiplication
+degenerations from~\cite{openai-2026-matrix-nine-fourths} constrain their
+slopes and intercepts, yielding
+$\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the three dot-product exponents
+of every tensor character. Tensor-spectrum duality then gives both the
+rectangular curve and a bound for $\omega(a,b,c)$, with exact exponent
 $a+b$ whenever $a\ge b\ge c\ge0$ and $c(a+b)\le ab$.
 As an application, Zwick's algorithm
 \cite{zwick-2002-bridging-sets} for all-pairs shortest paths in directed
@@ -77,16 +75,21 @@ and Hamming distance. Its exponents depend on the shape of the product;
 an improvement for square matrices need not give a comparable
 improvement for every rectangular shape.
 The analysis in~\cite{openai-2026-matrix-nine-fourths} establishes the square bound
-$\omega\le9/4$ using a shared-leg entropy inequality and degenerations
+$\omega\le2.25$ using a shared-leg entropy inequality and degenerations
 of polynomial-multiplication tensors. We extend that analysis to
 rectangular products by retaining the orientation information lost
 under full leg symmetrization.
+
+We work over $\CC$. By invariance of asymptotic rank under field extension,
+the resulting matrix-multiplication exponent bounds also hold over every
+field of characteristic zero
+\cite[Remark~1.3]{christandl-vrana-zuiddam-2018-universal-points}.
 
 For fixed nonnegative real $u,v,w$, let $\omega(u,v,w)$ be the infimum
 of the exponents $e$ for which multiplying an
 $\lceil n^u\rceil\times\lceil n^v\rceil$ matrix by a
 $\lceil n^v\rceil\times\lceil n^w\rceil$ matrix uses
-$O(n^e)$ arithmetic operations over $\CC$, with the convention above.
+$O(n^e)$ arithmetic operations, with the convention above.
 Write $\omega(k)=\omega(1,k,1)$ and
 $\alpha=\sup\{k\ge0:\omega(k)=2\}$.
 
@@ -104,7 +107,7 @@ $\omega(2)\le3.125$.
 \end{theorem}
 
 Theorem~\ref{thm:curve} gives exponent two for inner dimension
-up to $n^{0.5}$, and an upper bound within $1/(4k)$ of the input-size
+up to $n^{0.5}$, and an upper bound within $\frac{1}{4k}$ of the input-size
 lower bound $1+k$ for $k\ge1$.
 
 \begin{figure}[tbp]
@@ -117,54 +120,48 @@ lower bound $1+k$ for $k\ge1$.
  \label{fig:rectangular-curve}
 \end{figure}
 
-Our proof bounds the dot-product parameters of every tensor character.
-After averaging over the interchange of two legs, these parameters
-have the form $(a_0,a_0,b_0)$, and the rectangular objective is
-$2a_0+kb_0$. We prove the parabolic constraint
-$b_0\le4a_0(1-a_0)$.
-Keeping all three parameters distinct gives the joint constraint
-$\sum_i\arccos\sqrt{p_i}\ge\pi/2$. Its optimization yields the
-general bound in Corollary~\ref{cor:general-exponents}, including
-the exact size exponent $a+b$ for $a\ge b\ge c\ge0$ with
-$c(a+b)\le ab$.
+Our proof bounds the dot-product exponents $p_i$ of every tensor character,
+defined in \eqref{eq:dot-parameters}.
+Hermite interpolation splits a convolution tensor into a direct sum
+of smaller convolutions. This makes each character profile
+superadditive, so its ordinary scaling limit exists and is homogeneous
+of degree one. The shared-leg inequalities force the powered limits
+to have common slopes and bounded intercepts. Coupling the intercepts
+of all three orientations gives
+$\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
+Optimizing this constraint gives the general bound in
+Corollary~\ref{cor:general-exponents}; Theorem~\ref{thm:curve} follows
+by setting two dimension exponents equal.
 
 \paragraph{Relation to the preceding analysis.}
-The tensor constructions and shared-leg entropy inequality are taken
-directly from~\cite{openai-2026-matrix-nine-fourths}.
-Lemma~\ref{lem:openai-inputs} restates its Corollary~3.2 and the
-constructions in the proofs of its Lemmas~4.1 and~4.2, with oriented
-notation. The partial symmetrization in Section~\ref{sec:discrete}
-adapts its six-permutation geometric averaging to two permutations.
-The powered concavity and coupled tripling inequalities in
-Lemma~\ref{lem:discrete} are direct consequences of those same
-constructions, retaining the two distinct orientations.
+The shared-leg entropy inequality, determinant filtration, and
+three-sector degeneration in Lemma~\ref{lem:openai-inputs} are inherited
+from Corollary~3.2 and the proofs of Lemmas~4.1 and~4.2
+of~\cite{openai-2026-matrix-nine-fourths}.
+Their oriented powered-concavity and tripling inequalities in
+Lemma~\ref{lem:discrete} follow directly from those inputs.
 
-The additional analytic arguments relative to that paper are the
-simultaneous logarithmic homogenization of the two profiles
-(Lemma~\ref{lem:homogeneous}) and their common-slope and intercept
-analysis (Lemma~\ref{lem:intercepts}), which yields the parabolic
-parameter bound (Proposition~\ref{prop:cap}). The underlying tools,
-including geometric averaging, compactness, and concavity, are
-standard. These arguments extend the original use of concavity and
-tripling to constrain two parameters. Once this constraint is
-established, Section~\ref{sec:exponents} obtains the curve by elementary
-optimization and standard tensor-spectrum duality.
-Section~\ref{sec:general} extends the same homogenization and
-common-slope arguments to three distinct profiles. Its additional step
-couples their six intercept ratios to obtain the angular character
-constraint in Proposition~\ref{prop:angular-cap}; optimizing that
-constraint gives a stronger bound for three unequal dimensions.
-Section~\ref{sec:applications} substitutes these bounds into known algorithmic
-tradeoffs. Thus the contribution is the rectangular bound and the
-coupled-profile analysis leading to it; the tensor constructions and
-the application algorithms are inherited.
+The additional steps here are the Hermite direct-sum degeneration
+(Lemma~\ref{lem:hermite}), its use with the standard superadditive-limit
+argument (Lemma~\ref{lem:homogeneous}), and the common-slope and
+intercept analysis (Lemma~\ref{lem:intercepts}). Coupling the six
+intercept ratios gives the angular constraint in
+Proposition~\ref{prop:angular-cap}. These steps extend the preceding
+analysis while using standard interpolation, concavity, and
+optimization tools; we make no priority claim for those tools or for
+the Hermite construction itself. Section~\ref{sec:exponents} optimizes
+the constraint and applies standard tensor-spectrum duality.
+Section~\ref{sec:applications} substitutes the resulting bounds into
+known algorithmic tradeoffs.
 
 \section{Tensor characters and polynomial multiplication}\label{sec:discrete}
 
 We view a tensor as a trilinear form in three groups of variables,
 called its \emph{legs}. A \emph{restriction} applies linear substitutions
 independently on the three legs; a \emph{degeneration} is a limit of
-such restrictions.
+such restrictions. Here the substitutions may depend on $\varepsilon\ne0$;
+each coefficient of the resulting tensor converges as $\varepsilon\to0$,
+even if the substitutions themselves do not.
 
 A \emph{tensor character} assigns each tensor $T$ a nonnegative real
 number $\lambda(T)$, with
@@ -174,14 +171,15 @@ number $\lambda(T)$, with
  \lambda(S\otimes T)=\lambda(S)\lambda(T).
 \]
 Here $\oplus$ uses disjoint variable groups and $\otimes$ is the
-Kronecker product. A character is also monotone: if $T$ restricts or
+Kronecker product. A character is also monotone: if $T$ restricts to or
 degenerates to $S$, then $\lambda(S)\le\lambda(T)$. The collection of
 these characters is the \emph{tensor spectrum}.
 For the oriented dot-product tensors
 \[
  B_X(q)=x\sum_{j=1}^q y_jz_j,
 \]
-and its leg permutations $B_Y(q),B_Z(q)$, write
+and its leg permutations $B_Y(q),B_Z(q)$, define the \emph{dot-product
+exponents} $p_i$ of $\lambda$, for $i\in\{X,Y,Z\}$, by
 \begin{equation}\label{eq:dot-parameters}
  \lambda(B_i(q))=q^{p_i},\qquad 0\le p_i\le1.
 \end{equation}
@@ -213,6 +211,10 @@ $r+s-1$ over $\CC$: interpolation at $r+s-1$ distinct points gives
 the upper bound, and the output flattening gives the lower bound.
 A smaller pair of input lengths gives a restriction.
 
+We call the blocks $T_h$ \emph{matched sectors sharing the $X$-leg} if
+$T=\sum_h T_h$ with $T_h\in X\otimes Y_h\otimes Z_h$, where the $Y_h$
+are pairwise disjoint coordinate spaces, as are the $Z_h$.
+
 The following results restate Corollary~3.2 and the constructions in the
 proofs of Lemmas~4.1 and~4.2 of~\cite[pp.~5--8]{openai-2026-matrix-nine-fourths}.
 
@@ -228,7 +230,8 @@ vector $q$,
 \end{equation}
 The same inequality applies to a degeneration onto such sectors.
 \item The determinant filtration of $C_{ij}(r,s)\otimes B_i(2)$,
-for $s\ge2$, yields two matched sectors
+recapped in Appendix~\ref{app:determinant-filtration}, yields for $s\ge2$
+two matched sectors
 $C_{ij}(r,s+1)$ and $C_{ij}(r,s-1)$ sharing leg $i$.
 \item For $r,s\ge1$, $C_{ij}(r,3s+r-1)$ degenerates to three
 matched sectors sharing leg $i$: two copies of $C_{ij}(r,s)$ and
@@ -236,425 +239,233 @@ one copy of $C_{ik}(r,s)$, where $k$ is the remaining leg.
 \end{enumerate}
 \end{lemma}
 
-\subsection{Partial symmetrization}
+\subsection{Optimizing the shared-leg inequality}
 
-We adapt the geometric averaging in
-\cite[Section~4]{openai-2026-matrix-nine-fourths}, retaining only the
-interchange of $X,Y$. The use of a common probability vector before
-geometric averaging is also taken from that argument.
-
-Fix a character $\lambda$. Let $\tau$ exchange $X,Y$, and define
-\begin{equation}\label{eq:partial-symmetry}
- M(T)=\sqrt{\lambda(T)\lambda(T^\tau)},\qquad
- a_0=\frac{p_X+p_Y}{2},\quad b_0=p_Z.
-\end{equation}
-The function $M$ is positive, multiplicative, invariant under $\tau$,
-monotone under restriction and degeneration, and bounded above by rank.
-Its dot-product parameters are
-$(\bar p_X,\bar p_Y,\bar p_Z)=(a_0,a_0,b_0)$.
-It need not be additive and is not treated as a character.
-
-Apply \eqref{eq:entropy} to both factors in $M$ with the same probability
-vector and take their geometric mean. For sectors with common leg $i$,
-this gives the same entropy inequality for $M$, using the averaged
-parameter $\bar p_i$. For $\bar p_i>0$, the entropy variational identity gives
+Fix a character $\lambda$. For $p_i>0$ and nonzero matched sectors
+$T_h$ sharing leg $i$, put $a_h=\lambda(T_h)^{1/p_i}$ and
+$A=\sum_h a_h$. For every positive probability vector $q$, weighted
+AM--GM gives
+\[
+ e^{H(q)}\prod_h a_h^{q_h}
+ =\prod_h\left(\frac{a_h}{q_h}\right)^{q_h}
+ \le\sum_h q_h\frac{a_h}{q_h}=A.
+\]
+Equality holds at $q_h^*=a_h/A$. Substituting this maximizing vector
+into \eqref{eq:entropy} yields
 \begin{equation}\label{eq:optimized-entropy}
- M(T)^{1/\bar p_i}\ge\sum_h M(T_h)^{1/\bar p_i}.
+\begin{aligned}
+ \lambda(T)^{1/p_i}
+ &\ge e^{H(q^*)}\prod_h a_h^{q_h^*}
+ =\prod_h A^{q_h^*}\\
+ &=A=\sum_h\lambda(T_h)^{1/p_i}.
+\end{aligned}
 \end{equation}
-The probability vector is optimized after averaging the two character
-inequalities.
 
-\subsection{Discrete profiles}
+\subsection{Oriented convolution profiles}
 
-A \emph{profile} here is a function of the two input lengths. Set
+A \emph{profile} here is a function of the two input lengths. For
+distinct legs $i,j$, define
 \begin{equation}\label{eq:discrete-profiles}
- \vd(r,s)=M(C_{XY}(r,s)),\qquad
- \ud(r,s)=M(C_{XZ}(r,s)).
+ f_{ij}(r,s)=\lambda(C_{ij}(r,s))\qquad(r,s\ge1).
 \end{equation}
-The first profile is symmetric in $r,s$; $X/Y$ symmetry identifies
-$M(C_{XZ}(r,s))$ and $M(C_{YZ}(r,s))$. Both profiles are nondecreasing
-in each coordinate and satisfy
+These profiles are nondecreasing in each coordinate, and the rank
+bound gives
 \begin{equation}\label{eq:profile-rank}
- 1\le \vd(r,s),\ud(r,s)\le r+s-1.
+ 1\le f_{ij}(r,s)\le r+s-1.
 \end{equation}
+Interchanging the two polynomial inputs gives the same tensor, so
+$f_{ij}(r,s)=f_{ji}(s,r)$.
 
 \begin{lemma}[Powered concavity and tripling]\label{lem:discrete}
-If $a_0>0$, $\vd^{1/a_0}$ is concave separately in $r,s$, and
-$\ud^{1/a_0}$ is concave in $s$. If $b_0>0$, $\ud^{1/b_0}$ is
-concave in $r$. A zero parameter makes the corresponding profile
-constant in that coordinate. For positive denominators, the tripling
-inequalities are
-\begin{align}
- \vd(r,3s+r-1)^{1/a_0}
- &\ge2\vd(r,s)^{1/a_0}+\ud(r,s)^{1/a_0},\label{eq:trip-v}\\
- \ud(r,3s+r-1)^{1/a_0}
- &\ge2\ud(r,s)^{1/a_0}+\vd(r,s)^{1/a_0},\label{eq:trip-u}\\
- \ud(3r+s-1,s)^{1/b_0}
- &\ge3\ud(r,s)^{1/b_0}\quad(b_0>0).\label{eq:self-trip-u}
-\end{align}
+For $p_i>0$, the sequence $s\mapsto f_{ij}(r,s)^{1/p_i}$ is concave,
+and for all integers $r,s\ge1$,
+\begin{equation}\label{eq:discrete-tripling}
+ f_{ij}(r,3s+r-1)^{1/p_i}
+ \ge2f_{ij}(r,s)^{1/p_i}+f_{ik}(r,s)^{1/p_i},
+\end{equation}
+where $i,j,k$ are distinct. For $p_j>0$, the sequence
+$r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
 \end{lemma}
 
 \begin{proof}
-The determinant filtration and \eqref{eq:optimized-entropy} give
+The determinant filtration and \eqref{eq:optimized-entropy} give, for
+$s\ge2$,
 \[
- 2M(C_{ij}(r,s))^{1/\bar p_i}\ge
- M(C_{ij}(r,s+1))^{1/\bar p_i}+M(C_{ij}(r,s-1))^{1/\bar p_i}.
+\begin{aligned}
+ 2f_{ij}(r,s)^{1/p_i}
+ &=\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}\\
+ &\ge f_{ij}(r,s+1)^{1/p_i}+f_{ij}(r,s-1)^{1/p_i}.
+\end{aligned}
 \]
-Exchanging the inputs gives the powered concavity in the other length.
-If $\bar p_i=0$, choosing a probability vector supported on the larger-length
-sector in \eqref{eq:entropy} gives
-$M(C_{ij}(r,s))\ge M(C_{ij}(r,s+1))$. Restriction monotonicity gives
-the reverse inequality, proving constancy without division by zero.
-
-The three-sector input and \eqref{eq:optimized-entropy} give
-\eqref{eq:trip-v}--\eqref{eq:trip-u}. For \eqref{eq:self-trip-u},
-view $C_{XZ}(r,s)$ as $C_{ZX}(s,r)$. Its middle sector is
-$C_{ZY}(s,r)$, which has the same $M$ value by $X/Y$ symmetry.
-All three sectors therefore have the same value in this orientation.
+This is discrete concavity in $s$; input interchange gives the other
+coordinate. Applying \eqref{eq:optimized-entropy} to the three-sector
+degeneration in Lemma~\ref{lem:openai-inputs} gives
+\eqref{eq:discrete-tripling}.
 \end{proof}
 
-If $a_0=0$, $\vd$ is constant in both coordinates and equals one.
-However, $C_{XY}(n,n)$ restricts to $B_Z(n)$ by retaining output
-coefficient $n-1$, so $\vd(n,n)\ge n^{b_0}$ and $b_0=0$. The desired
-parameter bound is immediate in this case. Assume $a_0>0$ below.
+\section{Hermite degeneration and ordinary scaling limits}\label{sec:homogeneous}
 
-\begin{lemma}[Coordinate comparisons and bounded orientation ratio]
-\label{lem:comparisons}
-If $g$ is a positive nondecreasing concave sequence, then for
-$m'\ge m\ge2$,
-\begin{equation}\label{eq:coordinate-comparison}
- \frac{g(m')}{g(m)}\le\frac{m'-1}{m-1}.
+The following degeneration makes each character profile superadditive.
+It will give degree-one limits directly, with the original dot-product
+exponents $p_i$.
+
+\begin{lemma}[Hermite direct sums]\label{lem:hermite}
+For any nonempty finite list of positive integer pairs $(r_h,s_h)$, with
+$R=\sum_h r_h$ and $S=\sum_h s_h$,
+\begin{equation}\label{eq:hermite}
+ C_{ij}(R,S)\degen\bigoplus_h C_{ij}(r_h,s_h).
 \end{equation}
-For $n\ge2$,
-\begin{equation}\label{eq:ratio}
- \left(2+\frac2{n-1}\right)^{-1}
- \le \left(\frac{\ud(n,n)}{\vd(n,n)}\right)^{1/a_0}
- \le 2+\frac2{n-1}.
-\end{equation}
+The summands are disjoint on all three legs.
 \end{lemma}
 
 \begin{proof}
-The secant inequality gives
-$g(m')\le g(m)+(m'-m)(g(m)-g(1))/(m-1)$, proving
-\eqref{eq:coordinate-comparison}. Apply it to the powered profiles
-with $r=n$, $m=n$, $m'=4n-1$ in \eqref{eq:trip-v}. The upper
-factor is $(4n-2)/(n-1)=4+2/(n-1)$; subtracting the two outer-sector
-values gives the upper bound in \eqref{eq:ratio}. Use
-\eqref{eq:trip-u} for the reciprocal bound.
+It suffices to use the input legs $X,Y$. Choose distinct complex
+numbers $\alpha_1,\ldots,\alpha_m$. Hermite interpolation gives a
+basis $u_{h,i}(t)$ for polynomials of degree less than $R$, specified by
+\[
+ u_{h,i}(t)\equiv
+ \begin{cases}
+ (t-\alpha_h)^i,&\ell=h,\\
+ 0,&\ell\ne h,
+ \end{cases}
+ \pmod{(t-\alpha_\ell)^{r_\ell}},\qquad 0\le i<r_h.
+\]
+Choose the analogous basis $v_{h,j}(t)$ for the second input, using
+the orders $s_h$. On the output retain the Taylor coefficient
+functionals at $\alpha_h$ of orders $0\le k\le r_h+s_h-2$.
+These $R+S-m$ functionals are independent by Hermite interpolation,
+since the output polynomials have degree less than $R+S-1$.
+
+In these fixed coordinates, scale each tensor variable by
+$\varepsilon$ raised to its weight, where
+\begin{equation}\label{eq:hermite-weights}
+\begin{aligned}
+ w(x_{h,i})&=r_h-1-i,\qquad w(y_{h,j})=s_h-1-j,\\
+ w(z_{h,k})&=k-r_h-s_h+2.
+\end{aligned}
+\end{equation}
+For two inputs from node $h$, the coefficient at $k=i+j$ equals one
+and has total weight zero. Any other nonzero coefficient at that node
+has $k>i+j$ and positive weight. If the first input comes from another
+node and the second is $v_{h,j}$, a nonzero coefficient requires
+$k\ge r_h+j$. Its weight is at least one, since the first-input
+weight is nonnegative. The reversed case is identical. If both inputs
+come from other nodes, their product vanishes to order at least
+$r_h+s_h$, beyond the retained output range.
+
+Thus every nonzero term has nonnegative weight, and the limit as
+$\varepsilon\to0$ is exactly the direct sum in \eqref{eq:hermite}.
 \end{proof}
 
-\section{Homogeneous auxiliary profiles}\label{sec:homogeneous}
-
-The proof of~\cite[Lemma~5.1]{openai-2026-matrix-nine-fourths} uses a
-discrete recurrence along the diagonal of one fully symmetrized profile.
-We construct homogeneous auxiliary profiles from the discrete values
-in \eqref{eq:discrete-profiles}, preserving powered concavity and
-the tripling inequalities.
-
-\begin{lemma}[Logarithmic homogenization]\label{lem:homogeneous}
-There exist positive locally Lipschitz profiles $V,U$ on $(0,\infty)^2$
-and a number
-\begin{equation}\label{eq:delta}
- \max(a_0,b_0)\le\delta\le1
+Character additivity and degeneration monotonicity now give
+\begin{equation}\label{eq:superadditive}
+ f_{ij}(r+u,s+v)\ge f_{ij}(r,s)+f_{ij}(u,v).
 \end{equation}
-such that both profiles are homogeneous of degree $\delta$, $V(1,1)=1$,
-$V$ is symmetric, and both are nondecreasing. They inherit all powered
-concavities in Lemma~\ref{lem:discrete} and its tripling inequalities
-with $3s+r$ and $3r+s$ in place of the integer shifts.
+Taking $m$ copies of $C_{ij}(1,1)$ also gives $f_{ij}(m,m)\ge m$;
+by monotonicity, $f_{ij}(r,s)\ge\min\{r,s\}$.
+
+\begin{lemma}[Ordinary homogeneous limits]\label{lem:homogeneous}
+For every $r,s>0$, the limit
+\begin{equation}\label{eq:ordinary-limit}
+ g_{ij}(r,s)=\lim_{n\to\infty}
+ \frac{f_{ij}(\lfloor nr\rfloor,\lfloor ns\rfloor)}{n}
+\end{equation}
+exists, locally uniformly on the positive quadrant. The profiles
+$g_{ij}$ are nondecreasing, concave, and homogeneous of degree one,
+with
+\begin{equation}\label{eq:limit-rank}
+ \min\{r,s\}\le g_{ij}(r,s)\le r+s,
+ \qquad g_{ij}(r,s)=g_{ji}(s,r).
+\end{equation}
+For $p_i>0$, $g_{ij}^{1/p_i}$ is concave in $s$ and satisfies
+\begin{equation}\label{eq:general-tripling}
+ g_{ij}(r,3s+r)^{1/p_i}
+ \ge2g_{ij}(r,s)^{1/p_i}+g_{ik}(r,s)^{1/p_i}.
+\end{equation}
+For $p_j>0$, $g_{ij}^{1/p_j}$ is concave in $r$.
 \end{lemma}
 
 \begin{proof}
-Define, for real $t$,
+Fix positive integers $r,s$. By \eqref{eq:superadditive}, the sequence
+$a_n=f_{ij}(nr,ns)$ is superadditive and bounded above by $n(r+s)$.
+For each fixed $k$, writing $n=qk+t$, $0\le t<k$, gives
+$a_n\ge q a_k$. Therefore
 \[
- L_V(r,s;t)=\log\vd(\lceil re^t\rceil,\lceil se^t\rceil),\qquad
- L_U(r,s;t)=\log\ud(\lceil re^t\rceil,\lceil se^t\rceil),
+ \liminf_{n\to\infty}\frac{a_n}{n}\ge\frac{a_k}{k},
+ \qquad
+ \lim_{n\to\infty}\frac{a_n}{n}
+ =\sup_{k\ge1}\frac{a_k}{k}.
 \]
-and average using one common normalization:
-\begin{align}
- v_T(r,s)&=\frac1T\int_0^T
-       \bigl(L_V(r,s;t)-L_V(1,1;t)\bigr)\,dt,\label{eq:v-average}\\
- u_T(r,s)&=\frac1T\int_0^T
-       \bigl(L_U(r,s;t)-L_V(1,1;t)\bigr)\,dt.\label{eq:u-average}
-\end{align}
+This is the superadditive-sequence argument, also called Fekete's lemma.
 
-Applying \eqref{eq:coordinate-comparison} after the relevant power
-bounds a coordinate change in a log profile by its parameter times
-the corresponding log-length change, with $O(e^{-t})$ rounding errors
-on a fixed compact positive rectangle. A coordinate with zero parameter
-is constant. Together with \eqref{eq:ratio}, these comparisons bound
-the two integrands in \eqref{eq:v-average}--\eqref{eq:u-average} on
-each compact rectangle, uniformly in $t\ge0$.
-They also bound an averaged difference between two nearby points by a
-constant times their log-coordinate distance plus $O(1/T)$.
-Interpolating integer log profiles changes the averages by $O(1/T)$
-and gives uniformly Lipschitz approximations. Applying Arzel\`a--Ascoli
-on expanding compact rectangles and taking a diagonal subsequence gives
-locally uniform limits $v,u$ along a common sequence
-$T_j\to\infty$.\footnote{On each rectangle $K_j=[1/j,j]^2$, the
-interpolated profiles are uniformly bounded and have a common Lipschitz
-bound, so Arzel\`a--Ascoli gives a subsequence on which both converge
-uniformly. Choose nested subsequences for $K_1,K_2,\ldots$, then take
-the $j$-th term of the $j$-th subsequence. The resulting sequence
-converges uniformly on every compact subset of $(0,\infty)^2$;
-the $O(1/T)$ interpolation error gives the same limits for the original
-profiles.}
-Passing to a further subsequence, the bounded scalars also satisfy
-\[
- \delta_{T_j}=\frac{L_V(1,1;T_j)}{T_j}\longrightarrow\delta.
-\]
-All comparison constants here may depend on the fixed character.
+For positive rational $r=a/q$, $s=b/q$, monotonicity squeezes the
+floored pair in \eqref{eq:ordinary-limit} between
+$\lfloor n/q\rfloor(a,b)$ and $(\lfloor n/q\rfloor+1)(a,b)$.
+Hence the limit is $g_{ij}(a,b)/q$. Superadditivity passes to rational
+pairs, and rational homogeneity makes the limit concave there.
+Local boundedness and the concave secant inequalities give local
+Lipschitz bounds, so it extends uniquely to a continuous concave
+function on the positive quadrant.
 
-The rank bound \eqref{eq:profile-rank} gives $\delta\le1$.
-The tensor $C_{XY}(n,n)$ restricts to $B_X(n),B_Y(n),B_Z(n)$:
-retain the first-input constant coefficient, the second-input constant
-coefficient, or output coefficient $n-1$, respectively. Thus
-$\vd(n,n)\ge n^{\max(a_0,b_0)}$, proving \eqref{eq:delta}.
-In particular $\delta>0$.
+On a compact rectangle, choose a finite rational grid on which the
+oscillation between neighboring corners is arbitrarily small.
+Convergence at the grid points and coordinatewise monotonicity squeeze
+the normalized discrete profiles between these corner values. This
+proves locally uniform convergence in \eqref{eq:ordinary-limit}.
+Homogeneity, monotonicity, input interchange, and
+\eqref{eq:limit-rank} follow from their rational counterparts.
 
-Fix $c>0$ and put $d=\log c$. Replacing $(r,s)$ by $(cr,cs)$ shifts
-the first term of either integral by $d$ in its $t$ argument.
-The difference is the sum of two endpoint integrals. On the upper
-interval, for bounded $w$,
-\[
- L_V(r,s;T+w)=L_V(1,1;T)+O_{r,s,d}(1),
-\]
-uniformly; the same holds for $L_U$ by \eqref{eq:ratio}.
-The lower endpoint contributes $O(1)$.
-Dividing by $T$ gives
-\[
- v(cr,cs)-v(r,s)=\delta\log c,
- \qquad u(cr,cs)-u(r,s)=\delta\log c.
-\]
-This also handles $d<0$, since $L_V,L_U$ are defined for all real $t$.
-Consequently $V=e^v$, $U=e^u$ have degree $\delta$ and $V(1,1)=1$.
-
-It remains to justify the inequalities in the limit.
-The geometric-mean functional
-$G_T(h)=\exp(T^{-1}\int_0^T\log h(t)\,dt)$ is concave and homogeneous
-on positive functions. In particular
-\begin{equation}\label{eq:geometric-sum}
- h_t\ge 2g_t+j_t\quad\Longrightarrow\quad
- G_T(h)\ge2G_T(g)+G_T(j).
-\end{equation}
-For a direct proof, use the entropy variational identity for
-$\log(2g_t+j_t)$ with a single probability vector, integrate, and
-optimize that vector after integration. The same argument with two
-weighted terms shows that geometric averaging preserves concavity.
-An integrand-dependent positive multiplier common to all profiles
-does not affect these statements.
-
-Integer powered profiles have concave piecewise linear interpolations
-in each applicable coordinate. Rounding a length changes a log profile
-by $O(e^{-t})$ on compact positive rectangles by
-\eqref{eq:coordinate-comparison}. Thus their concavity inequalities,
-after averaging, have multiplicative errors $\exp(O(1/T))$.
-Likewise, $3\lceil se^t\rceil+\lceil re^t\rceil-1$ and
-$\lceil(3s+r)e^t\rceil$ differ by a bounded integer; changing between
-them changes the log value by $O(e^{-t})$.
-Apply \eqref{eq:geometric-sum} to
-\eqref{eq:trip-v}--\eqref{eq:self-trip-u} with the common normalization
-in \eqref{eq:v-average}--\eqref{eq:u-average}. The errors vanish as
-$T\to\infty$, giving the exact continuum tripling inequalities.
-Symmetry and monotonicity also pass to the limit.
+For powered concavity, first take rational lengths and a rational
+interpolation coefficient. Clear denominators and apply the discrete
+concavity from Lemma~\ref{lem:discrete} along multiples of that common
+denominator. Divide by $n^{1/p_i}$ and pass to the limit; continuity
+gives all real lengths and coefficients. The other coordinate is
+identical. Finally, local uniform convergence absorbs the bounded
+rounding errors and the $-1$ in \eqref{eq:discrete-tripling}, giving
+\eqref{eq:general-tripling}.
 \end{proof}
 
-Replace these profiles by their powers $1/\delta$, and set
-\begin{equation}\label{eq:normalized-parameters}
- a=a_0/\delta,\qquad b=b_0/\delta.
-\end{equation}
-We reuse the names $V,U$ for the resulting degree-one profiles.
-They have $0<a\le1$, $0\le b\le1$, and $V(1,1)=1$.
-Powered concavity and tripling are unchanged, since
-$(V^{1/\delta})^{1/a}=V^{1/a_0}$, and similarly for the other powers.
+\section{Common slopes and the angular constraint}\label{sec:slopes}
 
-\section{Common slopes and bounded intercepts}\label{sec:slopes}
-
-Put
-\begin{equation}\label{eq:powered-profiles}
- P(r,s)=V(r,s)^{1/a},\quad Q(r,s)=U(r,s)^{1/a},\quad D=1/a.
-\end{equation}
-Both profiles are homogeneous of degree $D$ and concave and
-nondecreasing in $s$. The profile $P$ is symmetric and concave in $r$.
-Positive separate concavity gives $P(2r,2s)\le4P(r,s)$, so $D\le2$
-and $a\ge\frac{1}{2}$. Here one extends each positive nondecreasing concave
-one-variable profile to its nonnegative limit at zero before applying
-the midpoint inequality.
+Index the three tensor legs by $1,2,3$. We use the limits above to
+constrain their dot-product exponents without symmetrizing them.
 
 \begin{lemma}[Common slope and intercepts]\label{lem:intercepts}
-For $r=1$, write $P(s)=P(1,s)$ and $Q(s)=Q(1,s)$. There is a
-common slope $L>0$ such that
+Fix $i$ with $p_i>0$, and let $j,k$ be the other legs. The functions
+$P_{ij}(s)=g_{ij}(1,s)^{1/p_i}$ and $P_{ik}(s)=g_{ik}(1,s)^{1/p_i}$
+have a common asymptotic slope $L_i>0$. Their intercepts
 \[
- \lim_{s\to\infty}\frac{P(s)}s
- =\lim_{s\to\infty}\frac{Q(s)}s=L.
+ C_{ij}=\lim_{s\to\infty}(P_{ij}(s)-L_i s),\qquad
+ C_{ik}=\lim_{s\to\infty}(P_{ik}(s)-L_i s)
 \]
-The limits
-\[
- C_P=\lim_{s\to\infty}(P(s)-Ls),\qquad
- C_Q=\lim_{s\to\infty}(Q(s)-Ls)
-\]
-exist, are nonnegative and finite, and satisfy
-\begin{equation}\label{eq:intercept-bounds}
- C_P+C_Q\le L,\qquad C_P\ge1-L,\qquad
- C_Q\le2L-1,\qquad L\le\frac1{2a}.
-\end{equation}
+are finite and nonnegative, with $C_{ij}+C_{ik}\le L_i$.
 \end{lemma}
 
 \begin{proof}
-Positive nondecreasing concavity gives finite nonnegative limits
-$L_P=\lim P(s)/s$, $L_Q=\lim Q(s)/s$. Divide the two coupled
-tripling inequalities
+Write $P=P_{ij}$ and $Q=P_{ik}$. Positive nondecreasing concavity
+gives finite nonnegative limits $L_P=\lim P(s)/s$ and
+$L_Q=\lim Q(s)/s$. Dividing the coupled inequalities
 \[
  P(3s+1)\ge2P(s)+Q(s),\qquad
  Q(3s+1)\ge2Q(s)+P(s)
 \]
-by $s$ and pass to infinity. They give $L_P\ge L_Q$ and
-$L_Q\ge L_P$, so the slopes agree.
+by $s$ and passing to infinity gives $L_P\ge L_Q$ and $L_Q\ge L_P$.
+Call their common value $L_i$.
 
-Their sum $R=P+Q$ satisfies $R(3s+1)\ge3R(s)$.
-Iterate at $s_j=3^j(s+\frac{1}{2})-\frac{1}{2}$ and use $R(s_j)/s_j\to2L$ to get
+Their sum $R=P+Q$ satisfies $R(3s+1)\ge3R(s)$. Iterating at
+$s_m=3^m(s+\frac{1}{2})-\frac{1}{2}$ gives
 \begin{equation}\label{eq:sum-majorant}
- R(s)\le L(2s+1).
+ R(s)\le\lim_{m\to\infty}3^{-m}R(s_m)=L_i(2s+1).
 \end{equation}
-Since $R(s)>0$, this proves $L>0$.
-
-The derivatives of a concave profile decrease to its asymptotic slope.
-Hence $P(s)-Ls$ and $Q(s)-Ls$ are nondecreasing. Each is nonnegative
-by comparison with its nonnegative limit at zero.
-Equation~\eqref{eq:sum-majorant} bounds their sum by $L$, so their
-finite limits exist and $C_P+C_Q\le L$. As $P(1)=1$,
-$C_P\ge1-L$, and therefore $C_Q\le2L-1$.
-
-Symmetry and homogeneity give $P(1,s)=s^D P(1,1/s)$.
-Taking one-sided derivatives at $s=1$ yields
-$P'_+(1)+P'_-(1)=D$. Concavity implies $P'_+(1)\le D/2$.
-The limiting slope is at most $P'_+(1)$, proving $L\le1/(2a)$.
-No differentiability at $s=1$ is needed.
+Since $R(s)>0$, we have $L_i>0$. Concavity makes the derivatives of
+$P,Q$ decrease to $L_i$, so $P(s)-L_i s$ and $Q(s)-L_i s$ are
+nondecreasing and have nonnegative limits at zero.
+Their sum is bounded above by $L_i$ by \eqref{eq:sum-majorant}.
+Their limits at infinity therefore exist and have the stated bounds.
 \end{proof}
-
-\begin{proposition}[Parabolic parameter cap]\label{prop:cap}
-The normalized parameters satisfy $b\le4a(1-a)$.
-\end{proposition}
-
-\begin{proof}
-At differentiability points, $Q_s'(1,s)\ge L$ and
-$Q(1,s)\le Ls+C_Q\le Ls+2L-1$. Thus
-\begin{align}
- \partial_s\log U(1,s)
- &=a\frac{Q_s'(1,s)}{Q(1,s)}
- \ge\frac{aL}{Ls+2L-1}
- \ge\frac a{s+2(1-a)}.\label{eq:u-second-derivative}
-\end{align}
-The denominators are positive: $L>0$ and $2L-1\ge C_Q\ge0$.
-The last inequality uses $2-1/L\le2-2a$.
-By degree-one homogeneity,
-\begin{equation}\label{eq:u-second-general}
- \partial_s\log U(r,s)\ge\frac a{s+2(1-a)r}.
-\end{equation}
-
-For $b>0$, the continuum self-tripling inequality and concavity in $r$
-of $U^{1/b}$ give
-\begin{equation}\label{eq:u-first-general}
- \partial_r\log U(r,s)\ge\frac{2b}{2r+s}.
-\end{equation}
-Indeed, the forward secant from $r$ to $3r+s$ is at most the right
-derivative at $r$, while the increment is at least $2U(r,s)^{1/b}$.
-If $b=0$, monotonicity gives \eqref{eq:u-first-general} with zero
-right-hand side without taking a power.
-
-Euler's identity for degree-one $U$ now gives, almost everywhere,
-\begin{equation}\label{eq:euler-bound}
- 1\ge\frac{2br}{2r+s}+
-       \frac{as}{s+2(1-a)r}.
-\end{equation}
-The right-hand side is continuous in $r/s$, so the inequality holds
-at every positive ratio. Put $x=2r/s$ and $A=1-a$; rearranging yields
-\begin{equation}\label{eq:ratio-bound}
- b\le\frac{A(1+x)^2}{x(1+Ax)}\qquad(x>0).
-\end{equation}
-For $\frac{1}{2}<a<1$, choose $x=1/(2a-1)$, which gives $b\le4a(1-a)$.
-At $a=\frac{1}{2}$, let $x\to\infty$ to get $b\le1$.
-At $a=1$, \eqref{eq:euler-bound} gives $b=0$ directly.
-\end{proof}
-
-\section{The rectangular exponent curve}\label{sec:exponents}
-
-\begin{corollary}[Character constraint]\label{cor:character-cap}
-Every character satisfies
-\begin{equation}\label{eq:original-cap}
- b_0\le4a_0(1-a_0),\qquad
- a_0=(p_X+p_Y)/2,\quad b_0=p_Z.
-\end{equation}
-\end{corollary}
-
-\begin{proof}
-For $a_0>0$, Proposition~\ref{prop:cap} and
-\eqref{eq:normalized-parameters} give
-\[
- b_0\le4a_0\left(1-\frac{a_0}{\delta}\right)
-       \le4a_0(1-a_0),
-\]
-since $\delta\le1$. If $a_0=0$, we already proved $b_0=0$.
-\end{proof}
-
-\begin{proof}[Proof of Theorem~\ref{thm:curve}]
-For $\cmm{q}{q^k}{q}$, \eqref{eq:mm-character} gives the character
-exponent $p_X+p_Y+kp_Z=2a_0+kb_0$. Corollary~\ref{cor:character-cap}
-therefore bounds this exponent by
-\[
- \max_{0\le a\le1}\bigl(2a+4ka(1-a)\bigr).
-\]
-For $0\le k\le\frac{1}{2}$ the maximum is $2$, attained at $a=1$.
-For $k\ge\frac{1}{2}$ the optimizer is
-\begin{equation}\label{eq:optimizer}
- a_* =\frac{1}{2}+\frac1{4k},\qquad
- b_*=4a_*(1-a_*)=1-\frac1{4k^2},
-\end{equation}
-and the value is $1+k+1/(4k)$.
-The optimization is over the parameter region defined by
-Corollary~\ref{cor:character-cap}; it does not require a character
-attaining \eqref{eq:optimizer}.
-
-For rational $k\ge0$, choose arbitrarily large integers $q$ with
-$q^k$ integral. The preceding bound on every character and
-\eqref{eq:duality} give the same upper bound on
-$\log_q\arank(\cmm{q}{q^k}{q})$.
-Tensor-power rank decompositions yield algorithms with
-this exponent bound: choose a tensor power with rank within an
-arbitrary exponent slack and recurse with that fixed rectangular
-decomposition. Additions are covered by its rank and flattening
-dimensions. Padding from these base sizes to arbitrary $n$ costs only
-a constant factor for each fixed algorithm.
-
-For real $k$, approximate from above by rational inner exponents and
-pad. Equivalently, inner-dimension blocking gives
-$\omega(k+h)\le \omega(k)+h$ for $h\ge0$. Continuity of the right-hand side
-of \eqref{eq:curve} and the exponent convention complete the extension
-to all real $k$.
-The output flattening has rank $n^2$, giving $\omega(k)\ge2$ and proving
-equality when $k\le\frac{1}{2}$ and the claim about $\alpha$.
-\end{proof}
-
-Some values of the bound in Theorem~\ref{thm:curve} are:
-\begin{center}
-\begin{tabular}{ccccccc}
-\toprule
-$k$ & $0.5$ & $0.6$ & $0.8$ & $1$ & $1.5$ & $2$\\
-\midrule
-$\omega(k)\le$ & $2$ & $2.0166\ldots$ & $2.1125$ & $2.25$ & $2.6666\ldots$ & $3.125$\\
-\bottomrule
-\end{tabular}
-\end{center}
-The exponent convention gives an $O(n^2)$-time
-algorithm at $k=\frac{1}{2}$.
-
-\section{Three unequal dimensions}\label{sec:general}
-
-Keeping the three character parameters distinct preserves information
-that is lost under partial symmetrization. We first derive their joint
-constraint, then optimize it for general matrix dimensions.
 
 \begin{proposition}[Angular character constraint]\label{prop:angular-cap}
-Every tensor character with dot-product parameters $p_1,p_2,p_3$ satisfies
+Every tensor character with dot-product exponents $p_1,p_2,p_3$ satisfies
 \begin{equation}\label{eq:angular-cap}
  \sum_{i=1}^3\arccos\sqrt{p_i}\ge\frac{\pi}{2}.
 \end{equation}
@@ -662,72 +473,45 @@ Every tensor character with dot-product parameters $p_1,p_2,p_3$ satisfies
 
 \begin{proof}
 If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-parameters are positive and put
-$F^{\mathrm d}_{ij}(r,s)=\lambda(C_{ij}(r,s))$.
-Lemma~\ref{lem:openai-inputs} gives powered concavity in $s$ with
-power $1/p_i$, powered concavity in $r$ with power $1/p_j$, and
-\[
- F^{\mathrm d}_{ij}(r,3s+r-1)^{1/p_i}
- \ge2F^{\mathrm d}_{ij}(r,s)^{1/p_i}
-       +F^{\mathrm d}_{ik}(r,s)^{1/p_i}.
-\]
-Here and below $i,j,k$ are distinct. Input interchange gives
-$F^{\mathrm d}_{ij}(r,s)=F^{\mathrm d}_{ji}(s,r)$.
-The proof of Lemma~\ref{lem:comparisons} gives
-\[
- \left(\frac{F^{\mathrm d}_{ik}(n,n)}
- {F^{\mathrm d}_{ij}(n,n)}\right)^{1/p_i}
- \le2+\frac{2}{n-1}\qquad(n\ge2),
-\]
-and the reverse comparison follows by exchanging $j,k$. Thus all three
-diagonal orientations are comparable by constants independent of $n$.
-
-Apply the proof of Lemma~\ref{lem:homogeneous} simultaneously to these
-profiles, using $F^{\mathrm d}_{12}$ for their common normalization.
-The coordinate comparisons and bounded orientation ratios give one
-common degree $\delta$, with $\max_i p_i\le\delta\le1$.
-Raising the profiles to $1/\delta$ gives degree-one functions $F_{ij}$
-and parameters $q_i=p_i/\delta\in(0,1]$. They satisfy
-$F_{ij}(r,s)=F_{ji}(s,r)$, the corresponding powered concavities, and
-\begin{equation}\label{eq:general-tripling}
- F_{ij}(r,3s+r)^{1/q_i}
- \ge2F_{ij}(r,s)^{1/q_i}+F_{ik}(r,s)^{1/q_i}.
-\end{equation}
-
-For fixed $i$, let $P_{ij}(s)=F_{ij}(1,s)^{1/q_i}$.
-The common-slope argument in Lemma~\ref{lem:intercepts}, through
-\eqref{eq:sum-majorant}, uses only concavity and coupled tripling.
-It therefore gives a common slope $L_i>0$ and finite nonnegative
-intercepts $C_{ij},C_{ik}$ satisfying $C_{ij}+C_{ik}\le L_i$.
-With $c_{ij}=C_{ij}/L_i$, we have
+exponents are positive. Set $c_{ij}=C_{ij}/L_i$. Lemma~\ref{lem:intercepts}
+gives the six intercept ratios and their three bounds
 \begin{equation}\label{eq:intercept-budgets}
  c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
 \end{equation}
-Moreover $P'_{ij}\ge L_i$ almost everywhere and
-$P_{ij}(s)\le L_i(s+c_{ij})$. Homogeneity, input interchange, and
-Euler's identity consequently give
+Also $P'_{ij}\ge L_i$ almost everywhere and
+$P_{ij}(s)\le L_i(s+c_{ij})$, so
 \[
- 1\ge\frac{q_i s}{s+c_{ij}r}
-       +\frac{q_j r}{r+c_{ji}s}.
+ \frac{d}{ds}\log g_{ij}(1,s)
+ =p_i\frac{P'_{ij}(s)}{P_{ij}(s)}
+ \ge\frac{p_i}{s+c_{ij}}.
 \]
-As before, continuity extends this inequality from almost every ratio
-to every positive ratio. With $t=r/s$, it is equivalent to
+By homogeneity and input interchange, at differentiability points
 \[
- (1-q_j)c_{ij}t^2+
- (1-q_i-q_j+c_{ij}c_{ji})t+(1-q_i)c_{ji}\ge0
+ \partial_s\log g_{ij}(r,s)\ge\frac{p_i}{s+c_{ij}r},\qquad
+ \partial_r\log g_{ij}(r,s)\ge\frac{p_j}{r+c_{ji}s}.
+\]
+The profiles are locally Lipschitz, so Euler's identity applies almost
+everywhere. Continuity of the resulting bound then gives
+\begin{equation}\label{eq:euler-bound}
+ 1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
+ \qquad(r,s>0).
+\end{equation}
+With $t=r/s$, this is equivalent to
+\[
+ (1-p_j)c_{ij}t^2+
+ (1-p_i-p_j+c_{ij}c_{ji})t+(1-p_i)c_{ji}\ge0
  \qquad(t>0).
 \]
-For a quadratic $At^2+Bt+C$ with $A,C\ge0$, nonnegativity on $t>0$
-is equivalent to $B\ge-2\sqrt{AC}$, including zero coefficients by
-limits. Hence
+A quadratic $At^2+Bt+C$ with $A,C\ge0$ is nonnegative on $t>0$
+exactly when $B\ge-2\sqrt{AC}$, including zero coefficients. Thus
 \begin{equation}\label{eq:intercept-products}
  \sqrt{c_{ij}c_{ji}}\ge K_{ij}:=
- \left(\sqrt{q_iq_j}-\sqrt{(1-q_i)(1-q_j)}\right)_+,
+ \left(\sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}\right)_+,
 \end{equation}
 where $(z)_+=\max\{z,0\}$.
 
 Let $K$ be the symmetric matrix with these off-diagonal entries and
-zero diagonal. For every vector $x\ge0$, weighted AM--GM and
+zero diagonal. For every vector $x\ge0$, AM--GM and
 \eqref{eq:intercept-budgets} give
 \begin{equation}\label{eq:angular-quadratic-form}
  x^{\mathsf T}Kx
@@ -735,7 +519,7 @@ zero diagonal. For every vector $x\ge0$, weighted AM--GM and
  \le\sum_{i<j}(c_{ij}x_i^2+c_{ji}x_j^2)
  \le\sum_i x_i^2.
 \end{equation}
-Put $\theta_i=\arccos\sqrt{q_i}$. If $\sum_i\theta_i<\pi/2$,
+Put $\theta_i=\arccos\sqrt{p_i}$. If $\sum_i\theta_i<\pi/2$,
 increase all three angles by the same positive amount to obtain
 $\phi_i>0$ with sum $\pi/2$. The matrix $K'$ with zero diagonal and
 $K'_{ij}=\cos(\phi_i+\phi_j)=\sin\phi_k$ is strictly smaller than $K$
@@ -744,10 +528,13 @@ off the diagonal. But the positive vector $x_i=\cos\phi_i$ satisfies
  (K'x)_i=\sin\phi_k\cos\phi_j+\sin\phi_j\cos\phi_k
  =\cos\phi_i=x_i,
 \]
-contradicting \eqref{eq:angular-quadratic-form}. Thus
-$\sum_i\arccos\sqrt{q_i}\ge\pi/2$. Finally $p_i=\delta q_i\le q_i$,
-so the same inequality holds for the original parameters $p_i$.
+contradicting \eqref{eq:angular-quadratic-form}.
 \end{proof}
+
+\section{Matrix-multiplication exponents}\label{sec:exponents}\label{sec:general}
+
+We first optimize the angular constraint for three arbitrary
+dimensions; the rectangular curve then follows by substitution.
 
 \begin{corollary}\label{cor:general-exponents}
 For every fixed $a\ge b\ge c\ge0$,
@@ -764,7 +551,7 @@ When $c(a+b)\le ab$, equality holds by the size lower bound.
 \end{corollary}
 
 \begin{proof}
-Reorder the parameters so that the character objective is
+Reorder the dot-product exponents so that the character objective is
 $ap_1+bp_2+cp_3$, and write $p_i=\cos^2\theta_i$ with
 $\theta_i\in[0,\pi/2]$. By Proposition~\ref{prop:angular-cap}, their
 sum is at least $\pi/2$. Since the objective decreases with each angle,
@@ -789,13 +576,47 @@ second branch of \eqref{eq:general-exponents}. It exceeds $a+b$ by
 $\bigl(c(a+b)-ab\bigr)^2/(4abc)>0$.
 Thus it is the global maximum when the triangle exists; otherwise the
 maximum is the boundary value $a+b$. At $c(a+b)=ab$, the branches agree.
-Tensor-spectrum duality gives the exponent bound, with the same
-rounding argument as in Theorem~\ref{thm:curve}.
+
+For rational shapes, choose an integer $q>1$ with $q^a,q^b,q^c$
+integral. By \eqref{eq:mm-character} and \eqref{eq:duality}, the bound
+just proved is an upper bound on
+$\log_q\arank(\cmm{q^a}{q^b}{q^c})$. Choose a tensor power whose rank
+is within arbitrary exponent slack, and recurse with its fixed
+bilinear decomposition. The rank and flattening dimensions cover the
+additions, and padding to arbitrary sizes preserves the exponent.
+This gives the claimed running time. For real shapes, approximate
+each exponent from above by rationals and pad. The optimized bound
+is continuous in the weights, as the maximum of these linear
+objectives over a fixed compact set, completing the proof.
 \end{proof}
 
 For $a,b>0$, the size-optimal range is $c\le ab/(a+b)$.
-When two dimensions are equal, \eqref{eq:general-exponents} recovers
-Theorem~\ref{thm:curve} by homogeneity and permutation.
+
+\begin{proof}[Proof of Theorem~\ref{thm:curve}]
+Apply Corollary~\ref{cor:general-exponents} to the sorted dimensions
+of $(1,k,1)$. For $0\le k\le1$, the first branch applies exactly when
+$2k\le1$. In the remaining range, both possible orderings give
+\[
+ \frac{2+k}{2}+\frac{1}{4}\left(2k+\frac1k\right)
+ =1+k+\frac1{4k}.
+\]
+The output-size lower bound $\omega(k)\ge2$ proves equality for
+$0\le k\le\frac{1}{2}$ and hence $\alpha\ge\frac{1}{2}$.
+\end{proof}
+
+Some values of the bound in Theorem~\ref{thm:curve} are:
+\begin{center}
+\begin{tabular}{ccccccc}
+\toprule
+$k$ & $0.5$ & $0.6$ & $0.8$ & $1$ & $1.5$ & $2$\\
+\midrule
+$\omega(k)\le$ & $2$ & $2.0166\ldots$ & $2.1125$ & $2.25$ & $2.6666\ldots$ & $3.125$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The exponent convention gives an $O(n^2)$-time
+algorithm at $k=\frac{1}{2}$.
+
 
 \section{Applications}\label{sec:applications}
 
@@ -869,6 +690,11 @@ Josh Alman and Virginia Vassilevska~Williams.
 \newblock Truly subquadratic {3SUM} and truly subcubic {APSP} via triangles in
   sparse lopsided graphs, 2026.
 
+\bibitem{christandl-vrana-zuiddam-2018-universal-points}
+Matthias Christandl, P{\'e}ter Vrana, and Jeroen Zuiddam.
+\newblock Universal points in the asymptotic spectrum of tensors.
+\newblock arXiv:1709.07851v3, 2018.
+
 \bibitem{christandl-vrana-zuiddam-2021-irreversibility}
 Matthias Christandl, Peter Vrana, and Jeroen Zuiddam.
 \newblock Barriers for fast matrix multiplication from irreversibility.
@@ -885,6 +711,15 @@ Fabrizio Grandoni, Giuseppe~F. Italiano, Aleksander {\L}ukasiewicz, Nikos
 \newblock All-pairs {LCA} in {DAGs}: Breaking through the {$O(n^{2.5})$}
   barrier.
 \newblock Proceedings of SODA 2021; arXiv:2007.08914, 2021.
+
+\bibitem{kowalski-2014-representation-theory}
+Emmanuel Kowalski.
+\newblock {\em An Introduction to the Representation Theory of Groups}, volume
+  155 of {\em Graduate Studies in Mathematics}.
+\newblock American Mathematical Society, 2014.
+\newblock Author version:
+  \href{https://people.math.ethz.ch/~kowalski/representation-theory.pdf}{\emph{Representation
+  theory}}, February 17, 2017.
 
 \bibitem{labib-uznanski-wolleb-graf-2019}
 Karim Labib, Przemys{\l}aw Uzna\'{n}ski, and Daniel Wolleb-Graf.
@@ -925,4 +760,97 @@ Uri Zwick.
 \newblock {\em Journal of the ACM}, 49(3):289--317, 2002.
 
 \end{thebibliography}
+
+\clearpage
+\appendix
+\numberwithin{equation}{section}
+\section{The determinant filtration}\label{app:determinant-filtration}
+
+We recap the classical determinant construction underlying the degree-one
+Clebsch--Gordan formula
+\cite[Theorem~2.6.3, pp.~56--57 of the author version]{kowalski-2014-representation-theory}.
+Its use for the tensor degeneration in Lemma~\ref{lem:openai-inputs}
+follows \cite[Lemma~4.1]{openai-2026-matrix-nine-fourths}.
+
+Fix $r\ge1$ and $s\ge2$.
+Let $\mathcal V_e$ be the homogeneous polynomials of degree $e$ in $u,v$,
+so $\dim\mathcal V_e=e+1$, and put
+$\mathcal U_e=\mathcal V_e\otimes\operatorname{span}(u',v')$.
+The tensor $C_{XY}(r,s)\otimes B_X(2)$ represents multiplication
+\[
+ \mathcal V_{r-1}\times\mathcal U_{s-1}
+ \longrightarrow\mathcal U_{r+s-2},\qquad (f,g)\longmapsto fg.
+\]
+Tensoring with $B_X(2)$ doubles the second-input and output spaces.
+
+Set $D=uv'-vu'$, the determinant of the columns $(u,v)$ and $(u',v')$.
+For $e\ge1$, substitution $(u',v')=(u,v)$ defines a surjective map
+$\rho_e:\mathcal U_e\to\mathcal V_{e+1}$: every output monomial is the
+image of a monomial ending in $u'$ or $v'$. Its kernel contains
+$D\mathcal V_{e-1}$. Multiplication by $D$ is injective, and
+\[
+ \dim\ker\rho_e=2(e+1)-(e+2)=e=\dim(D\mathcal V_{e-1}),
+\]
+so this is the entire kernel. A \emph{filtration} is a chain of nested
+subspaces; here it is
+\begin{equation}\label{eq:determinant-filtration}
+ 0\subset D\mathcal V_{e-1}\subset\mathcal U_e,
+ \qquad
+ \mathcal U_e/(D\mathcal V_{e-1})\cong\mathcal V_{e+1}.
+\end{equation}
+Thus the kernel and quotient at $e=s-1$ have dimensions $s-1$ and $s+1$.
+
+To make the construction explicit, use the following basis of
+$\mathcal U_e$: first the quotient lifts
+\[
+ u^{e-j}v^j u'\quad(0\le j\le e),\qquad v^e v',
+\]
+followed by the kernel basis
+$D u^{e-1-j}v^j$ for $0\le j<e$.
+The quotient images, and the kernel elements after division by $D$,
+are the standard monomial bases. Choose these bases at both
+$e=s-1$ and $e=r+s-2$.
+For every $f\in\mathcal V_{r-1}$,
+\[
+ \rho_{r+s-2}(fg)=f\rho_{s-1}(g),\qquad f(Dg)=D(fg).
+\]
+Consequently, multiplication by $f$ has the block matrix
+\begin{equation}\label{eq:determinant-blocks}
+ \begin{pmatrix}M_f^+&0\\ R_f&M_f^-\end{pmatrix},
+ \qquad
+ \begin{aligned}
+ M_f^+&:\mathcal V_s\longrightarrow\mathcal V_{r+s-1},\\
+ M_f^-&:\mathcal V_{s-2}\longrightarrow\mathcal V_{r+s-3},
+ \end{aligned}
+\end{equation}
+where $M_f^+$ and $M_f^-$ are ordinary multiplication by $f$.
+The bases are fixed independently of $f$, so this block structure holds
+for the whole tensor.
+
+Scale the second-input kernel coordinates by $\varepsilon^{-1}$ and
+the output-dual kernel coordinates by $\varepsilon$, leaving the
+other coordinates unchanged. On every multiplication matrix this gives
+\[
+ \begin{pmatrix}I&0\\0&\varepsilon I\end{pmatrix}
+ \begin{pmatrix}M_f^+&0\\R_f&M_f^-\end{pmatrix}
+ \begin{pmatrix}I&0\\0&\varepsilon^{-1}I\end{pmatrix}
+ =\begin{pmatrix}M_f^+&0\\\varepsilon R_f&M_f^-\end{pmatrix}
+ \xrightarrow{\varepsilon\to0}
+ \begin{pmatrix}M_f^+&0\\0&M_f^-\end{pmatrix}.
+\]
+The two surviving tensor blocks are $C_{XY}(r,s+1)$ and
+$C_{XY}(r,s-1)$. They share the first leg and have disjoint second
+and third legs. Permuting the legs gives the other orientations.
+
+Finally, for $p_i>0$, multiplicativity of $\lambda$, the identity
+$\lambda(B_i(2))=2^{p_i}$, degeneration monotonicity, and
+\eqref{eq:optimized-entropy} give
+\begin{equation}\label{eq:determinant-concavity}
+\begin{aligned}
+ 2\lambda(C_{ij}(r,s))^{1/p_i}
+ &=\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}\\
+ &\ge \lambda(C_{ij}(r,s+1))^{1/p_i}
+      +\lambda(C_{ij}(r,s-1))^{1/p_i}.
+\end{aligned}
+\end{equation}
 \end{document}
