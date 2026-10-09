@@ -1,8 +1,8 @@
-# Rectangular matrix multiplication from shared-leg entropy
+# Rectangular matrix multiplication from polynomial products
 
 Przemysław Uznański — Pathway
 
-This note extends the shared-leg entropy analysis to rectangular
+This note extends the polynomial-product analysis to rectangular
 matrix multiplication over fields of characteristic zero, proving
 
 $$
@@ -13,12 +13,15 @@ $$
 \end{cases}
 $$
 
-The shared-leg entropy inequality, determinant construction, and three-sector
-degeneration come from the recent nine-fourths result by OpenAI.
-The note adds a Hermite-interpolation degeneration, uses superadditivity
-to obtain ordinary scaling limits, and couples the profile slopes and
-intercepts to prove $\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
-Optimizing this constraint gives bounds for $\omega(a,b,c)$, including
+The finite separation and two polynomial splittings come from the recent
+nine-fourths result by OpenAI; their constructions are recapped in the note.
+Multinomial counting and a Hermite-interpolation splitting give concave
+profiles whose slopes and intercepts constrain three dot-product parameters:
+$\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
+Strassen's spectral theorem turns the resulting character bounds into
+asymptotic rank bounds. The note defines tensor characters, cites the
+theorem, and explains the passage from rank to running time.
+Optimizing the constraint gives bounds for $\omega(a,b,c)$, including
 the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c(a+b)\le ab$;
 the displayed rectangular curve follows as a corollary.
 Consequences include

@@ -14,17 +14,16 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newcommand{\CC}{\mathbb C}
 \newcommand{\rank}{\operatorname{rank}}
-\newcommand{\arank}{\widetilde{\operatorname{rank}}}
 \newcommand{\degen}{\unrhd}
 \newcommand{\cmm}[3]{\langle #1,#2,#3\rangle}
 \DeclareMathOperator{\MM}{MM}
 
-\title{Rectangular matrix multiplication from shared-leg entropy}
+\title{Rectangular matrix multiplication from polynomial products}
 \author{Przemysław Uznański\thanks{This note, its proofs, analysis and writeup
 were obtained fully through OpenAI Codex (GPT-6.1). The author has read and analyzed this note in full
-and takes full responsibility for its contents.}\\[2pt]\small Pathway\\[2pt]
+and takes full responsibility for its contents, and takes no credit for this work.}\\[2pt]\small Pathway\\[2pt]
 \small\href{mailto:przemek@pathway.com}{\texttt{przemek@pathway.com}}}
-\date{October 7, 2026}
+\date{October 9, 2026}
 
 \begin{document}
 \maketitle
@@ -40,13 +39,9 @@ rectangular products and prove
  \end{cases}
 \]
 In particular, $\omega(1,\frac{1}{2},1)=2$ and the dual exponent satisfies
-$\alpha\ge \frac{1}{2}$. A Hermite-interpolation degeneration gives
-ordinary homogeneous limits of convolution character profiles.
-The shared-leg entropy inequality and degenerations of convolution
-tensors from~\cite{openai-2026-matrix-nine-fourths} constrain their
-slopes and intercepts, yielding
-$\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the three dot-product exponents
-of every tensor character. Tensor-spectrum duality then gives both the
+$\alpha\ge \frac{1}{2}$. The proof uses explicit degenerations of convolution tensors,
+multinomial counting, and Strassen's spectral theorem.
+An angular constraint on three dot-product parameters gives both the
 rectangular curve and a bound for $\omega(a,b,c)$, with exact exponent
 $a+b$ whenever $a\ge b\ge c\ge0$ and $c(a+b)\le ab$.
 As an application, Zwick's algorithm
@@ -80,10 +75,9 @@ of convolution tensors. We extend that analysis to
 rectangular products by retaining the orientation information lost
 under full leg symmetrization.
 
-We work over $\CC$. By invariance of asymptotic rank under field extension,
-the resulting matrix-multiplication exponent bounds also hold over every
-field of characteristic zero
-\cite[Remark~1.3]{christandl-vrana-zuiddam-2018-universal-points}.
+We work over $\CC$. The resulting exponent bounds hold over every
+field of characteristic zero by invariance of asymptotic tensor rank
+under field extension~\cite[Theorem~3.10]{strassen-1988-asymptotic-spectrum}.
 
 For fixed nonnegative real $u,v,w$, let $\omega(u,v,w)$ be the infimum
 of the exponents $e$ for which multiplying an
@@ -120,201 +114,113 @@ lower bound $1+k$ for $k\ge1$.
  \label{fig:rectangular-curve}
 \end{figure}
 
-Our proof bounds the dot-product exponents $p_i$ of every tensor character,
-defined in \eqref{eq:dot-parameters}.
-Hermite interpolation splits a convolution tensor into a direct sum
-of smaller convolutions. This makes each character profile
-superadditive, so its ordinary scaling limit exists and is homogeneous
-of degree one. The shared-leg inequalities force the powered limits
-to have common slopes and bounded intercepts. Coupling the intercepts
-of all three orientations gives
-$\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
-Optimizing this constraint gives the general bound in
-Corollary~\ref{cor:general-exponents}; Theorem~\ref{thm:curve} follows
-by setting two dimension exponents equal.
+The proof has two parts. First, we list explicit ways to split and
+combine polynomial products and apply a tensor character to them.
+A character assigns numerical sizes that add on direct sums,
+multiply on tensor products, and cannot increase under restriction.
+Multinomial counting gives concavity and growth inequalities for these
+sizes. Ordinary scaling limits, common slopes, and intercept bounds
+then give $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the character's three
+dot-product parameters.
+
+Second, we optimize this constraint and apply Strassen's spectral
+theorem: the largest character value equals asymptotic tensor rank.
+We state precisely the form of this theorem we use, then show how the
+rank bound gives a running-time bound for every fixed matrix shape.
 
 \paragraph{Relation to the preceding analysis.}
-The shared-leg entropy inequality, determinant construction, and
-three-sector degeneration in Lemma~\ref{lem:openai-inputs} are inherited
-from Corollary~3.2 and the proofs of Lemmas~4.1 and~4.2
-of~\cite{openai-2026-matrix-nine-fourths}.
-Their oriented powered-concavity and tripling inequalities in
-Lemma~\ref{lem:discrete} follow directly from those inputs.
+The finite separation construction and the two polynomial splittings
+in Lemma~\ref{lem:openai-inputs} come from Proposition~3.1 and the proofs
+of Lemmas~4.1 and~4.2 of~\cite{openai-2026-matrix-nine-fourths}.
+We recap their constructions in the appendices. Multinomial counting
+gives the power-sum inequality needed here directly from finite separation.
+The Hermite direct-sum degeneration, its ordinary scaling limits, and
+the coupling of the six intercept ratios extend the preceding analysis.
+Strassen's spectral theorem is a standard input; a modern exposition is
+\cite{wigderson-zuiddam-2025-asymptotic-spectra}. We cite it rather than
+reproduce its proof. We make no priority claim for the standard tools or
+the Hermite construction. Section~\ref{sec:applications}
+substitutes the bounds into known algorithmic tradeoffs.
 
-The additional steps here are the Hermite direct-sum degeneration
-(Lemma~\ref{lem:hermite}), its use with the standard superadditive-limit
-argument (Lemma~\ref{lem:homogeneous}), and the common-slope and
-intercept analysis (Lemma~\ref{lem:intercepts}). Coupling the six
-intercept ratios gives the angular constraint in
-Proposition~\ref{prop:angular-cap}. These steps extend the preceding
-analysis while using standard interpolation, concavity, and
-optimization tools; we make no priority claim for those tools or for
-the Hermite construction itself. Section~\ref{sec:exponents} optimizes
-the constraint and applies standard tensor-spectrum duality.
-Section~\ref{sec:applications} substitutes the resulting bounds into
-known algorithmic tradeoffs.
+\section{Polynomial products and finite constructions}\label{sec:constructions}
 
-\section{Tensor characters and convolution}\label{sec:discrete}
+A tensor is a trilinear form in three groups of variables, called its
+\emph{legs}. A \emph{restriction} makes linear substitutions independently
+on the three legs. A \emph{degeneration} is a limit of such restrictions:
+the substitutions may depend on $\varepsilon\ne0$, and every resulting
+coefficient converges as $\varepsilon\to0$. Our constructions first change
+bases and then multiply variables by integer powers of $\varepsilon$.
+The resulting coefficient array is a polynomial in $\varepsilon$ whose
+constant coefficient is the desired tensor.
+We write $T\ge S$ for a restriction and $T\degen S$ for a degeneration.
+Successive constructions can use a single parameter: replace the earlier
+parameter by a sufficiently large power of the later one, so every
+earlier error term still has positive total exponent.
 
-We view a tensor as a trilinear form in three groups of variables,
-called its \emph{legs}. A \emph{restriction} applies linear substitutions
-independently on the three legs; a \emph{degeneration} is a limit of
-such restrictions. Here the substitutions may depend on $\varepsilon\ne0$;
-each coefficient of the resulting tensor converges as $\varepsilon\to0$,
-even if the substitutions themselves do not.
+The \emph{rank} $\rank(T)$ is the least number of products of three linear
+forms, one per leg, summing to $T$. The direct sum $S\oplus T$ uses
+disjoint variables on all three legs and represents independent computations.
+The tensor product $S\otimes T$ pairs their indices, as in a Kronecker
+product, and represents their composition on blocks. We write $mT$ for
+$m$ independent copies, and $T^{\otimes N}$ for $N$ tensor factors.
+Thus $\rank(T)\,xyz\ge T$. All factors used below restrict to $xyz$
+by keeping one nonzero term; this is what it means to drop a factor.
 
-A \emph{tensor character} assigns each tensor $T$ a nonnegative real
-number $\lambda(T)$, with
-\[
- \lambda(xyz)=1,\qquad
- \lambda(S\oplus T)=\lambda(S)+\lambda(T),\qquad
- \lambda(S\otimes T)=\lambda(S)\lambda(T).
-\]
-Here $\oplus$ uses disjoint variable groups and $\otimes$ is the
-Kronecker product. A character is also monotone: if $T$ restricts to or
-degenerates to $S$, then $\lambda(S)\le\lambda(T)$. The collection of
-these characters is the \emph{tensor spectrum}.
-For the oriented dot-product tensors
+The oriented dot products are
 \[
  B_X(q)=x\sum_{j=1}^q y_jz_j,
 \]
-and its leg permutations $B_Y(q),B_Z(q)$, define the \emph{dot-product
-exponents} $p_i$ of $\lambda$, for $i\in\{X,Y,Z\}$, by
-\begin{equation}\label{eq:dot-parameters}
- \lambda(B_i(q))=q^{p_i},\qquad 0\le p_i\le1.
+with $B_Y(q),B_Z(q)$ obtained by permuting the legs. They have rank $q$,
+and $B_i(q)\otimes B_i(q')$ is $B_i(qq')$ after reindexing. The matrix
+multiplication tensor factors as
+\begin{equation}\label{eq:mm-factorization}
+ \cmm{A}{B}{C}
+ =\sum_{u,v,w}x_{uv}y_{vw}z_{wu}
+ \cong B_Y(A)\otimes B_Z(B)\otimes B_X(C).
 \end{equation}
-The \emph{rank} of a tensor is the minimum number of products of
-three linear forms, one in each leg, whose sum equals that tensor.
-Characters are positive on nonzero tensors and bounded above by rank.
-The matrix-multiplication tensor
-$\cmm{A}{B}{C}=\sum_{u,v,w}x_{uv}y_{vw}z_{wu}$ has character value
-\begin{equation}\label{eq:mm-character}
- \lambda(\cmm{A}{B}{C})=A^{p_Y}B^{p_Z}C^{p_X},
-\end{equation}
-by its factorization into three oriented dot products.
-Define the asymptotic rank by
-$\arank(T)=\lim_{m\to\infty}\rank(T^{\otimes m})^{1/m}$.
-We use the standard duality
-\begin{equation}\label{eq:duality}
- \arank(T)=\max_{\lambda}\lambda(T),
-\end{equation}
-as stated, for example, in \cite[Section~4.1, p.~18]
-{christandl-vrana-zuiddam-2021-irreversibility}.
-Thus it suffices to upper-bound the value of every character on the
-relevant matrix-multiplication tensor. Section~\ref{sec:exponents}
-converts the resulting asymptotic-rank bound into a running-time
-exponent by taking tensor powers.
+Thus the three dot-product dimensions specify the matrix shape.
 
-For distinct tensor legs $i,j$, define the \emph{convolution tensor}
+For distinct input legs $i,j$, with remaining output leg $k$, the
+\emph{convolution tensor} is
 \[
  C_{ij}(r,s)=\sum_{h=0}^{r-1}\sum_{\ell=0}^{s-1}
-                 x_h^{(i)}x_\ell^{(j)}x_{h+\ell}^{(k)}
+ x_h^{(i)}x_\ell^{(j)}x_{h+\ell}^{(k)}.
 \]
-on input legs $i,j$ and the remaining output leg $k$. It represents
-multiplication of two polynomials through convolution of their coefficient
-vectors. Its rank is
-$r+s-1$ over $\CC$: interpolation at $r+s-1$ distinct points gives
-the upper bound, and the output flattening gives the lower bound.
-A smaller pair of input lengths gives a restriction.
+It multiplies two polynomials represented by their coefficient vectors.
+Its rank is $r+s-1$: evaluation at $r+s-1$ points and interpolation
+give the upper bound, and the independent output coefficients give the
+matching matrix-rank lower bound. Decreasing either input length is a
+restriction. Also
+\begin{equation}\label{eq:boundary-convolutions}
+ C_{ij}(1,s)\cong B_i(s),\qquad C_{ij}(r,1)\cong B_j(r).
+\end{equation}
 
-We call the blocks $T_h$ \emph{matched sectors sharing the $X$-leg} if
-$T=\sum_h T_h$ and the blocks may share $X$-variables, but use
-pairwise disjoint sets of $Y$-variables and pairwise disjoint sets
-of $Z$-variables.
-
-The following results restate Corollary~3.2 and the constructions in the
-proofs of Lemmas~4.1 and~4.2 of~\cite[pp.~5--8]{openai-2026-matrix-nine-fourths}.
+Blocks $T_h$ are \emph{matched sectors sharing leg $i$} when
+$T=\sum_h T_h$ and the blocks may share variables on leg $i$, but use
+pairwise disjoint variables on each other leg. The following constructions
+hold for every permutation of the legs.
 
 \begin{lemma}[{\cite{openai-2026-matrix-nine-fourths}}]\label{lem:openai-inputs}
-The following statements hold for every leg permutation.
 \begin{enumerate}
-\item If a tensor has matched sectors $T_h$ sharing leg $i$, with
-the sectors disjoint on the other two legs, then for every probability
-vector $q$,
-\begin{equation}\label{eq:entropy}
- \lambda(T)\ge \exp(p_i H(q))\prod_h\lambda(T_h)^{q_h},
- \qquad H(q)=-\sum_hq_h\log q_h.
+\item If $T$ has $M$ matched sectors sharing leg $i$, then
+\begin{equation}\label{eq:finite-separation}
+ (3M)T\degen\bigoplus_{h=1}^M\bigl(T_h\otimes B_i(M)\bigr).
 \end{equation}
-The same inequality applies to a degeneration onto such sectors.
-\item The determinant construction for $C_{ij}(r,s)\otimes B_i(2)$,
-recapped in Appendix~\ref{app:determinant-filtration}, yields for $s\ge2$
-two matched sectors
-$C_{ij}(r,s+1)$ and $C_{ij}(r,s-1)$ sharing leg $i$.
-\item For $r,s\ge1$, $C_{ij}(r,3s+r-1)$ degenerates to three
-matched sectors sharing leg $i$: two copies of $C_{ij}(r,s)$ and
-one copy of $C_{ik}(r,s)$, where $k$ is the remaining leg.
+The sectors on the right are independent on all three legs.
+\item For $r\ge1$ and $s\ge2$, $C_{ij}(r,s)\otimes B_i(2)$ degenerates
+to two matched sectors sharing leg $i$, namely
+$C_{ij}(r,s+1)$ and $C_{ij}(r,s-1)$.
+\item For $r,s\ge1$, $C_{ij}(r,3s+r-1)$ degenerates to three matched
+sectors sharing leg $i$: two copies of $C_{ij}(r,s)$ and one copy of
+$C_{ik}(r,s)$.
 \end{enumerate}
 \end{lemma}
 
-\subsection{Optimizing the shared-leg inequality}
-
-Fix a character $\lambda$. For $p_i>0$ and nonzero matched sectors
-$T_h$ sharing leg $i$, put $a_h=\lambda(T_h)^{1/p_i}$ and
-$A=\sum_h a_h$. For every positive probability vector $q$, weighted
-AM--GM gives
-\[
- e^{H(q)}\prod_h a_h^{q_h}
- =\prod_h\left(\frac{a_h}{q_h}\right)^{q_h}
- \le\sum_h q_h\frac{a_h}{q_h}=A.
-\]
-Equality holds at $q_h^*=a_h/A$. Substituting this maximizing vector
-into \eqref{eq:entropy} yields
-\begin{equation}\label{eq:optimized-entropy}
-\begin{aligned}
- \lambda(T)^{1/p_i}
- &\ge e^{H(q^*)}\prod_h a_h^{q_h^*}
- =\prod_h A^{q_h^*}\\
- &=A=\sum_h\lambda(T_h)^{1/p_i}.
-\end{aligned}
-\end{equation}
-
-\subsection{Oriented convolution profiles}
-
-A \emph{profile} here is a function of the two input lengths. For
-distinct legs $i,j$, define
-\begin{equation}\label{eq:discrete-profiles}
- f_{ij}(r,s)=\lambda(C_{ij}(r,s))\qquad(r,s\ge1).
-\end{equation}
-These profiles are nondecreasing in each coordinate, and the rank
-bound gives
-\begin{equation}\label{eq:profile-rank}
- 1\le f_{ij}(r,s)\le r+s-1.
-\end{equation}
-Interchanging the two inputs gives the same tensor, so
-$f_{ij}(r,s)=f_{ji}(s,r)$.
-
-\begin{lemma}[Powered concavity and tripling]\label{lem:discrete}
-For $p_i>0$, the sequence $s\mapsto f_{ij}(r,s)^{1/p_i}$ is concave,
-and for all integers $r,s\ge1$,
-\begin{equation}\label{eq:discrete-tripling}
- f_{ij}(r,3s+r-1)^{1/p_i}
- \ge2f_{ij}(r,s)^{1/p_i}+f_{ik}(r,s)^{1/p_i},
-\end{equation}
-where $i,j,k$ are distinct. For $p_j>0$, the sequence
-$r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
-\end{lemma}
-
-\begin{proof}
-The determinant construction and \eqref{eq:optimized-entropy} give, for
-$s\ge2$,
-\[
-\begin{aligned}
- 2f_{ij}(r,s)^{1/p_i}
- &=\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}\\
- &\ge f_{ij}(r,s+1)^{1/p_i}+f_{ij}(r,s-1)^{1/p_i}.
-\end{aligned}
-\]
-This is discrete concavity in $s$; input interchange gives the other
-coordinate. Applying \eqref{eq:optimized-entropy} to the three-sector
-degeneration in Lemma~\ref{lem:openai-inputs} gives
-\eqref{eq:discrete-tripling}.
-\end{proof}
-
-\section{Hermite degeneration and ordinary scaling limits}\label{sec:homogeneous}
-
-The following degeneration makes each character profile superadditive.
-It will give degree-one limits directly, with the original dot-product
-exponents $p_i$.
+Appendix~\ref{app:determinant-filtration} gives the two polynomial splittings
+in coefficient coordinates. Appendix~\ref{app:finite-separation} proves
+\eqref{eq:finite-separation} using a finite geometric sum and a nonnegative
+square. The next construction splits a convolution into fully independent
+smaller convolutions.
 
 \begin{lemma}[Hermite direct sums]\label{lem:hermite}
 For any nonempty finite list of positive integer pairs $(r_h,s_h)$, with
@@ -326,9 +232,10 @@ The summands are disjoint on all three legs.
 \end{lemma}
 
 \begin{proof}
-It suffices to use the input legs $X,Y$. Choose distinct complex
-numbers $\alpha_1,\ldots,\alpha_m$. Hermite interpolation gives a
-basis $u_{h,i}(t)$ for polynomials of degree less than $R$, specified by
+It suffices to use the input legs $X,Y$. Choose distinct integers
+$\alpha_1,\ldots,\alpha_m$. Hermite interpolation
+\cite[Section~5.6]{von-zur-gathen-gerhard-2013} gives a basis
+$u_{h,i}(t)$ for polynomials of degree less than $R$, specified by
 \[
  u_{h,i}(t)\equiv
  \begin{cases}
@@ -366,7 +273,168 @@ Thus every nonzero term has nonnegative weight, and the limit as
 $\varepsilon\to0$ is exactly the direct sum in \eqref{eq:hermite}.
 \end{proof}
 
-Character additivity and degeneration monotonicity now give
+\section{Tensor characters and counting}\label{sec:discrete}
+
+\subsection{Strassen's spectral theorem}
+
+A \emph{tensor character} is a function $\lambda$ from tensors to
+nonnegative real numbers satisfying
+\begin{equation}\label{eq:character-rules}
+\begin{aligned}
+ \lambda(S\oplus T)&=\lambda(S)+\lambda(T),&
+ \lambda(S\otimes T)&=\lambda(S)\lambda(T),\\
+ \lambda(xyz)&=1,&
+ S\ge T&\ \Longrightarrow\ \lambda(S)\ge\lambda(T).
+\end{aligned}
+\end{equation}
+These rules express addition of independent computations, multiplication
+of tensor factors, and monotonicity under linear substitutions. Matrix
+rank after grouping one leg against the other two is an example.
+Keeping one nonzero term and using $\rank(T)\,xyz\ge T$ gives
+$1\le\lambda(T)\le\rank(T)$ for every nonzero $T$.
+
+Characters also cannot increase under our polynomial degenerations.
+If $T\degen S$ has degree $L$, interpolation of its $N$-th tensor
+power at $NL+1$ nonzero points gives
+\[
+ (NL+1)T^{\otimes N}\ge S^{\otimes N},\qquad
+ \lambda(S)\le(NL+1)^{1/N}\lambda(T).
+\]
+Indeed, each specialized tensor is a restriction of $T^{\otimes N}$,
+and interpolation extracts the constant coefficient from their direct
+sum. Letting $N\to\infty$ proves $\lambda(S)\le\lambda(T)$.
+No continuity assumption on $\lambda$ is needed.
+
+The \emph{asymptotic rank} of $T$ is
+\[
+ \widetilde R(T)=\lim_{N\to\infty}\rank(T^{\otimes N})^{1/N}
+ =\inf_{N\ge1}\rank(T^{\otimes N})^{1/N}.
+\]
+The limit exists because tensor rank is submultiplicative; apply the
+subadditive-sequence form of Fekete's lemma to its logarithm.
+
+\begin{theorem}[Strassen's spectral theorem]\label{thm:spectral}
+For every nonzero tensor $T$ over $\CC$,
+\begin{equation}\label{eq:spectral}
+ \widetilde R(T)=\max_{\lambda}\lambda(T),
+\end{equation}
+where the maximum ranges over all tensor characters.
+\end{theorem}
+
+We use \cite[Theorem~3.8]{strassen-1988-asymptotic-spectrum}; see also
+\cite[Corollary~3.30]{wigderson-zuiddam-2025-asymptotic-spectra}.
+The easy direction follows from
+$\lambda(T)^N=\lambda(T^{\otimes N})\le\rank(T^{\otimes N})$.
+The theorem supplies the opposite direction. Thus, to prove an upper
+bound on asymptotic rank, it suffices to bound every character value.
+
+Fix an arbitrary character $\lambda$. Its \emph{dot-product parameters}
+are $p_i=\log_2\lambda(B_i(2))\in[0,1]$, for $i=X,Y,Z$. They determine
+the values at all integer dimensions:
+\begin{equation}\label{eq:dot-parameters}
+ \lambda(B_i(q))=q^{p_i}\qquad(q\ge1).
+\end{equation}
+To see this, put $m=\lfloor N\log_2q\rfloor$. Monotonicity in dimension
+and $B_i(q)^{\otimes N}\cong B_i(q^N)$ give
+\[
+ 2^{mp_i}\le\lambda(B_i(q))^N\le2^{(m+1)p_i}.
+\]
+Take $N$-th roots and let $N\to\infty$. The interval $[0,1]$ follows
+from $1\le\lambda(B_i(2))\le2$. In particular,
+\eqref{eq:mm-factorization} gives
+\begin{equation}\label{eq:mm-character}
+ \lambda(\cmm{A}{B}{C})=A^{p_Y}B^{p_Z}C^{p_X}.
+\end{equation}
+Our aim is to constrain these three parameters for every character.
+Define its \emph{convolution profiles} by
+\begin{equation}\label{eq:discrete-profiles}
+ f_{ij}(r,s)=\lambda(C_{ij}(r,s)).
+\end{equation}
+
+\subsection{Words with prescribed multiplicities}
+
+Suppose $T$ splits into $s$ matched sectors $T_1,\ldots,T_s$ sharing
+leg $i$. In $T^{\otimes N}$ a sector is specified by a word of $N$
+sector labels. Retain on the two nonshared legs the words with $n_h$
+occurrences of label $h$, where $\sum_h n_h=N$. There are
+\[
+ M=\binom{N}{n_1,\ldots,n_s}
+\]
+matched sectors. For example, multiplicities $(2,1)$ give the words
+$112,121,211$. Each sector is a product of the $T_h$ with the prescribed
+multiplicities. Apply \eqref{eq:finite-separation}; now all legs
+distinguish the words, so their factors can be reordered independently.
+This gives
+\begin{equation}\label{eq:type-shared}
+ (3M)T^{\otimes N}\degen
+ M\left(\bigotimes_h T_h^{\otimes n_h}\right)\otimes B_i(M).
+\end{equation}
+
+\begin{lemma}[Multinomial power-sum inequality]\label{lem:power-sum}
+If $T\degen\sum_{h=1}^s T_h$ is a splitting into matched sectors
+sharing leg $i$ and $p_i>0$, then
+\begin{equation}\label{eq:power-sum}
+ \lambda(T)^{1/p_i}\ge\sum_h\lambda(T_h)^{1/p_i}.
+\end{equation}
+For fully independent summands, $T\degen\bigoplus_h T_h$ gives
+$\lambda(T)\ge\sum_h\lambda(T_h)$ directly by additivity.
+\end{lemma}
+
+\begin{proof}
+For every tuple $\sum_h n_h=N$, applying $\lambda$ to
+\eqref{eq:type-shared} gives
+\[
+ 3M\lambda(T)^N\ge M^{1+p_i}\prod_h\lambda(T_h)^{n_h}.
+\]
+Put $a_h=\lambda(T_h)^{1/p_i}$. Cancel $M$ and take the power $1/p_i$:
+\[
+ M\prod_h a_h^{n_h}\le3^{1/p_i}\lambda(T)^{N/p_i}.
+\]
+Sum over all $\binom{N+s-1}{s-1}$ multiplicity tuples. The multinomial
+theorem gives
+\[
+ \left(\sum_h a_h\right)^N
+ \le\binom{N+s-1}{s-1}3^{1/p_i}\lambda(T)^{N/p_i}.
+\]
+For fixed $s$, the binomial coefficient is polynomial in $N$. Taking
+$N$-th roots and letting $N\to\infty$ proves \eqref{eq:power-sum}.
+\end{proof}
+
+Rank bounds and restrictions give
+\begin{equation}\label{eq:profile-rank}
+ 1\le f_{ij}(r,s)\le r+s-1,
+ \qquad f_{ij}(r,s)=f_{ji}(s,r),
+\end{equation}
+and coordinatewise monotonicity. The equality merely interchanges the
+two polynomial inputs of the same convolution.
+
+\begin{lemma}[Powered concavity and tripling]\label{lem:discrete}
+For $p_i>0$, the sequence $s\mapsto f_{ij}(r,s)^{1/p_i}$ is concave,
+and for all integers $r,s\ge1$,
+\begin{equation}\label{eq:discrete-tripling}
+ f_{ij}(r,3s+r-1)^{1/p_i}
+ \ge2f_{ij}(r,s)^{1/p_i}+f_{ik}(r,s)^{1/p_i},
+\end{equation}
+where $i,j,k$ are distinct. For $p_j>0$, the sequence
+$r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
+\end{lemma}
+
+\begin{proof}
+The determinant splitting and Lemma~\ref{lem:power-sum} give, for $s\ge2$,
+\[
+ 2f_{ij}(r,s)^{1/p_i}
+ =\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}
+ \ge f_{ij}(r,s+1)^{1/p_i}+f_{ij}(r,s-1)^{1/p_i}.
+\]
+This is discrete concavity in $s$; input interchange gives the other
+coordinate. The three-sector splitting and the same lemma give
+\eqref{eq:discrete-tripling}.
+\end{proof}
+
+\section{Ordinary scaling limits}\label{sec:homogeneous}
+
+The Hermite splitting and the full-sum assertion of
+Lemma~\ref{lem:power-sum} give
 \begin{equation}\label{eq:superadditive}
  f_{ij}(r+u,s+v)\ge f_{ij}(r,s)+f_{ij}(u,v).
 \end{equation}
@@ -451,7 +519,7 @@ rounding errors and the $-1$ in \eqref{eq:discrete-tripling}, giving
 \section{Common slopes and the angular constraint}\label{sec:slopes}
 
 Index the three tensor legs by $1,2,3$. We use the limits above to
-constrain their dot-product exponents without symmetrizing them.
+constrain the three dot-product parameters without averaging their orientations.
 
 \begin{lemma}[Common slope and intercepts]\label{lem:intercepts}
 Fix $i$ with $p_i>0$, and let $j,k$ be the other legs. The functions
@@ -480,15 +548,20 @@ $s_m=3^m(s+\frac{1}{2})-\frac{1}{2}$ gives
 \begin{equation}\label{eq:sum-majorant}
  R(s)\le\lim_{m\to\infty}3^{-m}R(s_m)=L_i(2s+1).
 \end{equation}
-Since $R(s)>0$, we have $L_i>0$. Concavity makes the derivatives of
-$P,Q$ decrease to $L_i$, so $P(s)-L_i s$ and $Q(s)-L_i s$ are
-nondecreasing and have nonnegative limits at zero.
-Their sum is bounded above by $L_i$ by \eqref{eq:sum-majorant}.
-Their limits at infinity therefore exist and have the stated bounds.
+Since $R(s)>0$, we have $L_i>0$. For $v>u>0$, concavity bounds
+the secant slope $(P(v)-P(u))/(v-u)$ below by every later secant slope;
+sending its far endpoint to infinity gives
+\[
+ P(v)-P(u)\ge L_i(v-u).
+\]
+Thus $P(s)-L_i s$ is nondecreasing and nonnegative, using the nonnegative
+limit of $P$ at zero. The same holds for $Q$. Their sum is bounded above
+by $L_i$ by \eqref{eq:sum-majorant}, so their limits at infinity exist
+and have the stated bounds.
 \end{proof}
 
-\begin{proposition}[Angular character constraint]\label{prop:angular-cap}
-Every tensor character with dot-product exponents $p_1,p_2,p_3$ satisfies
+\begin{proposition}[Angular constraint]\label{prop:angular-cap}
+The dot-product parameters of every tensor character satisfy
 \begin{equation}\label{eq:angular-cap}
  \sum_{i=1}^3\arccos\sqrt{p_i}\ge\frac{\pi}{2}.
 \end{equation}
@@ -496,32 +569,36 @@ Every tensor character with dot-product exponents $p_1,p_2,p_3$ satisfies
 
 \begin{proof}
 If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-exponents are positive. Set $c_{ij}=C_{ij}/L_i$. Lemma~\ref{lem:intercepts}
+parameters are positive. Set $c_{ij}=C_{ij}/L_i$. Lemma~\ref{lem:intercepts}
 gives the six intercept ratios and their three bounds
 \begin{equation}\label{eq:intercept-budgets}
  c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
 \end{equation}
-Also $P'_{ij}\ge L_i$ almost everywhere and
-$P_{ij}(s)\le L_i(s+c_{ij})$, so
+The secant bound from Lemma~\ref{lem:intercepts} and the definition
+of $c_{ij}$ give, for $s,t>0$,
 \[
- \frac{d}{ds}\log g_{ij}(1,s)
- =p_i\frac{P'_{ij}(s)}{P_{ij}(s)}
- \ge\frac{p_i}{s+c_{ij}}.
+ P_{ij}(s+t)\ge P_{ij}(s)+L_it,
+ \qquad P_{ij}(s)\le L_i(s+c_{ij}).
 \]
-By homogeneity and input interchange, at differentiability points
+Divide these inequalities and use homogeneity to obtain
+\begin{equation}\label{eq:finite-increment}
+ \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
+ \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
+\end{equation}
+Increase $r$ by $\varepsilon r$, then $s$ by $\varepsilon s$.
+Input interchange supplies the first bound and
+\eqref{eq:finite-increment} supplies the second:
 \[
- \partial_s\log g_{ij}(r,s)\ge\frac{p_i}{s+c_{ij}r},\qquad
- \partial_r\log g_{ij}(r,s)\ge\frac{p_j}{r+c_{ji}s}.
+\begin{aligned}
+ 1+\varepsilon
+ &=\frac{g_{ij}((1+\varepsilon)r,(1+\varepsilon)s)}{g_{ij}(r,s)}\\
+ &\ge\left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
+       \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
+\end{aligned}
 \]
-The profiles are locally Lipschitz and hence differentiable almost
-everywhere. At such a point, differentiating
-$g_{ij}(tr,ts)=t\,g_{ij}(r,s)$ at $t=1$ and dividing by $g_{ij}(r,s)$ gives
-\[
- r\,\partial_r\log g_{ij}(r,s)+s\,\partial_s\log g_{ij}(r,s)=1.
-\]
-Combining the two derivative bounds and using continuity to include
-all positive $r,s$ gives
-\begin{equation}\label{eq:euler-bound}
+Take logarithms, divide by $\varepsilon$, and let $\varepsilon\downarrow0$.
+The elementary limit $\log(1+\varepsilon x)/\varepsilon\to x$ gives
+\begin{equation}\label{eq:ratio-bound}
  1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
  \qquad(r,s>0).
 \end{equation}
@@ -560,10 +637,55 @@ off the diagonal. But the positive vector $x_i=\cos\phi_i$ satisfies
 contradicting \eqref{eq:angular-quadratic-form}.
 \end{proof}
 
-\section{Matrix-multiplication exponents}\label{sec:exponents}\label{sec:general}
+\section{From character bounds to running times}\label{sec:exponents}\label{sec:general}
 
-We first optimize the angular constraint for three arbitrary
-dimensions; the rectangular curve then follows by substitution.
+Strassen's theorem turns the constraint on dot-product parameters into
+rank bounds. We first spell out how these bounds give algorithms.
+
+\begin{lemma}[Character bounds give algorithms]\label{lem:cost-conversion}
+Fix $\mathbf h=(h_X,h_Y,h_Z)\ge0$. If the dot-product parameters of
+every tensor character satisfy $\sum_i h_ip_i\le E$, then
+$\omega(h_Y,h_Z,h_X)\le E$.
+\end{lemma}
+
+\begin{proof}
+The zero target is trivial. For a fixed integer $N\ge2$, put
+$D_i=\lceil N^{h_i}\rceil$ and $M_N=\bigotimes_i B_i(D_i)$. Since
+$D_i\le2N^{h_i}$ and $0\le p_i\le1$, every character satisfies
+\[
+ \lambda(M_N)=\prod_i D_i^{p_i}
+ \le8N^{\sum_i h_ip_i}\le8N^E.
+\]
+Theorem~\ref{thm:spectral} therefore gives
+\begin{equation}\label{eq:shape-asymptotic-rank}
+ \widetilde R(M_N)\le8N^E.
+\end{equation}
+
+Fix any positive exponent slack $\eta$. First choose $N$ so large that
+$8<N^{\eta/2}$. The infimum defining $\widetilde R(M_N)$ then gives
+a fixed integer $K$ and an exact rank decomposition with
+\[
+ R:=\rank(M_N^{\otimes K})\le N^{K(E+\eta)}.
+\]
+This is a finite bilinear algorithm for matrix dimensions
+$(D_Y^K,D_Z^K,D_X^K)$. Apply it recursively $\ell$ times to blocks.
+By \eqref{eq:mm-factorization}, the resulting dimensions are
+$(D_Y^{K\ell},D_Z^{K\ell},D_X^{K\ell})$ and there are $R^\ell$
+scalar multiplications.
+
+Each input and output dimension, viewed as a number of scalar entries,
+is at most $R$, by the corresponding matrix-rank lower bound. Thus the
+linear substitutions and additions over all recursion levels use
+$O(\ell R^\ell)$ operations. Given input size $n$, choose
+$\ell=\lceil\log_N n/K\rceil$ and pad to these dimensions. They cover
+the target shape because $D_i^{K\ell}\ge n^{h_i}$, while
+$R^\ell=O(n^{E+\eta})$. This proves the bound for every positive slack,
+and hence the lemma under our exponent convention. All choices of $N$,
+$K$, and the finite identity precede the limit $n\to\infty$.
+\end{proof}
+
+We now optimize the angular constraint for three arbitrary dimensions;
+the rectangular curve follows by substitution.
 
 \begin{corollary}\label{cor:general-exponents}
 For every fixed $a\ge b\ge c\ge0$,
@@ -580,7 +702,7 @@ When $c(a+b)\le ab$, equality holds by the size lower bound.
 \end{corollary}
 
 \begin{proof}
-Reorder the dot-product exponents so that the character objective is
+Reorder the character's dot-product parameters so that the objective is
 $ap_1+bp_2+cp_3$, and write $p_i=\cos^2\theta_i$ with
 $\theta_i\in[0,\pi/2]$. By Proposition~\ref{prop:angular-cap}, their
 sum is at least $\pi/2$. Since the objective decreases with each angle,
@@ -606,17 +728,9 @@ $\bigl(c(a+b)-ab\bigr)^2/(4abc)>0$.
 Thus it is the global maximum when the triangle exists; otherwise the
 maximum is the boundary value $a+b$. At $c(a+b)=ab$, the branches agree.
 
-For rational shapes, choose an integer $q>1$ with $q^a,q^b,q^c$
-integral. By \eqref{eq:mm-character} and \eqref{eq:duality}, the bound
-just proved is an upper bound on
-$\log_q\arank(\cmm{q^a}{q^b}{q^c})$. Choose a tensor power whose rank
-is within arbitrary exponent slack, and recurse with its fixed
-bilinear decomposition. The rank and flattening dimensions cover the
-additions, and padding to arbitrary sizes preserves the exponent.
-This gives the claimed running time. For real shapes, approximate
-each exponent from above by rationals and pad. The optimized bound
-is continuous in the weights, as the maximum of these linear
-objectives over a fixed compact set, completing the proof.
+We have bounded the objective for every tensor character.
+Lemma~\ref{lem:cost-conversion}, with target
+$\mathbf h=(c,a,b)$, gives \eqref{eq:general-exponents}.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:curve}]
@@ -711,21 +825,12 @@ reachability under edge updates, with $O(1)$ query time for a fixed pair
 
 % Bibliography inlined from BibTeX output generated with the plain style.
 \begin{thebibliography}{10}
+\raggedright
 
 \bibitem{alman-williams-2026}
 Josh Alman and Virginia Vassilevska~Williams.
 \newblock Truly subquadratic {3SUM} and truly subcubic {APSP} via triangles in
   sparse lopsided graphs, 2026.
-
-\bibitem{christandl-vrana-zuiddam-2018-universal-points}
-Matthias Christandl, P{\'e}ter Vrana, and Jeroen Zuiddam.
-\newblock Universal points in the asymptotic spectrum of tensors.
-\newblock arXiv:1709.07851v3, 2018.
-
-\bibitem{christandl-vrana-zuiddam-2021-irreversibility}
-Matthias Christandl, Peter Vrana, and Jeroen Zuiddam.
-\newblock Barriers for fast matrix multiplication from irreversibility.
-\newblock {\em Theory of Computing}, 17(2):1--32, 2021.
 
 \bibitem{cohen-yuster-2014-minimum-witnesses}
 Keren Cohen and Raphael Yuster.
@@ -762,11 +867,28 @@ Karim Labib, Przemys{\l}aw Uzna\'{n}ski, and Daniel Wolleb-Graf.
 \newblock OpenAI Math Release preprint, 2026.
 \newblock October 2, 2026.
 
+\bibitem{strassen-1988-asymptotic-spectrum}
+Volker Strassen.
+\newblock The asymptotic spectrum of tensors.
+\newblock {\em Journal f\"ur die reine und angewandte Mathematik},
+  384:102--152, 1988.
+
 \bibitem{van-den-brand-nanongkai-saranurak-2019}
 Jan van~den Brand, Danupon Nanongkai, and Thatchaphol Saranurak.
 \newblock Dynamic matrix inverse: Improved algorithms and matching conditional
   lower bounds.
 \newblock Proceedings of FOCS 2019; arXiv:1905.05067, 2019.
+
+\bibitem{von-zur-gathen-gerhard-2013}
+Joachim von zur Gathen and J{\"u}rgen Gerhard.
+\newblock {\em Modern Computer Algebra}.
+\newblock Cambridge University Press, third edition, 2013.
+
+\bibitem{wigderson-zuiddam-2025-asymptotic-spectra}
+Avi Wigderson and Jeroen Zuiddam.
+\newblock Asymptotic spectra: Theory, applications and extensions.
+\newblock Survey manuscript, August 5, 2025.
+\newblock \href{https://www.math.ias.edu/~avi/PUBLICATIONS/Wigderson_Zuiddam_2025.pdf}{Author version}.
 
 \bibitem{yuster-2009-permutations-dominance}
 Raphael Yuster.
@@ -864,15 +986,73 @@ The two surviving tensor blocks are $C_{XY}(r,s+1)$ and
 $C_{XY}(r,s-1)$. They share the first leg and have disjoint second
 and third legs. Permuting the legs gives the other orientations.
 
-Finally, for $p_i>0$, multiplicativity of $\lambda$, the identity
-$\lambda(B_i(2))=2^{p_i}$, degeneration monotonicity, and
-\eqref{eq:optimized-entropy} give
-\begin{equation}\label{eq:determinant-concavity}
+\section{The three-sector splitting}\label{app:tripling}
+
+We recap the construction from \cite[Lemma~4.2]{openai-2026-matrix-nine-fourths}.
+In $C_{XY}(r,3s+r-1)$, a term has $0\le x<r$ and output index $z=x+y$.
+Partition the second-input and output indices into three intervals:
+\[
+\begin{array}{c|ccc}
+ &\text{left}&\text{middle}&\text{right}\\ \hline
+ Y &[0,s-1]&[s,2s+r-2]&[2s+r-1,3s+r-2]\\
+ Z &[0,s+r-2]&[s+r-1,2s+r-2]&[2s+r-1,3s+2r-3].
+\end{array}
+\]
+Scale middle $Y$ variables by $\varepsilon$ and middle $Z$ variables
+by $\varepsilon^{-1}$, leaving the others unchanged.
+Since $z=y+x$ with $0\le x<r$, left and right $Y$ indices stay
+in the corresponding $Z$ intervals. Cross-sector terms thus connect
+middle $Y$ to outer $Z$ and acquire a factor $\varepsilon$;
+matched terms remain unchanged. As $\varepsilon\to0$, precisely
+three matched sectors sharing $X$ remain.
+
+Translations identify the outer sectors with $C_{XY}(r,s)$. The middle is
+\[
+ \sum_{u=0}^{r-1}\sum_{v=0}^{s-1}
+ x_{r-1-u}y_{s+u+v}z_{s+r-1+v},
+\]
+which is $C_{XZ}(r,s)$ after reversing its first-leg basis. This
+identifies the individual sector. In the fixed-word construction of
+\eqref{eq:type-shared}, the sectors acquire independent first-leg
+variables before their individual bases are changed.
+
+\section{Finite separation of a shared leg}\label{app:finite-separation}
+
+We use the construction of \cite[Proposition~3.1]{openai-2026-matrix-nine-fourths},
+reducing the copy count from $5M$ to $3M$.
+It suffices to share leg $X$. Write
+\[
+ T=\sum_{h=1}^M\sum_{a,b,c}\mu_{habc}x_a y_{hb}z_{hc}.
+\]
+Take $L=3M$ copies and a primitive $L$-th root of unity $\zeta$.
+In copy $\ell=0,\ldots,L-1$, make the substitutions
+\[
 \begin{aligned}
- 2\lambda(C_{ij}(r,s))^{1/p_i}
- &=\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}\\
- &\ge \lambda(C_{ij}(r,s+1))^{1/p_i}
-      +\lambda(C_{ij}(r,s-1))^{1/p_i}.
+ x_a^{(\ell)}&\longmapsto\sum_{g=1}^M\zeta^{2\ell g}X_{ag},\\
+ y_{hb}^{(\ell)}&\longmapsto\sum_{u=1}^M\zeta^{\ell(u-h)}Y_{hbu},\\
+ z_{hc}^{(\ell)}&\longmapsto\frac1L\sum_{v=1}^M
+                        \zeta^{\ell(-v-h)}Z_{hcv}.
 \end{aligned}
-\end{equation}
+\]
+Summing the copies multiplies each coefficient by
+\[
+ \frac1L\sum_{\ell=0}^{L-1}\zeta^{\ell[u-v+2(g-h)]}.
+\]
+The geometric sum is one for exponent divisible by $L$ and zero
+otherwise. Since $|u-v+2(g-h)|\le3(M-1)<L$, it retains precisely
+$u-v+2(g-h)=0$.
+
+Now give $X_{ag},Y_{hbu},Z_{hcv}$ respective weights
+$g^2$, $hu-h^2$, and $-hv$. On every retained term their total is
+\[
+ g^2+h(u-v)-h^2=(g-h)^2\ge0.
+\]
+The weight-zero terms have $g=h$ and $u=v$, so the limit is
+\[
+ \sum_{h,a,b,c,u}\mu_{habc}X_{ah}Y_{hbu}Z_{hcu}
+ =\bigoplus_h(T_h\otimes B_X(M)).
+\]
+Every leg now distinguishes $h$. Although individual weights may be
+negative, the transformed coefficients form a polynomial of degree at
+most $(M-1)^2$. This proves \eqref{eq:finite-separation}.
 \end{document}
