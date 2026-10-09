@@ -54,10 +54,13 @@ $O(n^{2.4999})$ running time.
 
 \section{Introduction}\label{sec:statement}
 
-The motivation for this note is to gather, in one place, useful bounds
-and algorithmic consequences of the groundbreaking matrix-multiplication
-result in~\cite{openai-2026-matrix-nine-fourths}, with a focus on
-rectangular products.
+The initial motivation for this note was to explore whether the methods
+of the groundbreaking matrix-multiplication result
+in~\cite{openai-2026-matrix-nine-fourths} could be pushed to analyze
+rectangular matrix products. We also aim to gather useful bounds and
+their algorithmic consequences in one place. Rephrasing the proofs in
+a form accessible to the theoretical computer science community has
+value in its own right.
 
 \paragraph{Complexity convention.}
 Throughout this note, all complexity bounds suppress a $+o(1)$ term
@@ -119,27 +122,31 @@ combine polynomial products and apply a tensor character to them.
 A character assigns numerical sizes that add on direct sums,
 multiply on tensor products, and cannot increase under restriction.
 Multinomial counting gives concavity and growth inequalities for these
-sizes. Ordinary scaling limits, common slopes, and intercept bounds
+sizes. Rational rescaling, common slopes, and affine bounds
 then give $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the character's three
 dot-product parameters.
 
-Second, we optimize this constraint and apply Strassen's spectral
+Second, a sum-of-squares identity bounds weighted sums of these parameters.
+We apply Strassen's spectral
 theorem: the largest character value equals asymptotic tensor rank.
 We state precisely the form of this theorem we use, then show how the
 rank bound gives a running-time bound for every fixed matrix shape.
 
 \paragraph{Relation to the preceding analysis.}
-The finite separation construction and the two polynomial splittings
-in Lemma~\ref{lem:openai-inputs} come from Proposition~3.1 and the proofs
-of Lemmas~4.1 and~4.2 of~\cite{openai-2026-matrix-nine-fourths}.
-We recap their constructions in the appendices. Multinomial counting
-gives the power-sum inequality needed here directly from finite separation.
-The Hermite direct-sum degeneration, its ordinary scaling limits, and
-the coupling of the six intercept ratios extend the preceding analysis.
+The two polynomial splittings in Lemma~\ref{lem:openai-inputs} recap
+the proofs of Lemmas~4.1 and~4.2 of~\cite{openai-2026-matrix-nine-fourths}
+in coefficient coordinates. The finite separation adapts Proposition~3.1
+of that reference, with a different root-of-unity filter using $2M$ copies
+instead of $5M$. All three constructions are proved in the appendices.
+Multinomial counting then gives the required power-sum inequality.
+The replication construction, rational rescaling, and coupling of six
+affine offsets supply the rectangular extension.
+The weighted bound uses the classical Wolstenholme inequality, for which
+we give a sum-of-squares proof.
 Strassen's spectral theorem is a standard input; a modern exposition is
 \cite{wigderson-zuiddam-2025-asymptotic-spectra}. We cite it rather than
 reproduce its proof. We make no priority claim for the standard tools or
-the Hermite construction. Section~\ref{sec:applications}
+the finite construction variants. Section~\ref{sec:applications}
 substitutes the bounds into known algorithmic tradeoffs.
 
 \section{Polynomial products and finite constructions}\label{sec:constructions}
@@ -200,11 +207,11 @@ $T=\sum_h T_h$ and the blocks may share variables on leg $i$, but use
 pairwise disjoint variables on each other leg. The following constructions
 hold for every permutation of the legs.
 
-\begin{lemma}[{\cite{openai-2026-matrix-nine-fourths}}]\label{lem:openai-inputs}
+\begin{lemma}[Finite separation and polynomial splittings]\label{lem:openai-inputs}
 \begin{enumerate}
 \item If $T$ has $M$ matched sectors sharing leg $i$, then
 \begin{equation}\label{eq:finite-separation}
- (3M)T\degen\bigoplus_{h=1}^M\bigl(T_h\otimes B_i(M)\bigr).
+ (2M)T\degen\bigoplus_{h=1}^M\bigl(T_h\otimes B_i(M)\bigr).
 \end{equation}
 The sectors on the right are independent on all three legs.
 \item For $r\ge1$ and $s\ge2$, $C_{ij}(r,s)\otimes B_i(2)$ degenerates
@@ -216,62 +223,24 @@ $C_{ik}(r,s)$.
 \end{enumerate}
 \end{lemma}
 
-Appendix~\ref{app:determinant-filtration} gives the two polynomial splittings
-in coefficient coordinates. Appendix~\ref{app:finite-separation} proves
+Appendices~\ref{app:determinant-filtration} and~\ref{app:tripling} give
+the polynomial splittings in coefficient coordinates.
+Appendix~\ref{app:finite-separation} proves
 \eqref{eq:finite-separation} using a finite geometric sum and a nonnegative
-square. The next construction splits a convolution into fully independent
-smaller convolutions.
+square. The next construction splits a convolution into repeated
+independent copies of a smaller convolution.
 
-\begin{lemma}[Hermite direct sums]\label{lem:hermite}
-For any nonempty finite list of positive integer pairs $(r_h,s_h)$, with
-$R=\sum_h r_h$ and $S=\sum_h s_h$,
-\begin{equation}\label{eq:hermite}
- C_{ij}(R,S)\degen\bigoplus_h C_{ij}(r_h,s_h).
+\begin{lemma}[Replicating a convolution]\label{lem:replication}
+For all positive integers $m,r,s$,
+\begin{equation}\label{eq:replication}
+ C_{ij}(mr,ms)\degen mC_{ij}(r,s).
 \end{equation}
-The summands are disjoint on all three legs.
 \end{lemma}
 
-\begin{proof}
-It suffices to use the input legs $X,Y$. Choose distinct integers
-$\alpha_1,\ldots,\alpha_m$. Hermite interpolation
-\cite[Section~5.6]{von-zur-gathen-gerhard-2013} gives a basis
-$u_{h,i}(t)$ for polynomials of degree less than $R$, specified by
-\[
- u_{h,i}(t)\equiv
- \begin{cases}
- (t-\alpha_h)^i,&\ell=h,\\
- 0,&\ell\ne h,
- \end{cases}
- \pmod{(t-\alpha_\ell)^{r_\ell}},\qquad 0\le i<r_h.
-\]
-Choose the analogous basis $v_{h,j}(t)$ for the second input, using
-the orders $s_h$. For the output polynomial $W(t)$, retain the
-coefficients $[z^k]W(\alpha_h+z)$ for $0\le k\le r_h+s_h-2$;
-here $[z^k]$ means the coefficient of $z^k$.
-These $R+S-m$ values can be specified independently: Hermite
-interpolation realizes any such list with a polynomial of degree
-less than $R+S-m$, which fits the output degree bound $R+S-1$.
-
-In these fixed coordinates, scale each tensor variable by
-$\varepsilon$ raised to its weight, where
-\begin{equation}\label{eq:hermite-weights}
-\begin{aligned}
- w(x_{h,i})&=r_h-1-i,\qquad w(y_{h,j})=s_h-1-j,\\
- w(z_{h,k})&=k-r_h-s_h+2.
-\end{aligned}
-\end{equation}
-For two inputs from node $h$, the coefficient at $k=i+j$ equals one
-and has total weight zero. Any other nonzero coefficient at that node
-has $k>i+j$ and positive weight. If the first input comes from another
-node and the second is $v_{h,j}$, a nonzero coefficient requires
-$k\ge r_h+j$. Its weight is at least one, since the first-input
-weight is nonnegative. The reversed case is identical. If both inputs
-come from other nodes, their product vanishes to order at least
-$r_h+s_h$, beyond the retained output range.
-
-Thus every nonzero term has nonnegative weight, and the limit as
-$\varepsilon\to0$ is exactly the direct sum in \eqref{eq:hermite}.
-\end{proof}
+The construction combines polynomial division with the standard evaluation
+description of cyclic convolution
+\cite[Theorem~5 and Section~5.1]{ju-solomonik-2020-convolution}.
+We give the full proof in Appendix~\ref{app:replication}.
 
 \section{Tensor characters and counting}\label{sec:discrete}
 
@@ -293,17 +262,21 @@ rank after grouping one leg against the other two is an example.
 Keeping one nonzero term and using $\rank(T)\,xyz\ge T$ gives
 $1\le\lambda(T)\le\rank(T)$ for every nonzero $T$.
 
-Characters also cannot increase under our polynomial degenerations.
-If $T\degen S$ has degree $L$, interpolation of its $N$-th tensor
-power at $NL+1$ nonzero points gives
-\[
- (NL+1)T^{\otimes N}\ge S^{\otimes N},\qquad
- \lambda(S)\le(NL+1)^{1/N}\lambda(T).
-\]
-Indeed, each specialized tensor is a restriction of $T^{\otimes N}$,
-and interpolation extracts the constant coefficient from their direct
-sum. Letting $N\to\infty$ proves $\lambda(S)\le\lambda(T)$.
-No continuity assumption on $\lambda$ is needed.
+\begin{lemma}[Interpolation of a degeneration]\label{lem:degeneration-interpolation}
+Suppose a degeneration $T\degen S$ produces a tensor $P(\varepsilon)$
+whose coefficients are polynomials of degree at most $L$. Then, for
+every integer $N\ge1$,
+\begin{equation}\label{eq:degeneration-interpolation}
+ (NL+1)T^{\otimes N}\ge S^{\otimes N}.
+\end{equation}
+Consequently, every tensor character satisfies $\lambda(S)\le\lambda(T)$.
+\end{lemma}
+
+Equation~\eqref{eq:degeneration-interpolation} is the standard interpolation
+conversion from degeneration to restriction
+\cite[Theorem~8]{christandl-jensen-zuiddam-2018-nonmultiplicativity}, applied
+to tensor powers. We include the proof for completeness in
+Appendix~\ref{app:degeneration-interpolation}.
 
 The \emph{asymptotic rank} of $T$ is
 \[
@@ -366,7 +339,7 @@ multiplicities. Apply \eqref{eq:finite-separation}; now all legs
 distinguish the words, so their factors can be reordered independently.
 This gives
 \begin{equation}\label{eq:type-shared}
- (3M)T^{\otimes N}\degen
+ (2M)T^{\otimes N}\degen
  M\left(\bigotimes_h T_h^{\otimes n_h}\right)\otimes B_i(M).
 \end{equation}
 
@@ -384,19 +357,19 @@ $\lambda(T)\ge\sum_h\lambda(T_h)$ directly by additivity.
 For every tuple $\sum_h n_h=N$, applying $\lambda$ to
 \eqref{eq:type-shared} gives
 \[
- 3M\lambda(T)^N\ge M^{1+p_i}\prod_h\lambda(T_h)^{n_h}.
+ 2M\lambda(T)^N\ge M^{1+p_i}\prod_h\lambda(T_h)^{n_h}.
 \]
 Put $a_h=\lambda(T_h)^{1/p_i}$. Cancel $M$ and take the power $1/p_i$:
 \[
- M\prod_h a_h^{n_h}\le3^{1/p_i}\lambda(T)^{N/p_i}.
+ M\prod_h a_h^{n_h}\le2^{1/p_i}\lambda(T)^{N/p_i}.
 \]
-Sum over all $\binom{N+s-1}{s-1}$ multiplicity tuples. The multinomial
+There are at most $(N+1)^s$ multiplicity tuples. Summing and using the multinomial
 theorem gives
 \[
  \left(\sum_h a_h\right)^N
- \le\binom{N+s-1}{s-1}3^{1/p_i}\lambda(T)^{N/p_i}.
+ \le(N+1)^s2^{1/p_i}\lambda(T)^{N/p_i}.
 \]
-For fixed $s$, the binomial coefficient is polynomial in $N$. Taking
+For fixed $s$, this extra factor is polynomial in $N$. Taking
 $N$-th roots and letting $N\to\infty$ proves \eqref{eq:power-sum}.
 \end{proof}
 
@@ -420,7 +393,7 @@ $r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
 \end{lemma}
 
 \begin{proof}
-The determinant splitting and Lemma~\ref{lem:power-sum} give, for $s\ge2$,
+The two-sector splitting and Lemma~\ref{lem:power-sum} give, for $s\ge2$,
 \[
  2f_{ij}(r,s)^{1/p_i}
  =\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}
@@ -431,32 +404,27 @@ coordinate. The three-sector splitting and the same lemma give
 \eqref{eq:discrete-tripling}.
 \end{proof}
 
-\section{Ordinary scaling limits}\label{sec:homogeneous}
+\section{Rescaling the convolution profiles}\label{sec:homogeneous}
 
-The Hermite splitting and the full-sum assertion of
-Lemma~\ref{lem:power-sum} give
-\begin{equation}\label{eq:superadditive}
- f_{ij}(r+u,s+v)\ge f_{ij}(r,s)+f_{ij}(u,v).
+Applying a character to Lemma~\ref{lem:replication} gives
+\begin{equation}\label{eq:profile-replication}
+ f_{ij}(mr,ms)\ge m f_{ij}(r,s).
 \end{equation}
-Taking $m$ copies of $C_{ij}(1,1)$ also gives $f_{ij}(m,m)\ge m$;
-by monotonicity, $f_{ij}(r,s)\ge\min\{r,s\}$.
+In particular, $f_{ij}(m,m)\ge m$, and monotonicity gives
+$f_{ij}(r,s)\ge\min\{r,s\}$.
+We need rescaled profiles only at positive rational lengths. Define
+\begin{equation}\label{eq:rescaled-profile}
+ g_{ij}(r,s)=
+ \sup_{\substack{q\in\mathbb Q_{>0}\\qr,qs\in\mathbb Z_{>0}}}
+ \frac{f_{ij}(qr,qs)}{q}.
+\end{equation}
 
-\begin{lemma}[Ordinary homogeneous limits]\label{lem:homogeneous}
-For every $r,s>0$, the limit
-\begin{equation}\label{eq:ordinary-limit}
- g_{ij}(r,s)=\lim_{n\to\infty}
- \frac{f_{ij}(\lfloor nr\rfloor,\lfloor ns\rfloor)}{n}
-\end{equation}
-exists, uniformly for $r,s\in[u,v]$ for every fixed $0<u<v$.
-The profiles $g_{ij}$ are nondecreasing and concave, and are homogeneous
-of degree one, meaning
-\[
- g_{ij}(tr,ts)=t\,g_{ij}(r,s)\qquad(t>0).
-\]
-They also satisfy
+\begin{lemma}[Rescaled profiles]\label{lem:homogeneous}
+The profiles $g_{ij}$ are coordinatewise nondecreasing and satisfy
 \begin{equation}\label{eq:limit-rank}
- \min\{r,s\}\le g_{ij}(r,s)\le r+s,
- \qquad g_{ij}(r,s)=g_{ji}(s,r).
+ \min\{r,s\}\le g_{ij}(r,s)\le r+s,\qquad
+ g_{ij}(r,s)=g_{ji}(s,r),\qquad
+ g_{ij}(tr,ts)=t\,g_{ij}(r,s).
 \end{equation}
 For $p_i>0$, $g_{ij}^{1/p_i}$ is concave in $s$ and satisfies
 \begin{equation}\label{eq:general-tripling}
@@ -464,77 +432,77 @@ For $p_i>0$, $g_{ij}^{1/p_i}$ is concave in $s$ and satisfies
  \ge2g_{ij}(r,s)^{1/p_i}+g_{ik}(r,s)^{1/p_i}.
 \end{equation}
 For $p_j>0$, $g_{ij}^{1/p_j}$ is concave in $r$.
+Here all lengths, scale factors, and concavity coefficients are rational.
 \end{lemma}
 
 \begin{proof}
-Fix positive integers $r,s$. By \eqref{eq:superadditive}, the sequence
-$a_n=f_{ij}(nr,ns)$ is superadditive and bounded above by $n(r+s)$.
-For each fixed $k$, writing $n=qk+t$, $0\le t<k$, gives
-$a_n\ge q a_k$. Therefore
+The bounds and input interchange follow from \eqref{eq:profile-rank}
+and the lower bound above. Replacing $q$ by $q/t$ proves homogeneity.
+
+The crucial point is that finitely many supremum values can be
+approached at one common scale. Choose scales $q_h$ approximating
+the desired values, and choose $Q$ so that every $Q/q_h$ is a positive
+integer. By \eqref{eq:profile-replication},
 \[
- \liminf_{n\to\infty}\frac{a_n}{n}\ge\frac{a_k}{k},
- \qquad
- \lim_{n\to\infty}\frac{a_n}{n}
- =\sup_{k\ge1}\frac{a_k}{k}.
+ \frac{f_{ij}(Qr,Qs)}{Q}
+ \ge\frac{f_{ij}(q_hr,q_hs)}{q_h}.
 \]
-This is the superadditive-sequence argument, also called Fekete's lemma.
+Replacing $Q$ by an integer multiple preserves all these approximations
+and can clear any additional rational denominators. Monotonicity now follows by
+comparing lengths at a common scale.
 
-For positive rational $r=a/q$, $s=b/q$, monotonicity squeezes the
-floored pair in \eqref{eq:ordinary-limit} between
-$\lfloor n/q\rfloor(a,b)$ and $(\lfloor n/q\rfloor+1)(a,b)$.
-Hence the limit is $g_{ij}(a,b)/q$. Superadditivity passes to rational
-pairs, and rational homogeneity makes the limit concave there.
-
-To handle real lengths, first bound how much the limit can change
-between nearby rational points. Fix rational $0<u<v$ and write
-$g=g_{ij}$. For rational $r,r',s\in[u,v]$ with $r<r'$, concavity gives
+For concavity, take $s=\tau s_1+(1-\tau)s_2$, with rational
+$0\le\tau\le1$. Approach $g_{ij}(r,s_1)$ and $g_{ij}(r,s_2)$ at
+one scale $Q$, with $Qr,Qs_1,Qs_2,Qs$ integers. Discrete concavity gives
 \[
- 0\le\frac{g(r',s)-g(r,s)}{r'-r}
- \le\frac{g(r,s)-g(u/2,s)}{r-u/2}\le\frac{4v}{u},
+ \left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
+ \ge\tau\left(\frac{f_{ij}(Qr,Qs_1)}{Q}\right)^{1/p_i}
+ +(1-\tau)\left(\frac{f_{ij}(Qr,Qs_2)}{Q}\right)^{1/p_i}.
 \]
-using $0\le g(r,s)\le r+s\le2v$. The same bound holds in the other
-coordinate. Thus changing the two coordinates by a total of $\eta$
-changes $g$ by at most $4v\eta/u$. Approximating real lengths by
-rationals therefore defines a unique continuous extension of $g$.
+Bound the left side by $g_{ij}(r,s)^{1/p_i}$ and let the approximation
+error tend to zero. Input interchange gives the other coordinate.
 
-Now cover any fixed rectangle with a fine rational grid. The slope
-bound makes the limit values at neighboring corners arbitrarily close.
-Both the normalized discrete profiles and $g$ lie between their values
-at the lower and upper grid corners. Convergence at the finitely many
-corners therefore gives uniform convergence throughout the rectangle.
-Homogeneity, monotonicity, input interchange, and
-concavity, as well as \eqref{eq:limit-rank}, pass from rational to real
-lengths by continuity.
-
-For powered concavity, first take rational lengths and a rational
-interpolation coefficient. Clear denominators and apply the discrete
-concavity from Lemma~\ref{lem:discrete} along multiples of that common
-denominator. Divide by $n^{1/p_i}$ and pass to the limit; continuity
-gives all real lengths and coefficients. The other coordinate is
-identical. Finally, local uniform convergence absorbs the bounded
-rounding errors and the $-1$ in \eqref{eq:discrete-tripling}, giving
+For tripling, monotonicity first enlarges the discrete source length
+$3s+r-1$ to $3s+r$. At a common scale $Q$,
+\[
+ \left(\frac{f_{ij}(Qr,Q(3s+r))}{Q}\right)^{1/p_i}
+ \ge2\left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
+ +\left(\frac{f_{ik}(Qr,Qs)}{Q}\right)^{1/p_i}.
+\]
+Approach the two right-hand suprema simultaneously; the left side is
+bounded by $g_{ij}(r,3s+r)^{1/p_i}$. This proves
 \eqref{eq:general-tripling}.
 \end{proof}
 
 \section{Common slopes and the angular constraint}\label{sec:slopes}
 
-Index the three tensor legs by $1,2,3$. We use the limits above to
+Index the three tensor legs by $1,2,3$. We use the rescaled profiles to
 constrain the three dot-product parameters without averaging their orientations.
+Until \eqref{eq:ratio-bound}, all profile arguments are positive rationals.
 
-\begin{lemma}[Common slope and intercepts]\label{lem:intercepts}
+\begin{lemma}[Common slopes and affine bounds]\label{lem:intercepts}
 Fix $i$ with $p_i>0$, and let $j,k$ be the other legs. The functions
 $P_{ij}(s)=g_{ij}(1,s)^{1/p_i}$ and $P_{ik}(s)=g_{ik}(1,s)^{1/p_i}$
-have a common asymptotic slope $L_i>0$. Their intercepts
+have a common asymptotic slope $L_i>0$. Their normalized offsets
 \[
- C_{ij}=\lim_{s\to\infty}(P_{ij}(s)-L_i s),\qquad
- C_{ik}=\lim_{s\to\infty}(P_{ik}(s)-L_i s)
+ c_{ij}=\sup_{s\in\mathbb Q_{>0}}
+ \left(\frac{P_{ij}(s)}{L_i}-s\right),\qquad
+ c_{ik}=\sup_{s\in\mathbb Q_{>0}}
+ \left(\frac{P_{ik}(s)}{L_i}-s\right)
 \]
-are finite and nonnegative, with $C_{ij}+C_{ik}\le L_i$.
+are nonnegative and satisfy $c_{ij}+c_{ik}\le1$. Moreover,
+\[
+ P_{ij}(s+t)\ge P_{ij}(s)+L_it,\qquad
+ P_{ij}(s)\le L_i(s+c_{ij}),
+\]
+and likewise for $P_{ik}$.
 \end{lemma}
 
 \begin{proof}
-Write $P=P_{ij}$ and $Q=P_{ik}$. Positive nondecreasing concavity
-gives finite nonnegative limits $L_P=\lim P(s)/s$ and
+Write $P=P_{ij}$ and $Q=P_{ik}$. For $s>1$, the nonnegative secant
+slope $(P(s)-P(1))/(s-1)$ decreases as $s$ grows, by concavity.
+It therefore has a finite limit, which is also $L_P=\lim P(s)/s$.
+Likewise define
 $L_Q=\lim Q(s)/s$. Dividing the coupled inequalities
 \[
  P(3s+1)\ge2P(s)+Q(s),\qquad
@@ -554,10 +522,12 @@ sending its far endpoint to infinity gives
 \[
  P(v)-P(u)\ge L_i(v-u).
 \]
-Thus $P(s)-L_i s$ is nondecreasing and nonnegative, using the nonnegative
-limit of $P$ at zero. The same holds for $Q$. Their sum is bounded above
-by $L_i$ by \eqref{eq:sum-majorant}, so their limits at infinity exist
-and have the stated bounds.
+Letting $u\downarrow0$ through rationals and using $P(u)\ge0$ gives
+$P(v)\ge L_i v$. Thus $P(s)/L_i-s$ is nonnegative and nondecreasing;
+the same holds for $Q$. Their sum is at most one by
+\eqref{eq:sum-majorant}. Approaching both suprema at one sufficiently
+large rational $s$ proves $c_{ij}+c_{ik}\le1$. The affine upper bounds
+follow from the definition of the offsets.
 \end{proof}
 
 \begin{proposition}[Angular constraint]\label{prop:angular-cap}
@@ -569,18 +539,17 @@ The dot-product parameters of every tensor character satisfy
 
 \begin{proof}
 If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-parameters are positive. Set $c_{ij}=C_{ij}/L_i$. Lemma~\ref{lem:intercepts}
-gives the six intercept ratios and their three bounds
+parameters are positive. Lemma~\ref{lem:intercepts}
+gives six offsets and their three bounds
 \begin{equation}\label{eq:intercept-budgets}
  c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
 \end{equation}
-The secant bound from Lemma~\ref{lem:intercepts} and the definition
-of $c_{ij}$ give, for $s,t>0$,
+The increment and affine bounds give
 \[
- P_{ij}(s+t)\ge P_{ij}(s)+L_it,
- \qquad P_{ij}(s)\le L_i(s+c_{ij}).
+ \frac{P_{ij}(s+t)}{P_{ij}(s)}
+ \ge1+\frac{L_it}{P_{ij}(s)}\ge1+\frac{t}{s+c_{ij}}.
 \]
-Divide these inequalities and use homogeneity to obtain
+Using homogeneity, we obtain
 \begin{equation}\label{eq:finite-increment}
  \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
  \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
@@ -596,43 +565,53 @@ Input interchange supplies the first bound and
        \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
 \end{aligned}
 \]
-Take logarithms, divide by $\varepsilon$, and let $\varepsilon\downarrow0$.
+Take logarithms, divide by $\varepsilon$, and let rational
+$\varepsilon\downarrow0$.
 The elementary limit $\log(1+\varepsilon x)/\varepsilon\to x$ gives
 \begin{equation}\label{eq:ratio-bound}
  1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
- \qquad(r,s>0).
+ \qquad(r,s\in\mathbb Q_{>0}).
 \end{equation}
 With $t=r/s$, this is equivalent to
 \[
  (1-p_j)c_{ij}t^2+
  (1-p_i-p_j+c_{ij}c_{ji})t+(1-p_i)c_{ji}\ge0
- \qquad(t>0).
+ \qquad(t\in\mathbb Q_{>0}).
 \]
+The polynomial is continuous, so the inequality holds for every real
+$t>0$; no extension of the profiles to real lengths is needed.
 A quadratic $At^2+Bt+C$ with $A,C\ge0$ is nonnegative on $t>0$
 exactly when $B\ge-2\sqrt{AC}$, including zero coefficients. Thus
+writing $x=\sqrt{c_{ij}c_{ji}}$ gives
+$\bigl(x+\sqrt{(1-p_i)(1-p_j)}\bigr)^2\ge p_ip_j$, or
 \begin{equation}\label{eq:intercept-products}
- \sqrt{c_{ij}c_{ji}}\ge K_{ij}:=
+ \sqrt{c_{ij}c_{ji}}\ge
  \left(\sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}\right)_+,
 \end{equation}
 where $(z)_+=\max\{z,0\}$.
 
-Let $K$ be the symmetric matrix with these off-diagonal entries and
-zero diagonal. For every vector $x\ge0$, AM--GM and
+For any nonnegative $x_1,x_2,x_3$, AM--GM and
 \eqref{eq:intercept-budgets} give
 \begin{equation}\label{eq:angular-quadratic-form}
- x^{\mathsf T}Kx
- \le\sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
+ \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
  \le\sum_{i<j}(c_{ij}x_i^2+c_{ji}x_j^2)
  \le\sum_i x_i^2.
 \end{equation}
-Put $\theta_i=\arccos\sqrt{p_i}$. If $\sum_i\theta_i<\pi/2$,
-increase all three angles by the same positive amount to obtain
-$\phi_i>0$ with sum $\pi/2$. The matrix $K'$ with zero diagonal and
-$K'_{ij}=\cos(\phi_i+\phi_j)=\sin\phi_k$ is strictly smaller than $K$
-off the diagonal. But the positive vector $x_i=\cos\phi_i$ satisfies
+Put $\theta_i=\arccos\sqrt{p_i}$ and suppose
+$S=\theta_1+\theta_2+\theta_3<\pi/2$. Take $x_i=\cos\theta_i>0$.
+By \eqref{eq:intercept-products},
+$\sqrt{c_{ij}c_{ji}}\ge\cos(\theta_i+\theta_j)$.
+For the other two indices $j,k$, the addition formula gives
 \[
- (K'x)_i=\sin\phi_k\cos\phi_j+\sin\phi_j\cos\phi_k
- =\cos\phi_i=x_i,
+ \cos(\theta_i+\theta_j)x_j+\cos(\theta_i+\theta_k)x_k
+ =x_i+\cos S\cos(\theta_j-\theta_k)>x_i.
+\]
+The last inequality uses $|\theta_j-\theta_k|\le S<\pi/2$.
+Multiply by $x_i$ and sum over $i$:
+\[
+ \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
+ \ge\sum_{i<j}2\cos(\theta_i+\theta_j)x_ix_j
+ >\sum_i x_i^2,
 \]
 contradicting \eqref{eq:angular-quadratic-form}.
 \end{proof}
@@ -684,7 +663,7 @@ and hence the lemma under our exponent convention. All choices of $N$,
 $K$, and the finite identity precede the limit $n\to\infty$.
 \end{proof}
 
-We now optimize the angular constraint for three arbitrary dimensions;
+We now bound weighted sums of the dot-product parameters;
 the rectangular curve follows by substitution.
 
 \begin{corollary}\label{cor:general-exponents}
@@ -705,28 +684,36 @@ When $c(a+b)\le ab$, equality holds by the size lower bound.
 Reorder the character's dot-product parameters so that the objective is
 $ap_1+bp_2+cp_3$, and write $p_i=\cos^2\theta_i$ with
 $\theta_i\in[0,\pi/2]$. By Proposition~\ref{prop:angular-cap}, their
-sum is at least $\pi/2$. Since the objective decreases with each angle,
-its maximum over this region occurs on $\sum_i\theta_i=\pi/2$.
-If a weight is zero, the maximum is $a+b$. Assume $a,b,c>0$.
+sum is at least $\pi/2$. Decreasing angles to make the sum exactly
+$\pi/2$ only increases the objective, so it suffices to bound that case.
+If $b=0$, then $c=0$ and the objective is at most $a$.
 
-On any boundary edge, the other two angles sum to $\pi/2$, so their
-contribution is a convex combination of the corresponding two weights.
-The largest boundary value is therefore $a+b$. At an interior stationary
-point, the multiplier equations are
+For $a,b,c>0$, put $\beta_i=2\theta_i$ and
 \[
- a\sin(2\theta_1)=b\sin(2\theta_2)=c\sin(2\theta_3).
+ u=\sqrt{\frac{bc}{a}},\qquad
+ v=\sqrt{\frac{ac}{b}},\qquad
+ w=\sqrt{\frac{ab}{c}}.
 \]
-The angles $2\theta_i$ form a triangle with sides proportional to
-$1/a,1/b,1/c$. Such a triangle exists uniquely exactly when
-$1/c<1/a+1/b$, or $c(a+b)>ab$. The cosine rule gives
+Thus $vw=a$, $wu=b$, $uv=c$, and $\beta_1+\beta_2+\beta_3=\pi$.
+The identity
+\begin{equation}\label{eq:weighted-squares}
+\begin{aligned}
+ u^2+v^2+w^2-2(a\cos\beta_1+b\cos\beta_2+c\cos\beta_3)
+ &= (u-v\cos\beta_3-w\cos\beta_2)^2\\
+ &\quad +(v\sin\beta_3-w\sin\beta_2)^2\ge0
+\end{aligned}
+\end{equation}
+follows by expansion and $\cos(\beta_2+\beta_3)=-\cos\beta_1$.
+This proves the classical Wolstenholme inequality
+\cite[Equation~(1)]{liu-2020-weighted-trigonometric}, including zero angles.
+Since $p_i=(1+\cos\beta_i)/2$, it gives
 \[
- \cos(2\theta_1)=\frac{c}{2b}+\frac{b}{2c}-\frac{bc}{2a^2},
+ ap_1+bp_2+cp_3\le\frac{a+b+c}{2}
+ +\frac{1}{4}\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
 \]
-and cyclic variants. Using $p_i=(1+\cos(2\theta_i))/2$ yields the
-second branch of \eqref{eq:general-exponents}. It exceeds $a+b$ by
-$\bigl(c(a+b)-ab\bigr)^2/(4abc)>0$.
-Thus it is the global maximum when the triangle exists; otherwise the
-maximum is the boundary value $a+b$. At $c(a+b)=ab$, the branches agree.
+For $a,b>0$, set $c_0=ab/(a+b)$. If $0\le c\le c_0$, replace $c$
+in the objective by $c_0$, which only increases it. The displayed bound
+at $c_0$ equals $a+b$. This proves both branches, including $c=0$.
 
 We have bounded the objective for every tensor character.
 Lemma~\ref{lem:cost-conversion}, with target
@@ -832,6 +819,11 @@ Josh Alman and Virginia Vassilevska~Williams.
 \newblock Truly subquadratic {3SUM} and truly subcubic {APSP} via triangles in
   sparse lopsided graphs, 2026.
 
+\bibitem{christandl-jensen-zuiddam-2018-nonmultiplicativity}
+Matthias Christandl, Asger Kj{\ae}rulff Jensen, and Jeroen Zuiddam.
+\newblock Tensor rank is not multiplicative under the tensor product.
+\newblock {\em Linear Algebra and its Applications}, 543:125--139, 2018.
+
 \bibitem{cohen-yuster-2014-minimum-witnesses}
 Keren Cohen and Raphael Yuster.
 \newblock On minimum witnesses for {Boolean} matrix multiplication.
@@ -843,6 +835,11 @@ Fabrizio Grandoni, Giuseppe~F. Italiano, Aleksander {\L}ukasiewicz, Nikos
 \newblock All-pairs {LCA} in {DAGs}: Breaking through the {$O(n^{2.5})$}
   barrier.
 \newblock Proceedings of SODA 2021; arXiv:2007.08914, 2021.
+
+\bibitem{ju-solomonik-2020-convolution}
+Caleb Ju and Edgar Solomonik.
+\newblock Derivation and analysis of fast bilinear algorithms for convolution.
+\newblock {\em SIAM Review}, 62(4):743--777, 2020.
 
 \bibitem{kowalski-2014-representation-theory}
 Emmanuel Kowalski.
@@ -861,6 +858,12 @@ Karim Labib, Przemys{\l}aw Uzna\'{n}ski, and Daniel Wolleb-Graf.
   pages 14:1--14:17. Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik,
   2019.
 
+\bibitem{liu-2020-weighted-trigonometric}
+Jian Liu.
+\newblock An improved result of a weighted trigonometric inequality in acute
+  triangles with applications.
+\newblock {\em Journal of Mathematical Inequalities}, 14(1):147--160, 2020.
+
 \bibitem{openai-2026-matrix-nine-fourths}
 {OpenAI}.
 \newblock An upper bound of {$9/4$} for the matrix multiplication exponent.
@@ -878,11 +881,6 @@ Jan van~den Brand, Danupon Nanongkai, and Thatchaphol Saranurak.
 \newblock Dynamic matrix inverse: Improved algorithms and matching conditional
   lower bounds.
 \newblock Proceedings of FOCS 2019; arXiv:1905.05067, 2019.
-
-\bibitem{von-zur-gathen-gerhard-2013}
-Joachim von zur Gathen and J{\"u}rgen Gerhard.
-\newblock {\em Modern Computer Algebra}.
-\newblock Cambridge University Press, third edition, 2013.
 
 \bibitem{wigderson-zuiddam-2025-asymptotic-spectra}
 Avi Wigderson and Jeroen Zuiddam.
@@ -913,13 +911,14 @@ Uri Zwick.
 \clearpage
 \appendix
 \numberwithin{equation}{section}
-\section{The determinant construction}\label{app:determinant-filtration}
+\section{Splitting two polynomial products}\label{app:determinant-filtration}
 
-We recap the determinant construction used in
+We recap the two-sector construction used in
 \cite[Lemma~4.1]{openai-2026-matrix-nine-fourths} as an explicit change of
-basis for pairs of univariate polynomials. Its classical form is the
-degree-one Clebsch--Gordan formula
+coordinates for pairs of polynomials.\footnote{This is the degree-one case
+of the classical Clebsch--Gordan formula
 \cite[Theorem~2.6.3, pp.~56--57 of the author version]{kowalski-2014-representation-theory}.
+The coefficient calculation here does not require that formula.}
 
 Fix $r\ge1$ and $s\ge2$. The tensor $C_{XY}(r,s)\otimes B_X(2)$
 computes
@@ -928,63 +927,33 @@ computes
  \deg f<r,\quad\deg a,\deg b<s.
 \]
 Thus tensoring with $B_X(2)$ means multiplying two polynomials by the
-same $f$. We will choose fixed bases in which this computation splits,
-in the limit, into multiplication with input lengths $s+1$ and $s-1$.
+same $f$. We will change coordinates to split the second input into
+lengths $s+1$ and $s-1$.
 
-For $e\ge1$, consider pairs $(a,b)$ with $\deg a,\deg b\le e$.
-The polynomial $a+tb$ has degree at most $e+1$, and
-\begin{equation}\label{eq:determinant-filtration}
- a+tb=0\quad\Longleftrightarrow\quad
- (a,b)=(-th,h)\quad\text{for some }\deg h\le e-1.
-\end{equation}
-Use the following basis, arranged in two blocks:
+For $e\ge1$ and $\deg a,\deg b\le e$, use
 \[
- \underbrace{(t^j,0)\ (0\le j\le e),\ (0,t^e)}_{e+2\text{ vectors}},
- \qquad
- \underbrace{(-t^{j+1},t^j)\ (0\le j<e)}_{e\text{ vectors}}.
+ p=a+tb,\qquad h=b-p_{e+1}t^e,\qquad p_d=[t^d]p.
 \]
-The first block maps under $(a,b)\mapsto a+tb$ to
-$1,t,\ldots,t^{e+1}$. Every pair mapping to zero is a unique linear
-combination of the second block, by \eqref{eq:determinant-filtration}.
-These vectors therefore form a basis. At $e=s-1$, the two blocks
-have sizes $s+1$ and $s-1$.
-
-Choose these bases for both the second-input pairs ($e=s-1$) and
-the output pairs ($e=r+s-2$). Multiplication by every $f$ satisfies
+Here $[t^d]p$ denotes the coefficient of $t^d$. We have
+$\deg p\le e+1$ and $\deg h\le e-1$, and these coordinates are invertible:
+$b=h+p_{e+1}t^e$, $a=p-tb$.
+Use them on the input pair with $e=s-1$ and on the output pair with
+$e=r+s-2$. Multiplication by $f$ becomes
 \[
- fa+t(fb)=f(a+tb),\qquad
- f(-th,h)=(-t(fh),fh).
+ (p,h)\longmapsto
+ \bigl(fp,\,fh+p_s t^{s-1}(f-f_{r-1}t^{r-1})\bigr).
 \]
-The first identity says that the first block undergoes ordinary
-multiplication by $f$; the second says the same for the second block
-and shows that it contributes nothing to the first. Consequently,
-the matrix of multiplication by $f$ has the form
-\begin{equation}\label{eq:determinant-blocks}
- \begin{pmatrix}M_f^+&0\\ R_f&M_f^-\end{pmatrix},
- \qquad
- \begin{aligned}
- M_f^+&:\CC^{s+1}\longrightarrow\CC^{r+s},\\
- M_f^-&:\CC^{s-1}\longrightarrow\CC^{r+s-2},
- \end{aligned}
-\end{equation}
-where $M_f^+,M_f^-$ are the usual coefficient matrices for multiplying
-by $f$. The bases are fixed independently of $f$, so this block
-structure holds for the whole tensor.
-
-Scale the variables in the second block on the second-input leg by
-$\varepsilon^{-1}$, and those in the second block on the output leg
-by $\varepsilon$. On every multiplication matrix this gives
+Scale input $h$ by $\varepsilon^{-1}$ and its output coordinate by
+$\varepsilon$. The map is now
 \[
- \begin{pmatrix}I&0\\0&\varepsilon I\end{pmatrix}
- \begin{pmatrix}M_f^+&0\\R_f&M_f^-\end{pmatrix}
- \begin{pmatrix}I&0\\0&\varepsilon^{-1}I\end{pmatrix}
- =\begin{pmatrix}M_f^+&0\\\varepsilon R_f&M_f^-\end{pmatrix}
- \xrightarrow{\varepsilon\to0}
- \begin{pmatrix}M_f^+&0\\0&M_f^-\end{pmatrix}.
+ (p,h)\longmapsto
+ \bigl(fp,\,fh+\varepsilon p_s t^{s-1}(f-f_{r-1}t^{r-1})\bigr)
+ \xrightarrow{\varepsilon\to0}(fp,fh).
 \]
-The two surviving tensor blocks are $C_{XY}(r,s+1)$ and
-$C_{XY}(r,s-1)$. They share the first leg and have disjoint second
-and third legs. Permuting the legs gives the other orientations.
+The independent polynomials $p,h$ have lengths $s+1,s-1$, respectively.
+This gives $C_{XY}(r,s+1)$ and $C_{XY}(r,s-1)$ sharing the first leg,
+with disjoint second and third legs. Permuting the legs gives the
+other orientations.
 
 \section{The three-sector splitting}\label{app:tripling}
 
@@ -1018,34 +987,34 @@ variables before their individual bases are changed.
 
 \section{Finite separation of a shared leg}\label{app:finite-separation}
 
-We use the construction of \cite[Proposition~3.1]{openai-2026-matrix-nine-fourths},
-reducing the copy count from $5M$ to $3M$.
+We adapt the construction of \cite[Proposition~3.1]{openai-2026-matrix-nine-fourths}
+with an equal-sums filter, reducing the copy count from $5M$ to $2M$.
 It suffices to share leg $X$. Write
 \[
  T=\sum_{h=1}^M\sum_{a,b,c}\mu_{habc}x_a y_{hb}z_{hc}.
 \]
-Take $L=3M$ copies and a primitive $L$-th root of unity $\zeta$.
+Take $L=2M$ copies and a primitive $L$-th root of unity $\zeta$.
 In copy $\ell=0,\ldots,L-1$, make the substitutions
 \[
 \begin{aligned}
- x_a^{(\ell)}&\longmapsto\sum_{g=1}^M\zeta^{2\ell g}X_{ag},\\
+ x_a^{(\ell)}&\longmapsto\sum_{g=1}^M\zeta^{\ell g}X_{ag},\\
  y_{hb}^{(\ell)}&\longmapsto\sum_{u=1}^M\zeta^{\ell(u-h)}Y_{hbu},\\
  z_{hc}^{(\ell)}&\longmapsto\frac1L\sum_{v=1}^M
-                        \zeta^{\ell(-v-h)}Z_{hcv}.
+                        \zeta^{-\ell v}Z_{hcv}.
 \end{aligned}
 \]
 Summing the copies multiplies each coefficient by
 \[
- \frac1L\sum_{\ell=0}^{L-1}\zeta^{\ell[u-v+2(g-h)]}.
+ \frac1L\sum_{\ell=0}^{L-1}\zeta^{\ell(g+u-h-v)}.
 \]
 The geometric sum is one for exponent divisible by $L$ and zero
-otherwise. Since $|u-v+2(g-h)|\le3(M-1)<L$, it retains precisely
-$u-v+2(g-h)=0$.
+otherwise. Since $|g+u-h-v|\le2(M-1)<L$, it retains precisely
+$g+u=h+v$.
 
 Now give $X_{ag},Y_{hbu},Z_{hcv}$ respective weights
-$g^2$, $hu-h^2$, and $-hv$. On every retained term their total is
+$g^2$, $2hu-h^2$, and $-2hv$. On every retained term their total is
 \[
- g^2+h(u-v)-h^2=(g-h)^2\ge0.
+ g^2+2h(u-v)-h^2=(g-h)^2\ge0.
 \]
 The weight-zero terms have $g=h$ and $u=v$, so the limit is
 \[
@@ -1055,4 +1024,71 @@ The weight-zero terms have $g=h$ and $u=v$, so the limit is
 Every leg now distinguishes $h$. Although individual weights may be
 negative, the transformed coefficients form a polynomial of degree at
 most $(M-1)^2$. This proves \eqref{eq:finite-separation}.
+
+\section{Interpolation of a degeneration}\label{app:degeneration-interpolation}
+
+For completeness, we give the standard interpolation proof
+\cite[Theorem~8]{christandl-jensen-zuiddam-2018-nonmultiplicativity}.
+
+\begin{proof}[Proof of Lemma~\ref{lem:degeneration-interpolation}]
+Let $P(\varepsilon)$ be the tensor obtained from $T$ by the degeneration's
+substitutions. Its coefficients are polynomials in $\varepsilon$ of degree
+at most $L$, and $P(0)=S$. Thus $L$ describes the chosen degeneration.
+For every $\varepsilon\ne0$, $P(\varepsilon)$ is a restriction of $T$.
+Put $Q(\varepsilon)=P(\varepsilon)^{\otimes N}$. Each coefficient of $Q$
+is a product of $N$ coefficients of $P$, so its degree is at most $NL$,
+and $Q(0)=S^{\otimes N}$.
+
+Choose $NL+1$ distinct nonzero points $\varepsilon_0,\ldots,\varepsilon_{NL}$.
+Lagrange interpolation, applied to every coefficient, gives
+\[
+ S^{\otimes N}=Q(0)=\sum_{j=0}^{NL}c_jQ(\varepsilon_j),\qquad
+ c_j=\prod_{\substack{0\le h\le NL\\h\ne j}}
+ \frac{-\varepsilon_h}{\varepsilon_j-\varepsilon_h}.
+\]
+Each $Q(\varepsilon_j)$ is a restriction of $T^{\otimes N}$.
+To form the displayed weighted sum from their direct sum, identify the
+corresponding variables on all three legs and scale the variables on
+one leg of copy $j$ by $c_j$. These are allowed linear substitutions,
+proving \eqref{eq:degeneration-interpolation}. Applying a character and
+taking $N$-th roots gives
+\[
+ \lambda(S)\le(NL+1)^{1/N}\lambda(T).
+\]
+Letting $N\to\infty$ proves $\lambda(S)\le\lambda(T)$.
+No continuity assumption on $\lambda$ is needed.
+\end{proof}
+
+\section{Replicating a convolution}\label{app:replication}
+
+\begin{proof}[Proof of Lemma~\ref{lem:replication}]
+Put $P(t)=t^m-1$. Repeated polynomial division writes the inputs uniquely as
+\[
+ F=\sum_{a=0}^{r-1}F_aP^a,\qquad
+ G=\sum_{b=0}^{s-1}G_bP^b,\qquad \deg F_a,\deg G_b<m.
+\]
+These are invertible linear coordinates: the basis polynomials $t^dP^a$
+have distinct leading degrees $ma+d$. On the output retain the analogous
+blocks $H_c$ for $0\le c<r+s-1$. They use $m(r+s-1)$ independent
+coordinates, within the original output length $m(r+s)-1$.
+Divide each $F_aG_b=Q_{ab}+PR_{ab}$ with $\deg Q_{ab},\deg R_{ab}<m$.
+Scale input blocks $a,b$ by $\varepsilon^{-a},\varepsilon^{-b}$ and output
+block $c$ by $\varepsilon^c$. The transformed product has
+\[
+ H_c=\sum_{a+b=c}Q_{ab}
+       +\varepsilon\sum_{a+b=c-1}R_{ab}.
+\]
+Let $\alpha_1,\ldots,\alpha_m$ be the distinct roots of $P$.
+Since $Q_{ab}(\alpha_h)=F_a(\alpha_h)G_b(\alpha_h)$, the limit gives
+\[
+ H_c(\alpha_h)=\sum_{a+b=c}F_a(\alpha_h)G_b(\alpha_h)
+ \qquad(1\le h\le m).
+\]
+Evaluation at $m$ distinct points is invertible on each block of degree
+less than $m$. The resulting coordinates therefore give $m$ independent
+convolutions of lengths $r,s$.
+The evaluation step is the usual diagonalization of cyclic convolution
+\cite[Theorem~5 and Section~5.1]{ju-solomonik-2020-convolution}; the displayed
+scalings prove the degeneration, with coefficient degree at most one.
+\end{proof}
 \end{document}

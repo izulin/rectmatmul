@@ -13,15 +13,16 @@ $$
 \end{cases}
 $$
 
-The finite separation and two polynomial splittings come from the recent
-nine-fourths result by OpenAI; their constructions are recapped in the note.
-Multinomial counting and a Hermite-interpolation splitting give concave
-profiles whose slopes and intercepts constrain three dot-product parameters:
+The proof recaps two polynomial splittings from the recent nine-fourths
+result by OpenAI and adapts its finite separation construction.
+Polynomial division and ordinary evaluation replicate a convolution;
+multinomial counting and rational rescaling give profiles whose affine
+bounds constrain three dot-product parameters:
 $\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
 Strassen's spectral theorem turns the resulting character bounds into
 asymptotic rank bounds. The note defines tensor characters, cites the
 theorem, and explains the passage from rank to running time.
-Optimizing the constraint gives bounds for $\omega(a,b,c)$, including
+A sum-of-squares identity gives bounds for $\omega(a,b,c)$, including
 the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c(a+b)\le ab$;
 the displayed rectangular curve follows as a corollary.
 Consequences include
