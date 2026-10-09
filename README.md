@@ -16,9 +16,11 @@ $$
 The proof recaps two polynomial splittings from the recent nine-fourths
 result by OpenAI and adapts its finite separation construction.
 Polynomial division and ordinary evaluation replicate a convolution;
-multinomial counting and rational rescaling give profiles whose affine
+multinomial counting and rescaling give continuous profiles whose affine
 bounds constrain three dot-product parameters:
 $\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
+The main text presents the real-length analysis; appendices contain
+the complete counting, approximation, and slope proofs.
 Strassen's spectral theorem turns the resulting character bounds into
 asymptotic rank bounds. The note defines tensor characters, cites the
 theorem, and explains the passage from rank to running time.

@@ -124,7 +124,7 @@ combine polynomial products and apply a tensor character to them.
 A character assigns numerical sizes that add on direct sums,
 multiply on tensor products, and cannot increase under restriction.
 Multinomial counting gives concavity and growth inequalities for these
-sizes. Rational rescaling, common slopes, and affine bounds
+sizes. Rescaling, common slopes, and affine bounds
 then give $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the character's three
 dot-product parameters.
 
@@ -141,7 +141,7 @@ in coefficient coordinates. The finite separation adapts Proposition~3.1
 of that reference, with a different root-of-unity filter using $2M$ copies
 instead of $5M$. All three constructions are proved in the appendices.
 Multinomial counting then gives the required power-sum inequality.
-The replication construction, rational rescaling, and coupling of six
+The replication construction, rescaling, and coupling of six
 affine offsets supply the rectangular extension.
 The weighted bound uses the classical Wolstenholme inequality, for which
 we give a sum-of-squares proof.
@@ -309,13 +309,11 @@ the values at all integer dimensions:
 \begin{equation}\label{eq:dot-parameters}
  \lambda(B_i(q))=q^{p_i}\qquad(q\ge1).
 \end{equation}
-To see this, put $m=\lfloor N\log_2q\rfloor$. Monotonicity in dimension
-and $B_i(q)^{\otimes N}\cong B_i(q^N)$ give
-\[
- 2^{mp_i}\le\lambda(B_i(q))^N\le2^{(m+1)p_i}.
-\]
-Take $N$-th roots and let $N\to\infty$. The interval $[0,1]$ follows
-from $1\le\lambda(B_i(2))\le2$. In particular,
+The interval $[0,1]$ follows from $1\le\lambda(B_i(2))\le2$.
+Tensor powers turn multiplication of dimensions into multiplication of
+character values; comparison with powers of two then gives
+\eqref{eq:dot-parameters}. Appendix~\ref{app:counting-rescaling} gives
+the details. In particular,
 \eqref{eq:mm-factorization} gives
 \begin{equation}\label{eq:mm-character}
  \lambda(\cmm{A}{B}{C})=A^{p_Y}B^{p_Z}C^{p_X}.
@@ -355,25 +353,16 @@ For fully independent summands, $T\degen\bigoplus_h T_h$ gives
 $\lambda(T)\ge\sum_h\lambda(T_h)$ directly by additivity.
 \end{lemma}
 
-\begin{proof}
-For every tuple $\sum_h n_h=N$, applying $\lambda$ to
-\eqref{eq:type-shared} gives
-\[
- 2M\lambda(T)^N\ge M^{1+p_i}\prod_h\lambda(T_h)^{n_h}.
-\]
-Put $a_h=\lambda(T_h)^{1/p_i}$. Cancel $M$ and take the power $1/p_i$:
-\[
- M\prod_h a_h^{n_h}\le2^{1/p_i}\lambda(T)^{N/p_i}.
-\]
-There are at most $(N+1)^s$ multiplicity tuples. Summing and using the multinomial
-theorem gives
+The counting idea is to sum over all multiplicities. With
+$a_h=\lambda(T_h)^{1/p_i}$, applying the character to
+\eqref{eq:type-shared} and using the multinomial theorem gives
 \[
  \left(\sum_h a_h\right)^N
- \le(N+1)^s2^{1/p_i}\lambda(T)^{N/p_i}.
+ \le (N+1)^s2^{1/p_i}\lambda(T)^{N/p_i}.
 \]
-For fixed $s$, this extra factor is polynomial in $N$. Taking
-$N$-th roots and letting $N\to\infty$ proves \eqref{eq:power-sum}.
-\end{proof}
+The number of multiplicity tuples is polynomial in $N$, so it disappears
+when we take $N$-th roots and let $N\to\infty$.
+The full calculation is in Appendix~\ref{app:counting-rescaling}.
 
 Rank bounds and restrictions give
 \begin{equation}\label{eq:profile-rank}
@@ -394,35 +383,36 @@ where $i,j,k$ are distinct. For $p_j>0$, the sequence
 $r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
 \end{lemma}
 
-\begin{proof}
-The two-sector splitting and Lemma~\ref{lem:power-sum} give, for $s\ge2$,
+For example, the two-sector splitting gives
 \[
  2f_{ij}(r,s)^{1/p_i}
- =\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}
- \ge f_{ij}(r,s+1)^{1/p_i}+f_{ij}(r,s-1)^{1/p_i}.
+ \ge f_{ij}(r,s+1)^{1/p_i}+f_{ij}(r,s-1)^{1/p_i},
 \]
-This is discrete concavity in $s$; input interchange gives the other
-coordinate. The three-sector splitting and the same lemma give
-\eqref{eq:discrete-tripling}.
-\end{proof}
+which is discrete concavity. The three-sector splitting gives
+\eqref{eq:discrete-tripling}; input interchange gives concavity in the
+other coordinate. Appendix~\ref{app:counting-rescaling} supplies the proof.
 
 \section{Rescaling the convolution profiles}\label{sec:homogeneous}
 
-Applying a character to Lemma~\ref{lem:replication} gives
+To compare shapes rather than integer dimensions, magnify both lengths
+and divide out the scale. Applying a character to
+Lemma~\ref{lem:replication} gives
 \begin{equation}\label{eq:profile-replication}
  f_{ij}(mr,ms)\ge m f_{ij}(r,s).
 \end{equation}
-In particular, $f_{ij}(m,m)\ge m$, and monotonicity gives
-$f_{ij}(r,s)\ge\min\{r,s\}$.
-We need rescaled profiles only at positive rational lengths. Define
+This makes the rescaled values stable under further replication.
+For real $r,s>0$, define
 \begin{equation}\label{eq:rescaled-profile}
- g_{ij}(r,s)=
- \sup_{\substack{q\in\mathbb Q_{>0}\\qr,qs\in\mathbb Z_{>0}}}
- \frac{f_{ij}(qr,qs)}{q}.
+ g_{ij}(r,s)=\lim_{m\to\infty}
+ \frac{f_{ij}(\lceil mr\rceil,\lceil ms\rceil)}{m},
+ \qquad m\in\mathbb Z_{>0}.
 \end{equation}
+The following lemma justifies this limit and lets us work with real
+lengths throughout the remaining analysis.
 
 \begin{lemma}[Rescaled profiles]\label{lem:homogeneous}
-The profiles $g_{ij}$ are coordinatewise nondecreasing and satisfy
+The limit in \eqref{eq:rescaled-profile} exists. The profiles $g_{ij}$
+are continuous, coordinatewise nondecreasing, and satisfy
 \begin{equation}\label{eq:limit-rank}
  \min\{r,s\}\le g_{ij}(r,s)\le r+s,\qquad
  g_{ij}(r,s)=g_{ji}(s,r),\qquad
@@ -434,103 +424,46 @@ For $p_i>0$, $g_{ij}^{1/p_i}$ is concave in $s$ and satisfies
  \ge2g_{ij}(r,s)^{1/p_i}+g_{ik}(r,s)^{1/p_i}.
 \end{equation}
 For $p_j>0$, $g_{ij}^{1/p_j}$ is concave in $r$.
-Here all lengths, scale factors, and concavity coefficients are rational.
+All lengths and scale factors here may be arbitrary positive reals.
 \end{lemma}
 
-\begin{proof}
-The bounds and input interchange follow from \eqref{eq:profile-rank}
-and the lower bound above. Replacing $q$ by $q/t$ proves homogeneity.
-
-The crucial point is that finitely many supremum values can be
-approached at one common scale. Choose scales $q_h$ approximating
-the desired values, and choose $Q$ so that every $Q/q_h$ is a positive
-integer. By \eqref{eq:profile-replication},
-\[
- \frac{f_{ij}(Qr,Qs)}{Q}
- \ge\frac{f_{ij}(q_hr,q_hs)}{q_h}.
-\]
-Replacing $Q$ by an integer multiple preserves all these approximations
-and can clear any additional rational denominators. Monotonicity now follows by
-comparing lengths at a common scale.
-
-For concavity, take $s=\tau s_1+(1-\tau)s_2$, with rational
-$0\le\tau\le1$. Approach $g_{ij}(r,s_1)$ and $g_{ij}(r,s_2)$ at
-one scale $Q$, with $Qr,Qs_1,Qs_2,Qs$ integers. Discrete concavity gives
-\[
- \left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
- \ge\tau\left(\frac{f_{ij}(Qr,Qs_1)}{Q}\right)^{1/p_i}
- +(1-\tau)\left(\frac{f_{ij}(Qr,Qs_2)}{Q}\right)^{1/p_i}.
-\]
-Bound the left side by $g_{ij}(r,s)^{1/p_i}$ and let the approximation
-error tend to zero. Input interchange gives the other coordinate.
-
-For tripling, monotonicity first enlarges the discrete source length
-$3s+r-1$ to $3s+r$. At a common scale $Q$,
-\[
- \left(\frac{f_{ij}(Qr,Q(3s+r))}{Q}\right)^{1/p_i}
- \ge2\left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
- +\left(\frac{f_{ik}(Qr,Qs)}{Q}\right)^{1/p_i}.
-\]
-Approach the two right-hand suprema simultaneously; the left side is
-bounded by $g_{ij}(r,3s+r)^{1/p_i}$. This proves
-\eqref{eq:general-tripling}.
-\end{proof}
+The discrete inequalities thus become inequalities about homogeneous
+curves. The additive $-1$ in \eqref{eq:discrete-tripling} disappears at
+this scale. The proof first compares rational lengths at a common integer
+scale; homogeneity and monotonicity then give continuity and the real
+extension. Appendix~\ref{app:counting-rescaling} includes that argument
+and verifies that rounding the lengths in \eqref{eq:rescaled-profile}
+does not change the limit.
 
 \section{Common slopes and the angular constraint}\label{sec:slopes}
 
-Index the three tensor legs by $1,2,3$. We use the rescaled profiles to
-constrain the three dot-product parameters without averaging their orientations.
-Until \eqref{eq:ratio-bound}, all profile arguments are positive rationals.
+Index the three tensor legs by $1,2,3$. We use the real rescaled profiles
+to constrain the dot-product parameters while retaining the orientation
+of each convolution. Full proofs of this section's slope and growth
+claims are in Appendix~\ref{app:slopes-angular}.
 
 \begin{lemma}[Common slopes and affine bounds]\label{lem:intercepts}
 Fix $i$ with $p_i>0$, and let $j,k$ be the other legs. The functions
 $P_{ij}(s)=g_{ij}(1,s)^{1/p_i}$ and $P_{ik}(s)=g_{ik}(1,s)^{1/p_i}$
-have a common asymptotic slope $L_i>0$. Their normalized offsets
-\[
- c_{ij}=\sup_{s\in\mathbb Q_{>0}}
- \left(\frac{P_{ij}(s)}{L_i}-s\right),\qquad
- c_{ik}=\sup_{s\in\mathbb Q_{>0}}
- \left(\frac{P_{ik}(s)}{L_i}-s\right)
-\]
-are nonnegative and satisfy $c_{ij}+c_{ik}\le1$. Moreover,
+have a common asymptotic slope $L_i>0$. There are offsets satisfying
+\begin{equation}\label{eq:intercept-budgets}
+ c_{ij},c_{ik}\ge0,\qquad c_{ij}+c_{ik}\le1,
+\end{equation}
+such that, for all real $s,t>0$,
 \[
  P_{ij}(s+t)\ge P_{ij}(s)+L_it,\qquad
- P_{ij}(s)\le L_i(s+c_{ij}),
+ L_i s\le P_{ij}(s)\le L_i(s+c_{ij}),
 \]
 and likewise for $P_{ik}$.
 \end{lemma}
 
-\begin{proof}
-Write $P=P_{ij}$ and $Q=P_{ik}$. For $s>1$, the nonnegative secant
-slope $(P(s)-P(1))/(s-1)$ decreases as $s$ grows, by concavity.
-It therefore has a finite limit, which is also $L_P=\lim P(s)/s$.
-Likewise define
-$L_Q=\lim Q(s)/s$. Dividing the coupled inequalities
-\[
- P(3s+1)\ge2P(s)+Q(s),\qquad
- Q(3s+1)\ge2Q(s)+P(s)
-\]
-by $s$ and passing to infinity gives $L_P\ge L_Q$ and $L_Q\ge L_P$.
-Call their common value $L_i$.
-
-Their sum $R=P+Q$ satisfies $R(3s+1)\ge3R(s)$. Iterating at
-$s_m=3^m(s+\frac{1}{2})-\frac{1}{2}$ gives
-\begin{equation}\label{eq:sum-majorant}
- R(s)\le\lim_{m\to\infty}3^{-m}R(s_m)=L_i(2s+1).
-\end{equation}
-Since $R(s)>0$, we have $L_i>0$. For $v>u>0$, concavity bounds
-the secant slope $(P(v)-P(u))/(v-u)$ below by every later secant slope;
-sending its far endpoint to infinity gives
-\[
- P(v)-P(u)\ge L_i(v-u).
-\]
-Letting $u\downarrow0$ through rationals and using $P(u)\ge0$ gives
-$P(v)\ge L_i v$. Thus $P(s)/L_i-s$ is nonnegative and nondecreasing;
-the same holds for $Q$. Their sum is at most one by
-\eqref{eq:sum-majorant}. Approaching both suprema at one sufficiently
-large rational $s$ proves $c_{ij}+c_{ik}\le1$. The affine upper bounds
-follow from the definition of the offsets.
-\end{proof}
+Concavity gives each curve a limiting slope. The coupled tripling
+inequalities force the two slopes to agree. Writing $R=P_{ij}+P_{ik}$,
+they also give $R(3s+1)\ge3R(s)$; iteration yields
+$R(s)\le L_i(2s+1)$. Consequently the two curves stay above their
+common limiting line, and their normalized vertical offsets are
+nondecreasing with sum at most one. Their limits are $c_{ij},c_{ik}$.
+This explains both the affine bounds and the constraint on their sum.
 
 \begin{proposition}[Angular constraint]\label{prop:angular-cap}
 The dot-product parameters of every tensor character satisfy
@@ -539,60 +472,27 @@ The dot-product parameters of every tensor character satisfy
 \end{equation}
 \end{proposition}
 
-\begin{proof}
+\begin{proof}[Proof outline]
 If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-parameters are positive. Lemma~\ref{lem:intercepts}
-gives six offsets and their three bounds
-\begin{equation}\label{eq:intercept-budgets}
- c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
-\end{equation}
-The increment and affine bounds give
-\[
- \frac{P_{ij}(s+t)}{P_{ij}(s)}
- \ge1+\frac{L_it}{P_{ij}(s)}\ge1+\frac{t}{s+c_{ij}}.
-\]
-Using homogeneity, we obtain
-\begin{equation}\label{eq:finite-increment}
- \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
- \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
-\end{equation}
-Increase $r$ by $\varepsilon r$, then $s$ by $\varepsilon s$.
-Input interchange supplies the first bound and
-\eqref{eq:finite-increment} supplies the second:
-\[
-\begin{aligned}
- 1+\varepsilon
- &=\frac{g_{ij}((1+\varepsilon)r,(1+\varepsilon)s)}{g_{ij}(r,s)}\\
- &\ge\left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
-       \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
-\end{aligned}
-\]
-Take logarithms, divide by $\varepsilon$, and let rational
-$\varepsilon\downarrow0$.
-The elementary limit $\log(1+\varepsilon x)/\varepsilon\to x$ gives
+parameters are positive. The affine bounds control the increase of
+$g_{ij}$ when either length grows. Increasing both lengths by a factor
+$1+\varepsilon$ increases $g_{ij}$ by exactly the same factor, by
+homogeneity. Comparing the first-order increases gives
 \begin{equation}\label{eq:ratio-bound}
  1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
- \qquad(r,s\in\mathbb Q_{>0}).
+ \qquad(r,s>0).
 \end{equation}
-With $t=r/s$, this is equivalent to
-\[
- (1-p_j)c_{ij}t^2+
- (1-p_i-p_j+c_{ij}c_{ji})t+(1-p_i)c_{ji}\ge0
- \qquad(t\in\mathbb Q_{>0}).
-\]
-The polynomial is continuous, so the inequality holds for every real
-$t>0$; no extension of the profiles to real lengths is needed.
-A quadratic $At^2+Bt+C$ with $A,C\ge0$ is nonnegative on $t>0$
-exactly when $B\ge-2\sqrt{AC}$, including zero coefficients. Thus
-writing $x=\sqrt{c_{ij}c_{ji}}$ gives
-$\bigl(x+\sqrt{(1-p_i)(1-p_j)}\bigr)^2\ge p_ip_j$, or
+Appendix~\ref{app:slopes-angular} derives this with finite increments,
+so no differentiability assumption is required.
+Clearing denominators gives a quadratic in $r/s$. Its nonnegativity
+for every positive ratio implies
 \begin{equation}\label{eq:intercept-products}
  \sqrt{c_{ij}c_{ji}}\ge
  \left(\sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}\right)_+,
 \end{equation}
 where $(z)_+=\max\{z,0\}$.
 
-For any nonnegative $x_1,x_2,x_3$, AM--GM and
+For nonnegative $x_1,x_2,x_3$, AM--GM and
 \eqref{eq:intercept-budgets} give
 \begin{equation}\label{eq:angular-quadratic-form}
  \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
@@ -601,21 +501,22 @@ For any nonnegative $x_1,x_2,x_3$, AM--GM and
 \end{equation}
 Put $\theta_i=\arccos\sqrt{p_i}$ and suppose
 $S=\theta_1+\theta_2+\theta_3<\pi/2$. Take $x_i=\cos\theta_i>0$.
-By \eqref{eq:intercept-products},
+Then \eqref{eq:intercept-products} gives
 $\sqrt{c_{ij}c_{ji}}\ge\cos(\theta_i+\theta_j)$.
-For the other two indices $j,k$, the addition formula gives
+Using the product-to-sum identities, we get
 \[
+\begin{aligned}
  \cos(\theta_i+\theta_j)x_j+\cos(\theta_i+\theta_k)x_k
- =x_i+\cos S\cos(\theta_j-\theta_k)>x_i.
+ &=\cos\theta_i+
+   \frac{\cos(\theta_i+2\theta_j)+\cos(\theta_i+2\theta_k)}{2}\\
+ &=x_i+\cos S\cos(\theta_j-\theta_k)>x_i.
+\end{aligned}
 \]
-The last inequality uses $|\theta_j-\theta_k|\le S<\pi/2$.
-Multiply by $x_i$ and sum over $i$:
-\[
- \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
- \ge\sum_{i<j}2\cos(\theta_i+\theta_j)x_ix_j
- >\sum_i x_i^2,
-\]
-contradicting \eqref{eq:angular-quadratic-form}.
+The extra term is positive: $\cos S>0$ and
+$\cos(\theta_j-\theta_k)>0$, since $|\theta_j-\theta_k|\le S<\pi/2$.
+Multiplying by $x_i$ and summing contradicts
+\eqref{eq:angular-quadratic-form}. Appendix~\ref{app:slopes-angular}
+contains the complete proof, including the quadratic calculation.
 \end{proof}
 
 \section{From character bounds to running times}\label{sec:exponents}\label{sec:general}
@@ -1092,5 +993,279 @@ convolutions of lengths $r,s$.
 The evaluation step is the usual diagonalization of cyclic convolution
 \cite[Theorem~5 and Section~5.1]{ju-solomonik-2020-convolution}; the displayed
 scalings prove the degeneration, with coefficient degree at most one.
+\end{proof}
+\section{Counting and rescaling}\label{app:counting-rescaling}
+
+We give the complete counting argument and justify the real-length
+profiles used in Sections~\ref{sec:discrete}--\ref{sec:homogeneous}.
+
+\subsection{Dot-product parameters and multinomial counting}
+
+To prove \eqref{eq:dot-parameters}, fix an integer $q\ge1$ and put
+$m=\lfloor N\log_2q\rfloor$. Monotonicity in dimension
+and $B_i(q)^{\otimes N}\cong B_i(q^N)$ give
+\[
+ 2^{mp_i}\le\lambda(B_i(q))^N\le2^{(m+1)p_i}.
+\]
+Take $N$-th roots and let $N\to\infty$. The interval $[0,1]$ follows
+from $1\le\lambda(B_i(2))\le2$.
+
+\begin{proof}[Proof of Lemma~\ref{lem:power-sum}]
+For every tuple $\sum_h n_h=N$, applying $\lambda$ to
+\eqref{eq:type-shared} gives
+\[
+ 2M\lambda(T)^N\ge M^{1+p_i}\prod_h\lambda(T_h)^{n_h}.
+\]
+Put $a_h=\lambda(T_h)^{1/p_i}$. Cancel $M$ and take the power $1/p_i$:
+\[
+ M\prod_h a_h^{n_h}\le2^{1/p_i}\lambda(T)^{N/p_i}.
+\]
+There are at most $(N+1)^s$ multiplicity tuples. Summing and using the multinomial
+theorem gives
+\[
+ \left(\sum_h a_h\right)^N
+ \le(N+1)^s2^{1/p_i}\lambda(T)^{N/p_i}.
+\]
+For fixed $s$, this extra factor is polynomial in $N$. Taking
+$N$-th roots and letting $N\to\infty$ proves \eqref{eq:power-sum}.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:discrete}]
+The two-sector splitting and Lemma~\ref{lem:power-sum} give, for $s\ge2$,
+\[
+ 2f_{ij}(r,s)^{1/p_i}
+ =\lambda(C_{ij}(r,s)\otimes B_i(2))^{1/p_i}
+ \ge f_{ij}(r,s+1)^{1/p_i}+f_{ij}(r,s-1)^{1/p_i}.
+\]
+This is discrete concavity in $s$; input interchange gives the other
+coordinate. The three-sector splitting and the same lemma give
+\eqref{eq:discrete-tripling}.
+\end{proof}
+
+\subsection{Rational lengths at a common scale}
+
+\begin{proof}[Proof of Lemma~\ref{lem:homogeneous}]
+Initially let $r,s>0$ be rational, and define
+\begin{equation}\label{eq:rational-rescaled-profile}
+ g_{ij}(r,s)=
+ \sup_{\substack{q\in\mathbb Q_{>0}\\qr,qs\in\mathbb Z_{>0}}}
+ \frac{f_{ij}(qr,qs)}{q}.
+\end{equation}
+Replication gives $f_{ij}(m,m)\ge m$, and monotonicity therefore gives
+$f_{ij}(r,s)\ge\min\{r,s\}$ for integer lengths.
+The bounds and input interchange follow from \eqref{eq:profile-rank}
+and the lower bound above. Replacing $q$ by $q/t$ proves homogeneity.
+
+The crucial point is that finitely many supremum values can be
+approached at one common scale. Choose scales $q_h$ approximating
+the desired values, and choose $Q$ so that every $Q/q_h$ is a positive
+integer. By \eqref{eq:profile-replication},
+\[
+ \frac{f_{ij}(Qr,Qs)}{Q}
+ \ge\frac{f_{ij}(q_hr,q_hs)}{q_h}.
+\]
+Replacing $Q$ by an integer multiple preserves all these approximations
+and can clear any additional rational denominators. Monotonicity now follows by
+comparing lengths at a common scale.
+
+For concavity, take $s=\tau s_1+(1-\tau)s_2$, with rational
+$0\le\tau\le1$. Approach $g_{ij}(r,s_1)$ and $g_{ij}(r,s_2)$ at
+one scale $Q$, with $Qr,Qs_1,Qs_2,Qs$ integers. Discrete concavity gives
+\[
+ \left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
+ \ge\tau\left(\frac{f_{ij}(Qr,Qs_1)}{Q}\right)^{1/p_i}
+ +(1-\tau)\left(\frac{f_{ij}(Qr,Qs_2)}{Q}\right)^{1/p_i}.
+\]
+Bound the left side by $g_{ij}(r,s)^{1/p_i}$ and let the approximation
+error tend to zero. Input interchange gives the other coordinate.
+
+For tripling, monotonicity first enlarges the discrete source length
+$3s+r-1$ to $3s+r$. At a common scale $Q$,
+\[
+ \left(\frac{f_{ij}(Qr,Q(3s+r))}{Q}\right)^{1/p_i}
+ \ge2\left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
+ +\left(\frac{f_{ik}(Qr,Qs)}{Q}\right)^{1/p_i}.
+\]
+Approach the two right-hand suprema simultaneously; the left side is
+bounded by $g_{ij}(r,3s+r)^{1/p_i}$. This proves
+\eqref{eq:general-tripling}.
+
+\subsection*{Continuous extension to real lengths}
+
+For two positive rational pairs $(r,s)$ and $(r',s')$, put
+\[
+ a=\min\left\{\frac{r'}r,\frac{s'}s\right\},\qquad
+ b=\max\left\{\frac{r'}r,\frac{s'}s\right\}.
+\]
+Homogeneity and monotonicity give
+\[
+ a\,g_{ij}(r,s)\le g_{ij}(r',s')\le b\,g_{ij}(r,s).
+\]
+Together with $g_{ij}(r,s)\le r+s$, this implies
+\begin{equation}\label{eq:profile-continuity}
+ |g_{ij}(r',s')-g_{ij}(r,s)|
+ \le\frac{r+s}{\min\{r,s\}}
+       \max\{|r'-r|,|s'-s|\}.
+\end{equation}
+The coefficient is bounded on every closed bounded region that stays
+away from the coordinate axes. Approximating a positive real pair by
+rationals therefore gives a unique continuous extension. All the rational
+bounds, homogeneity, monotonicity, input interchange, and powered
+concavity extend by continuity. So does \eqref{eq:general-tripling}.
+
+\subsection*{Agreement with the rounded-scale limit}
+
+For positive integers $A,B$, the scale $q=1$ in
+\eqref{eq:rational-rescaled-profile} gives $f_{ij}(A,B)\le g_{ij}(A,B)$.
+Thus for arbitrary real $r,s>0$,
+\[
+ \frac{f_{ij}(\lceil mr\rceil,\lceil ms\rceil)}m
+ \le g_{ij}\left(\frac{\lceil mr\rceil}m,
+                 \frac{\lceil ms\rceil}m\right)
+ \longrightarrow g_{ij}(r,s),
+\]
+using homogeneity and continuity.
+
+For the reverse bound, fix positive rationals $r_0<r$, $s_0<s$ and
+an admissible scale $q$ with $qr_0,qs_0$ positive integers.
+Put $k=\lfloor m/q\rfloor$. For all sufficiently large $m$, $k\ge1$,
+and $kqr_0\le\lceil mr\rceil$, $kqs_0\le\lceil ms\rceil$.
+Monotonicity and replication give
+\[
+ \frac{f_{ij}(\lceil mr\rceil,\lceil ms\rceil)}m
+ \ge\frac{k}{m}f_{ij}(qr_0,qs_0).
+\]
+Since $k/m\to1/q$, taking the lower limit and then the supremum over
+$q$ gives a lower bound $g_{ij}(r_0,s_0)$. Let $r_0,s_0$ approach
+$r,s$ from below and use continuity. This proves the limit formula
+\eqref{eq:rescaled-profile}, and completes the lemma.
+\end{proof}
+
+\section{Common slopes and the angular constraint}\label{app:slopes-angular}
+
+Here we justify the common slopes and offsets, then derive the angular
+constraint using finite increments rather than derivatives.
+
+\begin{proof}[Proof of Lemma~\ref{lem:intercepts}]
+Write $P=P_{ij}$ and $Q=P_{ik}$. We will define
+\[
+ c_{ij}=\sup_{s>0}\left(\frac{P(s)}{L_i}-s\right),\qquad
+ c_{ik}=\sup_{s>0}\left(\frac{Q(s)}{L_i}-s\right)
+\]
+once the common positive slope $L_i$ has been established. For $s>1$, the nonnegative secant
+slope $(P(s)-P(1))/(s-1)$ decreases as $s$ grows, by concavity.
+It therefore has a finite limit, which is also $L_P=\lim P(s)/s$.
+Likewise define
+$L_Q=\lim Q(s)/s$. Dividing the coupled inequalities
+\[
+ P(3s+1)\ge2P(s)+Q(s),\qquad
+ Q(3s+1)\ge2Q(s)+P(s)
+\]
+by $s$ and passing to infinity gives $L_P\ge L_Q$ and $L_Q\ge L_P$.
+Call their common value $L_i$.
+
+Their sum $R=P+Q$ satisfies $R(3s+1)\ge3R(s)$. Iterating at
+$s_m=3^m(s+\frac{1}{2})-\frac{1}{2}$ gives
+\begin{equation}\label{eq:sum-majorant}
+ R(s)\le\lim_{m\to\infty}3^{-m}R(s_m)=L_i(2s+1).
+\end{equation}
+Since $R(s)>0$, we have $L_i>0$. For $v>u>0$, concavity bounds
+the secant slope $(P(v)-P(u))/(v-u)$ below by every later secant slope;
+sending its far endpoint to infinity gives
+\[
+ P(v)-P(u)\ge L_i(v-u).
+\]
+Letting $u\downarrow0$ and using $P(u)\ge0$ gives
+$P(v)\ge L_i v$. Thus $P(s)/L_i-s$ is nonnegative and nondecreasing;
+the same holds for $Q$. Their sum is at most one by
+\eqref{eq:sum-majorant}. Approaching both suprema at one sufficiently
+large $s$ proves $c_{ij}+c_{ik}\le1$. The affine upper bounds
+follow from the definition of the offsets. Since the residuals are
+nondecreasing and bounded, these suprema also equal their limits as
+$s\to\infty$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:angular-cap}]
+If some $p_i=0$, its summand is already $\pi/2$. Assume all three
+parameters are positive. Lemma~\ref{lem:intercepts}
+gives six offsets and their three bounds
+\[
+ c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
+\]
+The increment and affine bounds give
+\[
+ \frac{P_{ij}(s+t)}{P_{ij}(s)}
+ \ge1+\frac{L_it}{P_{ij}(s)}\ge1+\frac{t}{s+c_{ij}}.
+\]
+Using homogeneity, we obtain
+\begin{equation}\label{eq:finite-increment}
+ \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
+ \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
+\end{equation}
+Increase $r$ by $\varepsilon r$, then $s$ by $\varepsilon s$.
+Input interchange supplies the first bound and
+\eqref{eq:finite-increment} supplies the second:
+\[
+\begin{aligned}
+ 1+\varepsilon
+ &=\frac{g_{ij}((1+\varepsilon)r,(1+\varepsilon)s)}{g_{ij}(r,s)}\\
+ &\ge\left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
+       \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
+\end{aligned}
+\]
+Take logarithms, divide by $\varepsilon$, and let
+$\varepsilon\downarrow0$.
+The elementary limit $\log(1+\varepsilon x)/\varepsilon\to x$ gives
+\[
+ 1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
+ \qquad(r,s>0).
+\]
+With $t=r/s$, this is equivalent to
+\[
+ (1-p_j)c_{ij}t^2+
+ (1-p_i-p_j+c_{ij}c_{ji})t+(1-p_i)c_{ji}\ge0
+ \qquad(t>0).
+\]
+A quadratic $At^2+Bt+C$ with $A,C\ge0$ is nonnegative on $t>0$
+exactly when $B\ge-2\sqrt{AC}$. Indeed, divide by $t$ and use
+$\inf_{t>0}(At+C/t)=2\sqrt{AC}$; if $A$ or $C$ is zero, the
+infimum is zero, approached at an endpoint. Thus
+writing $x=\sqrt{c_{ij}c_{ji}}$ gives
+$\bigl(x+\sqrt{(1-p_i)(1-p_j)}\bigr)^2\ge p_ip_j$, or
+\[
+ \sqrt{c_{ij}c_{ji}}\ge
+ \left(\sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}\right)_+,
+\]
+where $(z)_+=\max\{z,0\}$.
+
+For any nonnegative $x_1,x_2,x_3$, AM--GM and
+\eqref{eq:intercept-budgets} give
+\[
+ \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
+ \le\sum_{i<j}(c_{ij}x_i^2+c_{ji}x_j^2)
+ \le\sum_i x_i^2.
+\]
+Put $\theta_i=\arccos\sqrt{p_i}$ and suppose
+$S=\theta_1+\theta_2+\theta_3<\pi/2$. Take $x_i=\cos\theta_i>0$.
+By \eqref{eq:intercept-products},
+$\sqrt{c_{ij}c_{ji}}\ge\cos(\theta_i+\theta_j)$.
+For the other two indices $j,k$, the product-to-sum identities give
+\[
+\begin{aligned}
+ \cos(\theta_i+\theta_j)x_j+\cos(\theta_i+\theta_k)x_k
+ &=\cos\theta_i+
+   \frac{\cos(\theta_i+2\theta_j)+\cos(\theta_i+2\theta_k)}{2}\\
+ &=x_i+\cos S\cos(\theta_j-\theta_k)>x_i.
+\end{aligned}
+\]
+Both factors of the extra term are positive because $S<\pi/2$ and
+$|\theta_j-\theta_k|\le S$.
+Multiply by $x_i$ and sum over $i$:
+\[
+ \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
+ \ge\sum_{i<j}2\cos(\theta_i+\theta_j)x_ix_j
+ >\sum_i x_i^2,
+\]
+contradicting \eqref{eq:angular-quadratic-form}.
 \end{proof}
 \end{document}
