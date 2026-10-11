@@ -17,6 +17,7 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \newcommand{\CC}{\mathbb C}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}
 \newcommand{\rank}{\operatorname{rank}}
 \newcommand{\degen}{\unrhd}
 \newcommand{\cmm}[3]{\langle #1,#2,#3\rangle}
@@ -334,7 +335,7 @@ where the maximum ranges over all tensor characters.
 \end{theorem}
 
 We use \cite[Theorem~3.8]{strassen-1988-asymptotic-spectrum}; see also
-\cite[Corollary~3.30]{wigderson-zuiddam-2025-asymptotic-spectra}.
+\cite[Corollary~3.30 of the author version]{wigderson-zuiddam-2025-asymptotic-spectra}.
 The easy direction follows from
 $\lambda(T)^N=\lambda(T^{\otimes N})\le\rank(T^{\otimes N})$.
 The theorem supplies the opposite direction. Thus, to prove an upper
@@ -768,23 +769,28 @@ reachability under edge updates, with $O(1)$ query time for a fixed pair
 \end{enumerate}
 
 % Bibliography inlined from BibTeX output generated with the plain style.
+% DOI links are included explicitly.
 \begin{thebibliography}{10}
 \raggedright
 
 \bibitem{alman-williams-2026}
 Josh Alman and Virginia Vassilevska~Williams.
 \newblock Truly subquadratic {3SUM} and truly subcubic {APSP} via triangles in
-  sparse lopsided graphs, 2026.
+  sparse lopsided graphs.
+\newblock \href{https://arxiv.org/abs/2610.06783}{arXiv:2610.06783}, 2026.
+\newblock DOI: \doi{10.48550/arXiv.2610.06783}.
 
 \bibitem{christandl-jensen-zuiddam-2018-nonmultiplicativity}
 Matthias Christandl, Asger Kj{\ae}rulff Jensen, and Jeroen Zuiddam.
 \newblock Tensor rank is not multiplicative under the tensor product.
 \newblock {\em Linear Algebra and its Applications}, 543:125--139, 2018.
+\newblock DOI: \doi{10.1016/j.laa.2017.12.020}.
 
 \bibitem{cohen-yuster-2014-minimum-witnesses}
 Keren Cohen and Raphael Yuster.
 \newblock On minimum witnesses for {Boolean} matrix multiplication.
 \newblock {\em Algorithmica}, 69(2):431--442, 2014.
+\newblock DOI: \doi{10.1007/s00453-012-9742-3}.
 
 \bibitem{grandoni-et-al-2021-all-pairs-lca}
 Fabrizio Grandoni, Giuseppe~F. Italiano, Aleksander {\L}ukasiewicz, Nikos
@@ -792,11 +798,13 @@ Fabrizio Grandoni, Giuseppe~F. Italiano, Aleksander {\L}ukasiewicz, Nikos
 \newblock All-pairs {LCA} in {DAGs}: Breaking through the {$O(n^{2.5})$}
   barrier.
 \newblock Proceedings of SODA 2021; arXiv:2007.08914, 2021.
+\newblock DOI: \doi{10.1137/1.9781611976465.18}.
 
 \bibitem{ju-solomonik-2020-convolution}
 Caleb Ju and Edgar Solomonik.
 \newblock Derivation and analysis of fast bilinear algorithms for convolution.
 \newblock {\em SIAM Review}, 62(4):743--777, 2020.
+\newblock DOI: \doi{10.1137/19M1301059}.
 
 \bibitem{kowalski-2014-representation-theory}
 Emmanuel Kowalski.
@@ -806,6 +814,7 @@ Emmanuel Kowalski.
 \newblock Author version:
   \href{https://people.math.ethz.ch/~kowalski/representation-theory.pdf}{\emph{Representation
   theory}}, February 17, 2017.
+\newblock DOI: \doi{10.1090/gsm/155}.
 
 \bibitem{labib-uznanski-wolleb-graf-2019}
 Karim Labib, Przemys{\l}aw Uzna\'{n}ski, and Daniel Wolleb-Graf.
@@ -814,36 +823,44 @@ Karim Labib, Przemys{\l}aw Uzna\'{n}ski, and Daniel Wolleb-Graf.
   2019)}, volume 128 of {\em Leibniz International Proceedings in Informatics},
   pages 14:1--14:17. Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik,
   2019.
+\newblock DOI: \doi{10.4230/LIPIcs.CPM.2019.14}.
 
 \bibitem{liu-2020-weighted-trigonometric}
 Jian Liu.
 \newblock An improved result of a weighted trigonometric inequality in acute
   triangles with applications.
 \newblock {\em Journal of Mathematical Inequalities}, 14(1):147--160, 2020.
+\newblock DOI: \doi{10.7153/jmi-2020-14-11}.
 
 \bibitem{openai-2026-matrix-nine-fourths}
 {OpenAI}.
 \newblock An upper bound of {$9/4$} for the matrix multiplication exponent.
 \newblock OpenAI Math Release preprint, 2026.
 \newblock October 2, 2026.
+\newblock \href{https://github.com/openai/math/tree/main/preprints/Matrix-Multiplication-Nine-Fourths-October-2-2026}{Preprint}.
 
 \bibitem{strassen-1988-asymptotic-spectrum}
 Volker Strassen.
 \newblock The asymptotic spectrum of tensors.
 \newblock {\em Journal f\"ur die reine und angewandte Mathematik},
   384:102--152, 1988.
+\newblock DOI: \doi{10.1515/crll.1988.384.102}.
 
 \bibitem{van-den-brand-nanongkai-saranurak-2019}
 Jan van~den Brand, Danupon Nanongkai, and Thatchaphol Saranurak.
 \newblock Dynamic matrix inverse: Improved algorithms and matching conditional
   lower bounds.
 \newblock Proceedings of FOCS 2019; arXiv:1905.05067, 2019.
+\newblock DOI: \doi{10.1109/FOCS.2019.00036}.
 
 \bibitem{wigderson-zuiddam-2025-asymptotic-spectra}
 Avi Wigderson and Jeroen Zuiddam.
 \newblock Asymptotic spectra: Theory, applications and extensions.
-\newblock Survey manuscript, August 5, 2025.
-\newblock \href{https://www.math.ias.edu/~avi/PUBLICATIONS/Wigderson_Zuiddam_2025.pdf}{Author version}.
+\newblock {\em Bulletin of the American Mathematical Society},
+  63(2):199--331, 2026.
+\newblock Author version:
+  \href{https://www.math.ias.edu/~avi/PUBLICATIONS/Wigderson_Zuiddam_2025.pdf}{August 5, 2025}.
+\newblock DOI: \doi{10.1090/bull/1880}.
 
 \bibitem{yuster-2009-permutations-dominance}
 Raphael Yuster.
@@ -851,17 +868,20 @@ Raphael Yuster.
   real-weighted {APSP}.
 \newblock In {\em Proceedings of the Twentieth Annual ACM-SIAM Symposium on
   Discrete Algorithms (SODA 2009)}, pages 950--957. SIAM, 2009.
+\newblock DOI: \doi{10.1137/1.9781611973068.103}.
 
 \bibitem{yuster-zwick-2005-sparse}
 Raphael Yuster and Uri Zwick.
 \newblock Fast sparse matrix multiplication.
 \newblock {\em ACM Transactions on Algorithms}, 1(1):2--13, 2005.
+\newblock DOI: \doi{10.1145/1077464.1077466}.
 
 \bibitem{zwick-2002-bridging-sets}
 Uri Zwick.
 \newblock All pairs shortest paths using bridging sets and rectangular matrix
   multiplication.
 \newblock {\em Journal of the ACM}, 49(3):289--317, 2002.
+\newblock DOI: \doi{10.1145/567112.567114}.
 
 \end{thebibliography}
 
