@@ -8,6 +8,10 @@
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{microtype}
 
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\csname the#1\endcsname.\quad}
+\makeatother
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -41,7 +45,7 @@ $\alpha\ge \frac{1}{2}$. The proof uses explicit degenerations of convolution te
 multinomial counting, and Strassen's spectral theorem.
 An angular constraint on three dot-product parameters gives both the
 rectangular curve and a bound for $\omega(a,b,c)$, with exact exponent
-$a+b$ whenever $a\ge b\ge c\ge0$ and $c(a+b)\le ab$.
+$a+b$ whenever $a\ge b\ge c\ge0$ and $c\le\frac{ab}{a+b}$.
 As an application, Zwick's algorithm
 \cite{zwick-2002-bridging-sets} for all-pairs shortest paths in directed
 unweighted graphs runs in $O(n^{2.5})$ time.
@@ -92,7 +96,28 @@ $O(n^e)$ arithmetic operations, with the convention above.
 Write $\omega(k)=\omega(1,k,1)$ and
 $\alpha=\sup\{k\ge0:\omega(k)=2\}$.
 
-\begin{theorem}\label{thm:curve}
+We first state the bound for general matrix shapes, with the exponents
+sorted in decreasing order. We interpret the threshold $\frac{ab}{a+b}$
+as zero when $a=b=0$.
+
+\begin{theorem}\label{cor:general-exponents}
+For every fixed $a\ge b\ge c\ge0$,
+\begin{equation}\label{eq:general-exponents}
+ \omega(a,b,c)\le
+ \begin{cases}
+ a+b,&c\le\dfrac{ab}{a+b},\\[4pt]
+ \dfrac{a+b+c}{2}
+ +\dfrac{1}{4}\left(\dfrac{ab}{c}+\dfrac{ac}{b}+\dfrac{bc}{a}\right),
+ &c>\dfrac{ab}{a+b}.
+ \end{cases}
+\end{equation}
+When $c\le\frac{ab}{a+b}$, equality holds by the size lower bound.
+\end{theorem}
+
+Applying this bound to the sorted dimensions of $(1,k,1)$ gives
+the rectangular curve.
+
+\begin{corollary}\label{thm:curve}
 For every fixed real $k\ge0$,
 \begin{equation}\label{eq:curve}
  \omega(k)\le
@@ -101,18 +126,17 @@ For every fixed real $k\ge0$,
  1+k+\dfrac1{4k},&k\ge\frac{1}{2}.
  \end{cases}
 \end{equation}
-Consequently $\omega(k)=2$ for $0\le k\le\frac{1}{2}$, $\alpha\ge\frac{1}{2}$, and
-$\omega(2)\le3.125$.
-\end{theorem}
+Consequently $\omega(k)=2$ for $0\le k\le\frac{1}{2}$.
+\end{corollary}
 
-Theorem~\ref{thm:curve} gives exponent two for inner dimension
+Corollary~\ref{thm:curve} gives exponent two for inner dimension
 up to $n^{0.5}$, and an upper bound within $\frac{1}{4k}$ of the input-size
 lower bound $1+k$ for $k\ge1$.
 
 \begin{figure}[tbp]
  \centering
  \includegraphics[width=0.86\linewidth]{rectangular-exponent-curve.pdf}
- \caption{The upper bound on $\omega(k)$ from Theorem~\ref{thm:curve} for
+ \caption{The upper bound on $\omega(k)$ from Corollary~\ref{thm:curve} for
  $0\le k\le2$, together with the size lower bound
  $\max\{2,1+k\}$. The bounds coincide for
  $0\le k\le\frac{1}{2}$.}
@@ -128,7 +152,7 @@ sizes. Rescaling, common slopes, and affine bounds
 then give $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the character's three
 dot-product parameters.
 
-Second, a sum-of-squares identity bounds weighted sums of these parameters.
+Second, Wolstenholme's inequality bounds weighted sums of these parameters.
 We apply Strassen's spectral
 theorem: the largest character value equals asymptotic tensor rank.
 We state precisely the form of this theorem we use, then show how the
@@ -138,13 +162,12 @@ rank bound gives a running-time bound for every fixed matrix shape.
 The two polynomial splittings in Lemma~\ref{lem:openai-inputs} recap
 the proofs of Lemmas~4.1 and~4.2 of~\cite{openai-2026-matrix-nine-fourths}
 in coefficient coordinates. The finite separation adapts Proposition~3.1
-of that reference, with a different root-of-unity filter using $2M$ copies
-instead of $5M$. All three constructions are proved in the appendices.
+of that reference. All three constructions are proved in the appendices.
 Multinomial counting then gives the required power-sum inequality.
 The replication construction, rescaling, and coupling of six
 affine offsets supply the rectangular extension.
-The weighted bound uses the classical Wolstenholme inequality, for which
-we give a sum-of-squares proof.
+The weighted bound uses the classical Wolstenholme inequality
+\cite{liu-2020-weighted-trigonometric}.
 Strassen's spectral theorem is a standard input; a modern exposition is
 \cite{wigderson-zuiddam-2025-asymptotic-spectra}. We cite it rather than
 reproduce its proof. We make no priority claim for the standard tools or
@@ -152,6 +175,13 @@ the finite construction variants. Section~\ref{sec:applications}
 substitutes the bounds into known algorithmic tradeoffs.
 
 \section{Polynomial products and finite constructions}\label{sec:constructions}
+
+We begin by describing matrix multiplication and convolution as tensors.
+We then build ways to split polynomial products and separate computations
+that share variables. These constructions give the inequalities in
+Section~\ref{sec:discrete}. A further construction replicates a convolution;
+it will let us compare convolutions at different scales in
+Section~\ref{sec:homogeneous}.
 
 A tensor is a trilinear form in three groups of variables, called its
 \emph{legs}. A \emph{restriction} makes linear substitutions independently
@@ -166,7 +196,7 @@ Successive constructions can use a single parameter: replace the earlier
 parameter by a sufficiently large power of the later one, so every
 earlier error term still has positive total exponent.
 
-The \emph{rank} $\rank(T)$ is the least number of products of three linear
+The $\rank(T)$ is the least number of products of three linear
 forms, one per leg, summing to $T$. The direct sum $S\oplus T$ uses
 disjoint variables on all three legs and represents independent computations.
 The tensor product $S\otimes T$ pairs their indices, as in a Kronecker
@@ -210,6 +240,7 @@ pairwise disjoint variables on each other leg. The following constructions
 hold for every permutation of the legs.
 
 \begin{lemma}[Finite separation and polynomial splittings]\label{lem:openai-inputs}
+\leavevmode
 \begin{enumerate}
 \item If $T$ has $M$ matched sectors sharing leg $i$, then
 \begin{equation}\label{eq:finite-separation}
@@ -246,7 +277,13 @@ We give the full proof in Appendix~\ref{app:replication}.
 
 \section{Tensor characters and counting}\label{sec:discrete}
 
-\subsection{Strassen's spectral theorem}
+To use the preceding constructions, we assign numerical values to tensors
+using tensor characters. The splittings and separation give concavity
+and tripling inequalities for their convolution values, which we rescale
+in the next section. We also identify the three parameters that determine
+their matrix-multiplication values and state Strassen's theorem: bounding
+every character value will give an asymptotic rank bound in
+Section~\ref{sec:exponents}.
 
 A \emph{tensor character} is a function $\lambda$ from tensors to
 nonnegative real numbers satisfying
@@ -324,7 +361,8 @@ Define its \emph{convolution profiles} by
  f_{ij}(r,s)=\lambda(C_{ij}(r,s)).
 \end{equation}
 
-\subsection{Words with prescribed multiplicities}
+The next counting argument turns the polynomial splittings into
+inequalities for these profiles.
 
 Suppose $T$ splits into $s$ matched sectors $T_1,\ldots,T_s$ sharing
 leg $i$. In $T^{\otimes N}$ a sector is specified by a word of $N$
@@ -394,9 +432,15 @@ other coordinate. Appendix~\ref{app:counting-rescaling} supplies the proof.
 
 \section{Rescaling the convolution profiles}\label{sec:homogeneous}
 
-To compare shapes rather than integer dimensions, magnify both lengths
-and divide out the scale. Applying a character to
-Lemma~\ref{lem:replication} gives
+We next pass from integer input lengths to real ones, so we can compare
+convolution shapes at any scale. Replication from
+Section~\ref{sec:constructions} lets us enlarge both inputs together;
+the bounds, monotonicity, concavity, and tripling inequalities from the
+preceding section control the resulting limit. We obtain continuous
+profiles that retain concavity and tripling and scale linearly when both
+lengths grow by the same factor.
+
+Applying a character to Lemma~\ref{lem:replication} gives
 \begin{equation}\label{eq:profile-replication}
  f_{ij}(mr,ms)\ge m f_{ij}(r,s).
 \end{equation}
@@ -437,9 +481,14 @@ does not change the limit.
 
 \section{Common slopes and the angular constraint}\label{sec:slopes}
 
-Index the three tensor legs by $1,2,3$. We use the real rescaled profiles
-to constrain the dot-product parameters while retaining the orientation
-of each convolution. Full proofs of this section's slope and growth
+With the profile properties from Lemma~\ref{lem:homogeneous}, we can now
+relate the three dot-product parameters $p_i\in[0,1]$. Comparing the growth
+of differently oriented convolutions leads to the angular constraint in
+Proposition~\ref{prop:angular-cap}. This is the only result from this
+section needed for the running-time bounds in Section~\ref{sec:exponents}.
+
+Index the three tensor legs by $1,2,3$.
+Full proofs of this section's slope and growth
 claims are in Appendix~\ref{app:slopes-angular}.
 
 \begin{lemma}[Common slopes and affine bounds]\label{lem:intercepts}
@@ -474,16 +523,33 @@ The dot-product parameters of every tensor character satisfy
 
 \begin{proof}[Proof outline]
 If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-parameters are positive. The affine bounds control the increase of
-$g_{ij}$ when either length grows. Increasing both lengths by a factor
-$1+\varepsilon$ increases $g_{ij}$ by exactly the same factor, by
-homogeneity. Comparing the first-order increases gives
+parameters are positive. For this outline, suppose $g=g_{ij}$ is
+differentiable. The increment and upper bounds in
+Lemma~\ref{lem:intercepts} give $P'_{ij}(t)\ge L_i$ and
+$P_{ij}(t)\le L_i(t+c_{ij})$. Homogeneity gives
+$g(r,s)=rP_{ij}(s/r)^{p_i}$, so, also interchanging the inputs,
+\[
+\begin{aligned}
+ \frac{\partial_s g(r,s)}{g(r,s)}
+ &=\frac{p_i}{r}\frac{P'_{ij}(s/r)}{P_{ij}(s/r)}
+ \ge\frac{p_i}{s+c_{ij}r},\\
+ \frac{\partial_r g(r,s)}{g(r,s)}
+ &=\frac{p_j}{s}\frac{P'_{ji}(r/s)}{P_{ji}(r/s)}
+ \ge\frac{p_j}{r+c_{ji}s}.
+\end{aligned}
+\]
+Differentiating $g(tr,ts)=t\,g(r,s)$ at $t=1$ gives
+\[
+ r\frac{\partial_r g(r,s)}{g(r,s)}
+ +s\frac{\partial_s g(r,s)}{g(r,s)}=1.
+\]
+Substituting the two lower bounds yields
 \begin{equation}\label{eq:ratio-bound}
  1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
  \qquad(r,s>0).
 \end{equation}
-Appendix~\ref{app:slopes-angular} derives this with finite increments,
-so no differentiability assumption is required.
+Appendix~\ref{app:slopes-angular} obtains the same inequality using
+finite increments, without assuming differentiability.
 Clearing denominators gives a quadratic in $r/s$. Its nonnegativity
 for every positive ratio implies
 \begin{equation}\label{eq:intercept-products}
@@ -521,8 +587,15 @@ contains the complete proof, including the quadratic calculation.
 
 \section{From character bounds to running times}\label{sec:exponents}\label{sec:general}
 
-Strassen's theorem turns the constraint on dot-product parameters into
-rank bounds. We first spell out how these bounds give algorithms.
+We can now turn the parameter constraint into matrix-multiplication
+algorithms. The other ingredients are the matrix-tensor formula
+\eqref{eq:mm-character} and Strassen's spectral theorem
+(Theorem~\ref{thm:spectral}). For a given matrix shape, we bound a weighted
+sum of the three parameters for every character; the theorem then bounds
+asymptotic rank. We first show how this rank bound gives a running-time
+bound, then apply the angular constraint from
+Proposition~\ref{prop:angular-cap} to obtain the general-shape bound and
+the rectangular curve.
 
 \begin{lemma}[Character bounds give algorithms]\label{lem:cost-conversion}
 Fix $\mathbf h=(h_X,h_Y,h_Z)\ge0$. If the dot-product parameters of
@@ -566,24 +639,9 @@ and hence the lemma under our exponent convention. All choices of $N$,
 $K$, and the finite identity precede the limit $n\to\infty$.
 \end{proof}
 
-We now bound weighted sums of the dot-product parameters;
-the rectangular curve follows by substitution.
+It remains to bound these weighted sums using the angular constraint.
 
-\begin{corollary}\label{cor:general-exponents}
-For every fixed $a\ge b\ge c\ge0$,
-\begin{equation}\label{eq:general-exponents}
- \omega(a,b,c)\le
- \begin{cases}
- a+b,&c(a+b)\le ab,\\[4pt]
- \dfrac{a+b+c}{2}
- +\dfrac{1}{4}\left(\dfrac{ab}{c}+\dfrac{ac}{b}+\dfrac{bc}{a}\right),
- &c(a+b)>ab.
- \end{cases}
-\end{equation}
-When $c(a+b)\le ab$, equality holds by the size lower bound.
-\end{corollary}
-
-\begin{proof}
+\begin{proof}[Proof of Theorem~\ref{cor:general-exponents}]
 Reorder the character's dot-product parameters so that the objective is
 $ap_1+bp_2+cp_3$, and write $p_i=\cos^2\theta_i$ with
 $\theta_i\in[0,\pi/2]$. By Proposition~\ref{prop:angular-cap}, their
@@ -598,23 +656,19 @@ For $a,b,c>0$, put $\beta_i=2\theta_i$ and
  w=\sqrt{\frac{ab}{c}}.
 \]
 Thus $vw=a$, $wu=b$, $uv=c$, and $\beta_1+\beta_2+\beta_3=\pi$.
-The identity
-\begin{equation}\label{eq:weighted-squares}
-\begin{aligned}
- u^2+v^2+w^2-2(a\cos\beta_1+b\cos\beta_2+c\cos\beta_3)
- &= (u-v\cos\beta_3-w\cos\beta_2)^2\\
- &\quad +(v\sin\beta_3-w\sin\beta_2)^2\ge0
-\end{aligned}
-\end{equation}
-follows by expansion and $\cos(\beta_2+\beta_3)=-\cos\beta_1$.
-This proves the classical Wolstenholme inequality
-\cite[Equation~(1)]{liu-2020-weighted-trigonometric}, including zero angles.
+Wolstenholme's inequality
+\cite[Equation~(1)]{liu-2020-weighted-trigonometric}, applied with weights
+$u,v,w$, gives
+\[
+ 2(a\cos\beta_1+b\cos\beta_2+c\cos\beta_3)\le u^2+v^2+w^2.
+\]
+The inequality also holds at zero angles by continuity.
 Since $p_i=(1+\cos\beta_i)/2$, it gives
 \[
  ap_1+bp_2+cp_3\le\frac{a+b+c}{2}
  +\frac{1}{4}\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
 \]
-For $a,b>0$, set $c_0=ab/(a+b)$. If $0\le c\le c_0$, replace $c$
+For $a,b>0$, set $c_0=\frac{ab}{a+b}$. If $0\le c\le c_0$, replace $c$
 in the objective by $c_0$, which only increases it. The displayed bound
 at $c_0$ equals $a+b$. This proves both branches, including $c=0$.
 
@@ -623,10 +677,10 @@ Lemma~\ref{lem:cost-conversion}, with target
 $\mathbf h=(c,a,b)$, gives \eqref{eq:general-exponents}.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:curve}]
-Apply Corollary~\ref{cor:general-exponents} to the sorted dimensions
+\begin{proof}[Proof of Corollary~\ref{thm:curve}]
+Apply Theorem~\ref{cor:general-exponents} to the sorted dimensions
 of $(1,k,1)$. For $0\le k\le1$, the first branch applies exactly when
-$2k\le1$. In the remaining range, both possible orderings give
+$k\le\frac{1}{2}$. In the remaining range, both possible orderings give
 \[
  \frac{2+k}{2}+\frac{1}{4}\left(2k+\frac1k\right)
  =1+k+\frac1{4k}.
@@ -635,7 +689,7 @@ The output-size lower bound $\omega(k)\ge2$ proves equality for
 $0\le k\le\frac{1}{2}$ and hence $\alpha\ge\frac{1}{2}$.
 \end{proof}
 
-Some values of the bound in Theorem~\ref{thm:curve} are:
+Some values of the bound in Corollary~\ref{thm:curve} are:
 \begin{center}
 \begin{tabular}{ccccccc}
 \toprule
@@ -651,7 +705,7 @@ algorithm at $k=\frac{1}{2}$.
 
 \section{Applications}\label{sec:applications}
 
-Theorem~\ref{thm:curve} and Corollary~\ref{cor:general-exponents} give the following bounds through standard
+Corollary~\ref{thm:curve} and Theorem~\ref{cor:general-exponents} give the following bounds through standard
 rectangular-multiplication balances. All bounds use arithmetic
 operations, with graph operations and symbol comparisons also charged.
 
@@ -659,7 +713,7 @@ operations, with graph operations and symbol comparisons also charged.
 \item \textbf{One lowest common ancestor per pair in a DAG.}
 Grandoni et al.\ \cite[Theorem~4.2 of the published version]
 {grandoni-et-al-2021-all-pairs-lca} obtain exponent $1+2x$ from the
-balance $\omega(x)=3x$. Theorem~\ref{thm:curve} permits
+balance $\omega(x)=3x$. Corollary~\ref{thm:curve} permits
 $x=(1+\sqrt3)/4$, giving
 $O(n^{(3+\sqrt3)/2})$ time for finding one lowest common
 ancestor for every pair in an $n$-vertex DAG. The exponent is
@@ -671,7 +725,7 @@ reduction to dominance products~\cite{labib-uznanski-wolleb-graf-2019}
 and Yuster's tradeoff
 \cite[Proposition~2.1]{yuster-2009-permutations-dominance} give the balance
 $\rho=\omega(4-\rho)$.
-Theorem~\ref{thm:curve} gives
+Corollary~\ref{thm:curve} gives
 $\rho=(13-\sqrt7)/4\approx2.58856$ and running time
 $O(n^\rho)$ for computing every exact Hamming distance.
 
@@ -700,7 +754,7 @@ $O(m^2/n^r+n^{\omega(r)})$ time for $0\le r\le1$.
 Thus $m\le n^{1.25}$ permits $O(n^2)$ time.
 
 \item \textbf{Dynamic matrix inverse and reachability.}
-Substituting Corollary~\ref{cor:general-exponents} into van den
+Substituting Theorem~\ref{cor:general-exponents} into van den
 Brand--Nanongkai--Saranurak's tradeoff
 \cite[Theorem~4.2]{van-den-brand-nanongkai-saranurak-2019}, with
 $u=0.50323551$ and $v=0.80667763$ in
@@ -813,6 +867,9 @@ Uri Zwick.
 
 \clearpage
 \appendix
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\appendixname~\csname the#1\endcsname.\quad}
+\makeatother
 \numberwithin{equation}{section}
 \section{Splitting two polynomial products}\label{app:determinant-filtration}
 
@@ -999,8 +1056,6 @@ scalings prove the degeneration, with coefficient degree at most one.
 We give the complete counting argument and justify the real-length
 profiles used in Sections~\ref{sec:discrete}--\ref{sec:homogeneous}.
 
-\subsection{Dot-product parameters and multinomial counting}
-
 To prove \eqref{eq:dot-parameters}, fix an integer $q\ge1$ and put
 $m=\lfloor N\log_2q\rfloor$. Monotonicity in dimension
 and $B_i(q)^{\otimes N}\cong B_i(q^N)$ give
@@ -1041,8 +1096,6 @@ This is discrete concavity in $s$; input interchange gives the other
 coordinate. The three-sector splitting and the same lemma give
 \eqref{eq:discrete-tripling}.
 \end{proof}
-
-\subsection{Rational lengths at a common scale}
 
 \begin{proof}[Proof of Lemma~\ref{lem:homogeneous}]
 Initially let $r,s>0$ be rational, and define
@@ -1090,9 +1143,8 @@ Approach the two right-hand suprema simultaneously; the left side is
 bounded by $g_{ij}(r,3s+r)^{1/p_i}$. This proves
 \eqref{eq:general-tripling}.
 
-\subsection*{Continuous extension to real lengths}
-
-For two positive rational pairs $(r,s)$ and $(r',s')$, put
+To extend the profiles to real lengths, we first compare two positive
+rational pairs $(r,s)$ and $(r',s')$. Put
 \[
  a=\min\left\{\frac{r'}r,\frac{s'}s\right\},\qquad
  b=\max\left\{\frac{r'}r,\frac{s'}s\right\}.
@@ -1113,9 +1165,8 @@ rationals therefore gives a unique continuous extension. All the rational
 bounds, homogeneity, monotonicity, input interchange, and powered
 concavity extend by continuity. So does \eqref{eq:general-tripling}.
 
-\subsection*{Agreement with the rounded-scale limit}
-
-For positive integers $A,B$, the scale $q=1$ in
+We finally check that this extension agrees with the limit in
+\eqref{eq:rescaled-profile}. For positive integers $A,B$, the scale $q=1$ in
 \eqref{eq:rational-rescaled-profile} gives $f_{ij}(A,B)\le g_{ij}(A,B)$.
 Thus for arbitrary real $r,s>0$,
 \[

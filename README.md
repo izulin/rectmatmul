@@ -24,8 +24,8 @@ the complete counting, approximation, and slope proofs.
 Strassen's spectral theorem turns the resulting character bounds into
 asymptotic rank bounds. The note defines tensor characters, cites the
 theorem, and explains the passage from rank to running time.
-A sum-of-squares identity gives bounds for $\omega(a,b,c)$, including
-the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c(a+b)\le ab$;
+Wolstenholme's inequality gives bounds for $\omega(a,b,c)$, including
+the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c\le\frac{ab}{a+b}$;
 the displayed rectangular curve follows as a corollary.
 Consequences include
 $\alpha\ge\frac{1}{2}$ and exponent **2.5** for Zwick's directed
