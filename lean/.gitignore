@@ -1,0 +1,8 @@
+.lake/
+.elan/
+.pixi/
+lakefile.olean
+lakefile.olean.trace
+lakefile.ilean
+logs/
+__pycache__/

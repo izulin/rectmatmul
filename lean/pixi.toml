@@ -1,0 +1,63 @@
+[workspace]
+name = "rectmatmul-lean"
+description = "Pinned Lean environment for rectangular matrix multiplication"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+bash = "*"
+coreutils = "*"
+curl = "*"
+git = "*"
+gzip = "*"
+python = "3.13.*"
+tar = "*"
+zstd = "*"
+
+[activation.env]
+ELAN_HOME = "$PIXI_PROJECT_ROOT/.elan"
+PATH = "$PIXI_PROJECT_ROOT/.elan/bin:$PATH"
+LEAN_NUM_THREADS = "${LEAN_NUM_THREADS:-1}"
+
+# Elan is not packaged on conda-forge; install its pinned official release.
+[tasks.install-elan]
+description = "Install elan 4.2.4 locally without changing shell profiles"
+cmd = '''bash -euc '
+if [[ ! -x "$ELAN_HOME/bin/elan" ]]; then
+  bootstrap_dir="$(mktemp -d)"
+  trap "rm -rf -- \"$bootstrap_dir\"" EXIT
+  curl -fL --retry 3 --connect-timeout 20 \
+    -o "$bootstrap_dir/elan.tar.gz" \
+    https://github.com/leanprover/elan/releases/download/v4.2.4/elan-x86_64-unknown-linux-gnu.tar.gz
+  tar -xzf "$bootstrap_dir/elan.tar.gz" -C "$bootstrap_dir"
+  "$bootstrap_dir/elan-init" -y --no-modify-path --default-toolchain none
+fi
+' '''
+
+[tasks.toolchain]
+description = "Install the exact Lean version from lean-toolchain"
+cmd = '''bash -euc 'elan toolchain install "$(cat lean-toolchain)"' '''
+depends-on = ["install-elan"]
+
+[tasks.dependencies]
+description = "Fetch the pinned Lake dependencies without downloading caches yet"
+cmd = "MATHLIB_NO_CACHE_ON_UPDATE=1 lake update"
+depends-on = ["toolchain"]
+
+[tasks.check-pins]
+description = "Check the source revisions, lockfile, and toolchain pin"
+cmd = "python scripts/verify-pins.py"
+
+[tasks.cache]
+description = "Fetch the pinned Mathlib compiled cache"
+cmd = "LEAN_NUM_THREADS=2 lake exe cache get"
+depends-on = ["check-pins"]
+
+[tasks.bootstrap]
+description = "Set up Lean, check dependency pins, and fetch the Mathlib cache"
+depends-on = ["dependencies", "cache"]
+
+[tasks.build]
+description = "Build the upstream theorem, axiom audit, and local Lean modules"
+cmd = "lake build"
+depends-on = ["check-pins"]
