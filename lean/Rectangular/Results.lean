@@ -54,6 +54,7 @@ theorem curveAdmissible_over [Infinite K] [IsAlgClosed K]
     (shapeAdmissible_of_rankBlocks (by norm_num) hk (by norm_num)
       (curveBound_nonneg hk) (curve_rankBlocks_over spectral hk))
 
+/-- Theorem 1.1 (`cor:general-exponents`), equality when `c ≤ ab/(a+b)`. -/
 theorem sizeOptimalTarget (spectral : SpectralInput) : SizeOptimalTarget := by
   intro a b c hba hcb hc hthin
   constructor
@@ -62,6 +63,7 @@ theorem sizeOptimalTarget (spectral : SpectralInput) : SizeOptimalTarget := by
   · intro E hE
     exact shapeAdmissible_left_lower hE
 
+/-- Corollary 1.2 (`thm:curve`), including equality for `0 ≤ k ≤ 0.5`. -/
 theorem curveTarget (spectral : SpectralInput) : CurveTarget := by
   intro k hk
   have hadm := curveAdmissible_over spectral hk
@@ -71,12 +73,16 @@ theorem curveTarget (spectral : SpectralInput) : CurveTarget := by
   rw [curveBound,ite_eq_left hhalf] at hupper
   exact le_antisymm hupper (Arithmetic.rectangularOmega_two_le k)
 
+/-- The consequence `alpha ≥ 0.5` immediately following Corollary 1.2
+(`thm:curve`) in Section 6; it is not a separately numbered result. -/
 theorem complexAlpha_half_le (spectral : SpectralInput) :
     (0.5:ℝ) ≤ Arithmetic.complexAlpha :=
   Arithmetic.le_complexAlpha (by norm_num)
     ((curveTarget spectral 0.5 (by norm_num)).2 (by norm_num))
 
-/-- Size-optimal exactness after the checked algebraic-closure descent. -/
+/-- Theorem 1.1 (`cor:general-exponents`), equality after the checked
+algebraic-closure descent. This interface also covers positive characteristic,
+beyond the characteristic-zero scope stated in the writeup's introduction. -/
 theorem sizeOptimal_all_fields (F : Type) [Field F]
     (spectral : SpectralInputOver (AlgebraicClosure F))
     {a b c : ℝ} (hba : b ≤ a) (hcb : c ≤ b) (hc : 0 ≤ c)
@@ -98,12 +104,16 @@ theorem curveAdmissible_all_fields (F : Type) [Field F]
     (by norm_num) hk (by norm_num) (curveBound_nonneg hk)
     (curve_rankBlocks_over spectral hk)
 
+/-- Corollary 1.2 (`thm:curve`), upper bound after field descent,
+also covering positive characteristic. -/
 theorem rectangularOmega_all_fields_le (F : Type) [Field F]
     (spectral : SpectralInputOver (AlgebraicClosure F))
     {k : ℝ} (hk : 0 ≤ k) : Arithmetic.rectangularOmega F k ≤ curveBound k :=
   Arithmetic.rectangularOmega_le_of_admissibleExponent
     (curveAdmissible_all_fields F spectral hk)
 
+/-- Corollary 1.2 (`thm:curve`), equality after field descent,
+also covering positive characteristic. -/
 theorem rectangularOmega_all_fields_eq_two (F : Type) [Field F]
     (spectral : SpectralInputOver (AlgebraicClosure F))
     {k : ℝ} (hk : 0 ≤ k) (hhalf : k ≤ (0.5:ℝ)) :

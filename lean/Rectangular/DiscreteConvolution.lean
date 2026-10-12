@@ -13,6 +13,11 @@ public import OAI.LinearAlgebra.MatrixMultiplication.AuxiliarySeparation.Convolu
 The finite determinant and three-sector constructions are reused from the pinned
 source; the powered bounds below are obtained without symmetrizing characters.
 No replication or extension to real arguments is assumed here.
+
+Writeup: Lemma 2.1 (`lem:openai-inputs`) supplies the finite constructions;
+Lemma 3.3 (`lem:power-sum`) and Lemma 3.4 (`lem:discrete`) are their character
+consequences below. The pinned source uses `6M` separation and determinant
+splitting rather than the writeup's `2M` filter and coefficient construction.
 -/
 
 noncomputable section
@@ -99,7 +104,7 @@ theorem convolutionValue_input_swap (χ : Character K) (r s : ℕ) :
   rw [heq] at h
   exact h
 
-/-- The matched-sector power sum, with the first input shared. This follows
+/-- Lemma 3.3 (`lem:power-sum`), with the first input shared. This follows
 from the checked finite separation construction and its arbitrary-law tag bound. -/
 theorem sharedFirst_power_sum [IsAlgClosed K]
     (χ : Character K) {X Y Z : Type} [Fintype X] [Fintype Y] [Fintype Z]
@@ -114,7 +119,8 @@ theorem sharedFirst_power_sum [IsAlgClosed K]
     (zero_lt_one.trans_le (χ.one_le_value (sharedFirstTensor_ne_zero_of_branch B i (hB i))))
     (fun q => χ.sharedFirst_tag q B hB)
 
-/-- The finite two-sector construction gives powered midpoint concavity in
+/-- Lemma 3.4 (`lem:discrete`), second-coordinate concavity.
+The finite two-sector construction gives powered midpoint concavity in
 the second length, for each character individually. -/
 theorem convolution_concavity_second [IsAlgClosed K] (χ : Character K)
     {r s : ℕ} (hr : 0 < r) (hs : 2 ≤ s) (hp : 0 < χ.pX) :
@@ -132,7 +138,8 @@ theorem convolution_concavity_second [IsAlgClosed K] (χ : Character K)
     (fun _ q hq₀ hq₁ => χ.convolution_concavity_tag r s hr hs q hq₀ hq₁)
   simpa using h
 
-/-- The other coordinate uses its own dot-product parameter, `pY`. -/
+/-- Lemma 3.4 (`lem:discrete`), first-coordinate concavity.
+The other coordinate uses its own dot-product parameter, `pY`. -/
 theorem convolution_concavity_first [IsAlgClosed K] (χ : Character K)
     {r s : ℕ} (hr : 2 ≤ r) (hs : 0 < s) (hp : 0 < χ.pY) :
     convolutionValue χ (r + 1) s ^ (1 / χ.pY) +
@@ -143,7 +150,8 @@ theorem convolution_concavity_first [IsAlgClosed K] (χ : Character K)
   simpa only [Character.cyclicCharacter_pX, Character.swap23Character_pZ,
     convolutionValue_input_swap] using h
 
-/-- The actual three-sector splitting gives the asymmetric powered tripling
+/-- Lemma 3.4, equation (16) (`eq:discrete-tripling`).
+The actual three-sector splitting gives the asymmetric powered tripling
 inequality. Only the middle sector exchanges legs; no character symmetry is used. -/
 theorem convolution_tripling [IsAlgClosed K] (χ : Character K)
     {r s : ℕ} (hr : 0 < r) (hs : 0 < s) (hp : 0 < χ.pX) :

@@ -59,6 +59,8 @@ theorem AffineSlopePair.right_row_bounds (χ : Character K) {L c d : ℝ}
     intro s hs
     simpa only [profilePoweredRow, poweredRow] using h.right_upper hs
 
+/-- Equation (23) (`eq:ratio-bound`) in the proof of Proposition 5.2
+(`prop:angular-cap`); Appendix G supplies the finite-increment justification. -/
 theorem character_profile_pair_ratio (χ : Character K) {L M c d : ℝ}
     (hp : 0<χ.pX) (hq : 0<χ.pY)
     (hP : PoweredRowBounds (rescaledProfile χ) χ.pX L c)
@@ -76,7 +78,9 @@ theorem character_profile_pair_ratio (χ : Character K) {L M c d : ℝ}
     hP hQ' hp hq ht (by norm_num : (0:ℝ)<1)
   simpa only [mul_one, one_mul] using hh
 
-/-- Manuscript Proposition 5.2, with all six offsets kept in their own orientations. -/
+/-- Proposition 5.2 (`prop:angular-cap`), equation (22) (`eq:angular-cap`),
+with all six offsets kept in their own orientations. The proof follows the
+rigorous finite-increment route of Appendix G (`app:slopes-angular`). -/
 theorem character_angular_constraint [IsAlgClosed K] (χ : Character K) :
     Real.pi/2 ≤ Real.arccos (Real.sqrt χ.pX)+Real.arccos (Real.sqrt χ.pY)+
       Real.arccos (Real.sqrt χ.pZ) := by

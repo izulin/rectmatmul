@@ -124,7 +124,8 @@ theorem profileResidual_tendsto_offset {P : ℝ → ℝ} {L : ℝ}
   filter_upwards [eventually_ge_atTop (1:ℝ)] with s hs
   simp [H, max_eq_right hs]
 
-/-- The complete interface of manuscript Lemma 5.1, with canonical offsets. -/
+/-- The complete interface of Lemma 5.1 (`lem:intercepts`), with canonical
+offsets and the budget in equation (21) (`eq:intercept-budgets`). -/
 structure AffineSlopePair (P Q : ℝ → ℝ) (L c d : ℝ) : Prop where
   slope_pos : 0 < L
   left_nonneg : 0 ≤ c

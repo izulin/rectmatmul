@@ -8,6 +8,10 @@ public section
 /-!
 # The published spectral input
 
+Writeup: Theorem 3.2 (`thm:spectral`), equation (9) (`eq:spectral`).
+Only its finite-power upper-bound consequence is supplied here, explicitly
+as a theorem parameter; this module does not prove spectral duality.
+
 `SpectralInputOver K` is an explicit theorem hypothesis, not a new Lean axiom
 or a proof of Strassen's theorem. `SpectralInput` is its complex specialization.
 It contains only the finite-power rank

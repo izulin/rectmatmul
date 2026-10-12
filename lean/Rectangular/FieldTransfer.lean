@@ -82,7 +82,10 @@ theorem shapeAdmissible_descend_algebraic [Algebra.IsAlgebraic F E]
     ShapeAdmissibleExponent F a b c s :=
   shapeAdmissible_of_rankBlocks ha hb hc hs (rankBlocks_descend_algebraic hblocks)
 
-/-- General shape bound over any field, with the standard spectral input
+/-- Theorem 1.1 (`cor:general-exponents`), after field descent.
+The writeup's introduction states the characteristic-zero transfer; this
+checked interface also covers positive characteristic.
+General shape bound over any field, with the standard spectral input
 over its algebraic closure exposed rather than installed as an axiom. -/
 theorem shapeAdmissible_all_fields (F : Type) [Field F]
     (spectral : SpectralInputOver (AlgebraicClosure F))

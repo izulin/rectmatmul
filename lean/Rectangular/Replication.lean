@@ -5,7 +5,10 @@ public import Rectangular.DiscreteConvolution
 
 @[expose] public section
 
-/-! Manuscript Lemma 2.2 and its character consequence. Distinct nodes are chosen
+/-! Manuscript Lemma 2.2 (`lem:replication`) and its character consequence.
+The finite proof uses local Lagrange polynomials, whereas Appendix E
+(`app:replication`) uses polynomial division and evaluation.
+Distinct nodes are chosen
 over an infinite field; the finite certificate itself only needs distinct nodes.
 The copy count may be zero, and both convolution input lengths are positive.
 -/
@@ -30,7 +33,8 @@ theorem nodes_injective [Infinite K] (m : ℕ) : Function.Injective (nodes (K :=
 
 end Replication
 
-/-- Exact finite replication certificate, using polynomial local maps. -/
+/-- Lemma 2.2, equation (6) (`eq:replication`): exact finite replication
+certificate, using polynomial local maps. -/
 def convolution_replication [Infinite K] (m : ℕ) {r s : ℕ} (hr : 0 < r) (hs : 0 < s) :
     Tensor.PolynomialRestrictionDegeneration
       (convolution (K := K) (m * r) (m * s)) (Replication.copies (K := K) m r s)
@@ -41,11 +45,14 @@ theorem value_replication_copies (χ : Character K) (m r s : ℕ) :
     χ.value (Replication.copies (K := K) m r s) = (m : ℝ) * convolutionValue χ r s := by
   simp [Replication.copies, χ.map_directSum, convolutionValue]
 
-/-- Replication is a checked finite construction, so character monotonicity
+/-- Equation (17) (`eq:profile-replication`), following Lemma 2.2.
+Replication is a checked finite construction, so character monotonicity
 gives the scaling comparison required by the real-profile step. -/
 theorem convolutionValue_replication [Infinite K] (χ : Character K) (m : ℕ)
     {r s : ℕ} (hr : 0 < r) (hs : 0 < s) :
     (m : ℝ) * convolutionValue χ r s ≤ convolutionValue χ (m * r) (m * s) := by
+  -- Lemma 3.1 (`lem:degeneration-interpolation`), character-monotonicity
+  -- consequence, provided by the pinned interpolation proof.
   have h := χ.value_polynomialRestrictionDegeneration_le
     (convolution_replication (K := K) m hr hs)
   simpa only [value_replication_copies, convolutionValue] using h

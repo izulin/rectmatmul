@@ -44,19 +44,22 @@ def CharacterBoundTarget : Prop :=
   ∀ a b c : ℝ, b ≤ a → c ≤ b → 0 ≤ c →
     WeightedCharacterBound a b c (shapeBound a b c)
 
-/-- Main result, stated directly as a uniform arithmetic cost bound. -/
+/-- Theorem 1.1 (`cor:general-exponents`), upper bound: the specification,
+stated directly as a uniform arithmetic cost bound. Proved by `mainTarget`. -/
 def MainTarget : Prop :=
   ∀ a b c : ℝ, b ≤ a → c ≤ b → 0 ≤ c →
     ShapeAdmissibleExponent ℂ a b c (shapeBound a b c)
 
-/-- Exact exponent in the size-optimal range, without introducing a
-new infimum whose boundedness would itself need to be proved. -/
+/-- Theorem 1.1 (`cor:general-exponents`), equality clause: the specification
+proved by `sizeOptimalTarget`, without introducing a new infimum whose
+boundedness would itself need to be proved. -/
 def SizeOptimalTarget : Prop :=
   ∀ a b c : ℝ, b ≤ a → c ≤ b → 0 ≤ c → c ≤ thinThreshold a b →
     ShapeAdmissibleExponent ℂ a b c (a + b) ∧
       ∀ E : ℝ, ShapeAdmissibleExponent ℂ a b c E → a + b ≤ E
 
-/-- Rectangular curve and equality in its exponent-two range. -/
+/-- Corollary 1.2 (`thm:curve`): the specification for the rectangular curve
+and equality in its exponent-two range. Proved by `curveTarget`. -/
 def CurveTarget : Prop :=
   ∀ k : ℝ, 0 ≤ k →
     Arithmetic.RectangularAdmissibleExponent ℂ k (curveBound k) ∧

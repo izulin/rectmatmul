@@ -115,7 +115,7 @@ theorem rankBlocks_of_character_bound (spectral : SpectralInputOver K)
     exact_mod_cast pow_le_pow_left₀ (Real.rpow_nonneg hB0.le c) (Nat.le_ceil _) N
   · simpa only [Nat.cast_pow, Real.rpow_pow_comm hB0.le] using hR
 
-/-- Manuscript Lemma 6.1, with the standard spectral input exposed. -/
+/-- Lemma 6.1 (`lem:cost-conversion`), with the standard spectral input exposed. -/
 theorem shapeAdmissible_of_character_bound (spectral : SpectralInputOver K)
     {a b c E : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c)
     (hweight : ∀ χ : Character K, a*χ.pY+b*χ.pZ+c*χ.pX ≤ E) :
@@ -149,7 +149,8 @@ theorem shapeAdmissible_over [Infinite K] [IsAlgClosed K]
     (hc.trans hcb) hc
     (weighted_character_bound_over hba hcb hc)
 
-/-- The manuscript's complex general-shape running-time target. -/
+/-- Theorem 1.1 (`cor:general-exponents`), upper bound, proved in Section 6:
+the complex general-shape running-time target. Equality is `sizeOptimalTarget`. -/
 theorem mainTarget (spectral : SpectralInput) : MainTarget := by
   intro a b c hba hcb hc
   exact shapeAdmissible_over spectral hba hcb hc

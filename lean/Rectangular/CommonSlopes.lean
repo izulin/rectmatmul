@@ -53,7 +53,8 @@ theorem poweredRow_coupled_tripling [IsAlgClosed K] (χ : Character K) (hp : 0<�
       rescaledProfile_tripling χ.swap23Character (by simpa using hp)
         (by norm_num : (0:ℝ)<1) hs
 
-/-- Manuscript Lemma 5.1, including the limits and canonical residual offsets. -/
+/-- Lemma 5.1 (`lem:intercepts`), proved in Appendix G (`app:slopes-angular`),
+including the limits and canonical residual offsets. -/
 theorem character_common_slopes [IsAlgClosed K] (χ : Character K) (hp : 0<χ.pX) :
     ∃ L c d : ℝ, AffineSlopePair (poweredRow χ) (poweredRow χ.swap23Character) L c d :=
   common_slopes_affine_bounds (poweredRow_curve χ hp)

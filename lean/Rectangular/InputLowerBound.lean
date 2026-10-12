@@ -159,7 +159,8 @@ theorem left_input_size_le_twice_cost {m l q : ℕ} (hq : 0 < q)
     simpa using hh
   exact hcard.trans (ProgramInputs.used_card P.program)
 
-/-- The largest sorted tensor leg supplies the lower exponent, in the
+/-- Theorem 1.1 (`cor:general-exponents`), the size lower bound used for equality.
+The largest sorted tensor leg supplies the lower exponent, in the
 actual program model rather than by charging free input loads. -/
 theorem shapeAdmissible_left_lower {a b c E : ℝ}
     (h : ShapeAdmissibleExponent F a b c E) : a+b ≤ E := by

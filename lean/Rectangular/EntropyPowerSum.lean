@@ -21,7 +21,10 @@ open scoped BigOperators
 open OAI.MatrixMultiplication.Foundation
 open OAI.MatrixMultiplication.AuxiliarySeparation
 
-/-- Optimizing all finite probability laws turns an entropy tag bound into a
+/-- Analytic step in Lemma 3.3 (`lem:power-sum`), proved fully in Appendix F
+(`app:counting-rescaling`). This uses the pinned entropy formulation rather
+than the writeup's direct multinomial summation.
+Optimizing all finite probability laws turns an entropy tag bound into a
 power sum. Positivity excludes empty sectors; `p > 0` is essential. -/
 theorem entropy_power_sum_le {ι : Type*} [Fintype ι] [Nonempty ι]
     (V : ι → ℝ) (hV : ∀ i, 0 < V i) {p T : ℝ} (hp : 0 < p) (hT : 0 < T)

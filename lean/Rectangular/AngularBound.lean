@@ -14,6 +14,9 @@ public section
 This module is purely real analysis. It does not assume the spectral theorem
 or that tensor characters satisfy the angular constraint.
 
+Writeup: the weighted optimization in the Section 6 proof of Theorem 1.1
+(`cor:general-exponents`). `weighted_bound_of_angular` provides both branches.
+
 The classical Wolstenholme inequality is Equation (1), p. 147, of J. Liu,
 "An Improved Result of a Weighted Trigonometric Inequality in Acute Triangles
 with Applications", J. Math. Inequalities 14 (2020), 147–160,
