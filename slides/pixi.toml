@@ -1,0 +1,24 @@
+[workspace]
+name = "rectmatmul-slides"
+description = "Build and preview the rectangular matrix multiplication slides"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+python = "3.13.*"
+pymupdf = "*"
+pillow = "*"
+
+[tasks.compile]
+description = "Compile the Beamer source with the installed TeX Live tools"
+cmd = "latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build rectangular-slides.tex"
+
+[tasks.build]
+description = "Build the presentation PDF beside its source"
+cmd = "cp build/rectangular-slides.pdf rectangular-slides.pdf"
+depends-on = ["compile"]
+
+[tasks.preview]
+description = "Render all slides to PNG for visual review"
+cmd = '''python -c 'from pathlib import Path; import pymupdf; p = Path("build/preview"); p.mkdir(parents=True, exist_ok=True); d = pymupdf.open("rectangular-slides.pdf"); [(page.get_pixmap(matrix=pymupdf.Matrix(1.5, 1.5)).save(str(p / f"slide-{i+1:02}.png"))) for i, page in enumerate(d)]; print(f"Rendered {len(d)} slides to {p}")' '''
+depends-on = ["build"]

@@ -35,6 +35,9 @@ Hamming distance, minimum/maximum witnesses, and sparse multiplication.
 
 [Read the note](main.pdf) · [LaTeX source](main.tex)
 
+[Preliminary slides](slides/rectangular-slides.pdf) · [Slides source](slides/rectangular-slides.tex) ·
+[Build instructions](slides/README.md)
+
 The [Lean formalization](lean/README.md) checks the main rectangular bounds,
 including the curve and size-optimal equality, with the published spectral
 theorem supplied explicitly as a hypothesis. The [proof map](lean/PROOF-MAP.md)
