@@ -153,7 +153,8 @@ sizes. Rescaling, common slopes, and affine bounds
 then give $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the character's three
 dot-product parameters.
 
-Second, Wolstenholme's inequality bounds weighted sums of these parameters.
+Second, a squared-norm identity for triangle normals bounds weighted sums
+of these parameters.
 We apply Strassen's spectral
 theorem: the largest character value equals asymptotic tensor rank.
 We state precisely the form of this theorem we use, then show how the
@@ -167,8 +168,9 @@ of that reference. All three constructions are proved in the appendices.
 Multinomial counting then gives the required power-sum inequality.
 The replication construction, rescaling, and coupling of six
 affine offsets supply the rectangular extension.
-The weighted bound uses the classical Wolstenholme inequality
-\cite{liu-2020-weighted-trigonometric}.
+The weighted bound is proved by an elementary identity for triangle
+normals. Dropping its nonnegative squared-norm term recovers the classical
+Wolstenholme inequality \cite[Equation~(1)]{liu-2020-weighted-trigonometric}.
 Strassen's spectral theorem is a standard input; a modern exposition is
 \cite{wigderson-zuiddam-2025-asymptotic-spectra}. We cite it rather than
 reproduce its proof. We make no priority claim for the standard tools or
@@ -559,31 +561,26 @@ for every positive ratio implies
 \end{equation}
 where $(z)_+=\max\{z,0\}$.
 
-For nonnegative $x_1,x_2,x_3$, AM--GM and
-\eqref{eq:intercept-budgets} give
-\begin{equation}\label{eq:angular-quadratic-form}
- \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
- \le\sum_{i<j}(c_{ij}x_i^2+c_{ji}x_j^2)
- \le\sum_i x_i^2.
-\end{equation}
-Put $\theta_i=\arccos\sqrt{p_i}$ and suppose
-$S=\theta_1+\theta_2+\theta_3<\pi/2$. Take $x_i=\cos\theta_i>0$.
-Then \eqref{eq:intercept-products} gives
-$\sqrt{c_{ij}c_{ji}}\ge\cos(\theta_i+\theta_j)$.
-Using the product-to-sum identities, we get
+Put $\theta_i=\arccos\sqrt{p_i}\in[0,\pi/2)$ and
+$S=\theta_1+\theta_2+\theta_3$. Equation~\eqref{eq:intercept-products}
+and AM--GM give, for each pair,
 \[
-\begin{aligned}
- \cos(\theta_i+\theta_j)x_j+\cos(\theta_i+\theta_k)x_k
- &=\cos\theta_i+
-   \frac{\cos(\theta_i+2\theta_j)+\cos(\theta_i+2\theta_k)}{2}\\
- &=x_i+\cos S\cos(\theta_j-\theta_k)>x_i.
-\end{aligned}
+ 2\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
+ \le c_{ij}\cos^2\theta_i+c_{ji}\cos^2\theta_j.
 \]
-The extra term is positive: $\cos S>0$ and
-$\cos(\theta_j-\theta_k)>0$, since $|\theta_j-\theta_k|\le S<\pi/2$.
-Multiplying by $x_i$ and summing contradicts
-\eqref{eq:angular-quadratic-form}. Appendix~\ref{app:slopes-angular}
-contains the complete proof, including the quadratic calculation.
+Summing, using \eqref{eq:intercept-budgets}, and applying cosine addition gives
+\begin{equation}\label{eq:angular-quadratic-form}
+\begin{aligned}
+ 0&\ge2\sum_{i<j}\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
+       -\sum_i\cos^2\theta_i\\
+  &=\cos S\sum_i\cos\theta_i\cos(\theta_j-\theta_k),
+\end{aligned}
+\end{equation}
+where $j,k$ are the other two indices in the last sum. Every term of that
+sum is positive, since $\cos\theta_i>0$ and
+$|\theta_j-\theta_k|<\pi/2$. Thus $\cos S\le0$; as $0\le S<3\pi/2$,
+we obtain $S\ge\pi/2$. Appendix~\ref{app:slopes-angular} supplies the
+finite-increment argument and the quadratic calculation.
 \end{proof}
 
 \section{From character bounds to running times}\label{sec:exponents}\label{sec:general}
@@ -644,34 +641,42 @@ It remains to bound these weighted sums using the angular constraint.
 
 \begin{proof}[Proof of Theorem~\ref{cor:general-exponents}]
 Reorder the character's dot-product parameters so that the objective is
-$ap_1+bp_2+cp_3$, and write $p_i=\cos^2\theta_i$ with
-$\theta_i\in[0,\pi/2]$. By Proposition~\ref{prop:angular-cap}, their
-sum is at least $\pi/2$. Decreasing angles to make the sum exactly
-$\pi/2$ only increases the objective, so it suffices to bound that case.
-If $b=0$, then $c=0$ and the objective is at most $a$.
+$ap_1+bp_2+cp_3$. If $c=0$, the bound $a+b$ follows from $0\le p_i\le1$.
+Assume now $c>0$ and write $p_i=\cos^2\theta_i$, with
+$\theta_i\in[0,\pi/2]$. Proposition~\ref{prop:angular-cap} gives
+$S:=\sum_i\theta_i\ge\pi/2$. Scaling every angle by $\pi/(2S)$ only
+increases the objective. It therefore suffices to bound
+$W(\theta)=a\cos^2\theta_1+b\cos^2\theta_2+c\cos^2\theta_3$ over the
+relaxed region $\theta_i\ge0$, $\sum_i\theta_i=\pi/2$.
 
-For $a,b,c>0$, put $\beta_i=2\theta_i$ and
+First take all angles positive. Let $n_i\in\mathbb R^2$ be the outward
+unit normal to the side opposite angle $2\theta_i$ of a triangle with
+these angles. Then $n_j\cdot n_k=-\cos(2\theta_i)$. Define the coefficients
 \[
- u=\sqrt{\frac{bc}{a}},\qquad
- v=\sqrt{\frac{ac}{b}},\qquad
- w=\sqrt{\frac{ab}{c}}.
+ \ell_1=\sqrt{\frac{bc}{a}},\qquad
+ \ell_2=\sqrt{\frac{ac}{b}},\qquad
+ \ell_3=\sqrt{\frac{ab}{c}},
 \]
-Thus $vw=a$, $wu=b$, $uv=c$, and $\beta_1+\beta_2+\beta_3=\pi$.
-Wolstenholme's inequality
-\cite[Equation~(1)]{liu-2020-weighted-trigonometric}, applied with weights
-$u,v,w$, gives
+so $\ell_2\ell_3=a$, $\ell_3\ell_1=b$, and $\ell_1\ell_2=c$.
+Expanding the squared norm of $v:=\sum_i\ell_i n_i$ gives
+\begin{equation}\label{eq:weighted-norm-identity}
+ W(\theta)=E(a,b,c)-\frac14\|v\|^2,\qquad
+ E(a,b,c):=\frac{a+b+c}{2}
+ +\frac14\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
+\end{equation}
+In particular, $W(\theta)\le E(a,b,c)$.
+
+In the thin case $c\le ab/(a+b)$,
 \[
- 2(a\cos\beta_1+b\cos\beta_2+c\cos\beta_3)\le u^2+v^2+w^2.
+ \ell_3-\ell_1-\ell_2=\frac{ab-ac-bc}{\sqrt{abc}}\ge0.
 \]
-The inequality also holds at zero angles by continuity.
-Since $p_i=(1+\cos\beta_i)/2$, it gives
+The triangle inequality gives $\|v\|\ge\ell_3-\ell_1-\ell_2$, so the
+same identity yields
 \[
- ap_1+bp_2+cp_3\le\frac{a+b+c}{2}
- +\frac{1}{4}\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
+ W(\theta)\le E(a,b,c)-\frac{(ab-ac-bc)^2}{4abc}=a+b.
 \]
-For $a,b>0$, set $c_0=\frac{ab}{a+b}$. If $0\le c\le c_0$, replace $c$
-in the objective by $c_0$, which only increases it. The displayed bound
-at $c_0$ equals $a+b$. This proves both branches, including $c=0$.
+Continuity covers zero angles and degenerate triangles. This proves both
+branches, including the threshold equality.
 
 We have bounded the objective for every tensor character.
 Lemma~\ref{lem:cost-conversion}, with target
@@ -1218,12 +1223,7 @@ Here we justify the common slopes and offsets, then derive the angular
 constraint using finite increments rather than derivatives.
 
 \begin{proof}[Proof of Lemma~\ref{lem:intercepts}]
-Write $P=P_{ij}$ and $Q=P_{ik}$. We will define
-\[
- c_{ij}=\sup_{s>0}\left(\frac{P(s)}{L_i}-s\right),\qquad
- c_{ik}=\sup_{s>0}\left(\frac{Q(s)}{L_i}-s\right)
-\]
-once the common positive slope $L_i$ has been established. For $s>1$, the nonnegative secant
+Write $P=P_{ij}$ and $Q=P_{ik}$. For $s>1$, the nonnegative secant
 slope $(P(s)-P(1))/(s-1)$ decreases as $s$ grows, by concavity.
 It therefore has a finite limit, which is also $L_P=\lim P(s)/s$.
 Likewise define
@@ -1247,13 +1247,15 @@ sending its far endpoint to infinity gives
  P(v)-P(u)\ge L_i(v-u).
 \]
 Letting $u\downarrow0$ and using $P(u)\ge0$ gives
-$P(v)\ge L_i v$. Thus $P(s)/L_i-s$ is nonnegative and nondecreasing;
-the same holds for $Q$. Their sum is at most one by
-\eqref{eq:sum-majorant}. Approaching both suprema at one sufficiently
-large $s$ proves $c_{ij}+c_{ik}\le1$. The affine upper bounds
-follow from the definition of the offsets. Since the residuals are
-nondecreasing and bounded, these suprema also equal their limits as
-$s\to\infty$.
+$P(v)\ge L_i v$. Thus the two residuals $P(s)/L_i-s$ and $Q(s)/L_i-s$
+are nonnegative and nondecreasing, with sum at most one by
+\eqref{eq:sum-majorant}. Both therefore have finite limits; define
+\[
+ c_{ij}:=\lim_{s\to\infty}\left(\frac{P(s)}{L_i}-s\right),\qquad
+ c_{ik}:=\lim_{s\to\infty}\left(\frac{Q(s)}{L_i}-s\right).
+\]
+Taking limits gives $c_{ij}+c_{ik}\le1$, and bounding each residual by
+its limit gives the affine upper bounds.
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:angular-cap}]
@@ -1309,34 +1311,30 @@ $\bigl(x+\sqrt{(1-p_i)(1-p_j)}\bigr)^2\ge p_ip_j$, or
 \]
 where $(z)_+=\max\{z,0\}$.
 
-For any nonnegative $x_1,x_2,x_3$, AM--GM and
-\eqref{eq:intercept-budgets} give
+Put $\theta_i=\arccos\sqrt{p_i}\in[0,\pi/2)$ and
+$S=\theta_1+\theta_2+\theta_3$. The pairwise bounds and AM--GM give
 \[
- \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
- \le\sum_{i<j}(c_{ij}x_i^2+c_{ji}x_j^2)
- \le\sum_i x_i^2.
+ 2\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
+ \le c_{ij}\cos^2\theta_i+c_{ji}\cos^2\theta_j.
 \]
-Put $\theta_i=\arccos\sqrt{p_i}$ and suppose
-$S=\theta_1+\theta_2+\theta_3<\pi/2$. Take $x_i=\cos\theta_i>0$.
-By \eqref{eq:intercept-products},
-$\sqrt{c_{ij}c_{ji}}\ge\cos(\theta_i+\theta_j)$.
-For the other two indices $j,k$, the product-to-sum identities give
+Summing over pairs and using the three row budgets gives
 \[
-\begin{aligned}
- \cos(\theta_i+\theta_j)x_j+\cos(\theta_i+\theta_k)x_k
- &=\cos\theta_i+
-   \frac{\cos(\theta_i+2\theta_j)+\cos(\theta_i+2\theta_k)}{2}\\
- &=x_i+\cos S\cos(\theta_j-\theta_k)>x_i.
-\end{aligned}
+ 2\sum_{i<j}\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
+ \le\sum_i\cos^2\theta_i.
 \]
-Both factors of the extra term are positive because $S<\pi/2$ and
-$|\theta_j-\theta_k|\le S$.
-Multiply by $x_i$ and sum over $i$:
+For the other two indices $j,k$, cosine addition gives the identity
 \[
- \sum_{i<j}2\sqrt{c_{ij}c_{ji}}x_ix_j
- \ge\sum_{i<j}2\cos(\theta_i+\theta_j)x_ix_j
- >\sum_i x_i^2,
+ \cos(\theta_i+\theta_j)\cos\theta_j
+ +\cos(\theta_i+\theta_k)\cos\theta_k-\cos\theta_i
+ =\cos S\cos(\theta_j-\theta_k).
 \]
-contradicting \eqref{eq:angular-quadratic-form}.
+Multiplying by $\cos\theta_i$ and summing factors the preceding
+nonpositive difference as
+\[
+ 0\ge\cos S\sum_i\cos\theta_i\cos(\theta_j-\theta_k).
+\]
+Every term in the sum is positive because $\theta_i<\pi/2$ and
+$|\theta_j-\theta_k|<\pi/2$. Hence $\cos S\le0$. Since
+$0\le S<3\pi/2$, this gives $S\ge\pi/2$ as required.
 \end{proof}
 \end{document}

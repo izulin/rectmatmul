@@ -24,7 +24,8 @@ the complete counting, approximation, and slope proofs.
 Strassen's spectral theorem turns the resulting character bounds into
 asymptotic rank bounds. The note defines tensor characters, cites the
 theorem, and explains the passage from rank to running time.
-Wolstenholme's inequality gives bounds for $\omega(a,b,c)$, including
+A squared-norm identity for triangle normals gives bounds for
+$\omega(a,b,c)$, including
 the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c\le\frac{ab}{a+b}$;
 the displayed rectangular curve follows as a corollary.
 Consequences include
