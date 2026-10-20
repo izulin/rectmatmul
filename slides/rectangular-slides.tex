@@ -126,9 +126,6 @@
   \medskip
   \takeaway{This talk asks how the methods behind the $2.25$ bound
     extend to rectangular products.}
-  \source{Selected milestones, not an exhaustive timeline. Names link to primary sources;
-  the 2024 entry dates the preprint (published at SODA 2025).
-  The last two entries are the September 24 and October 2 preprints by OpenAI.}
 \end{frame}
 
 % 4. General shapes and the matching matrix dimensions.
@@ -158,8 +155,7 @@
     \node[right] at (9.3,1.025) {$n^a$};
   \end{tikzpicture}
   \end{center}
-  \source{Exact multiplication over $\CC$; dimensions are rounded upward.
-  The shared inner dimension $n^b$ is highlighted. Shapes are schematic.}
+  \source{Exact multiplication over $\CC$; dimensions are rounded upward.}
 \end{frame}
 
 % 5. The usual one-parameter curve, its dual exponent, and their history.
@@ -199,7 +195,7 @@
   \takeaway{Motivation: extend the polynomial-product analysis in~\cite{nine-fourths}
   to the shapes used by all-pairs algorithms, and make the proof accessible to TCS.}
   \source{These works also bound the curve $\omega(k)$ beyond the quadratic range;
-  $\alpha$ summarizes where that range ends. The 1997--2024 dates are publication years.
+  $\alpha$ summarizes where that range ends.
   Dimensions are rounded upward.}
 \end{frame}
 
@@ -221,8 +217,7 @@
   \takeaway{If $c\le\frac{ab}{a+b}$, the exponent is exactly $a+b$.}
   \medskip
   Permuting tensor legs lets us use the sorted dimensions of any product.
-  \source{The threshold is interpreted as zero at $a=b=0$.
-  The largest input size supplies the lower bound $a+b$.}
+  \source{The largest input size supplies the lower bound $a+b$.}
 \end{frame}
 
 % 7. Corollary 1.2 (thm:curve).
@@ -273,10 +268,10 @@
       Split, separate, and replicate polynomial products.};
     \node[flow,text width=10.7cm,below=of a] (b) {\textbf{Profile inequalities}\\
       Counting gives concavity; rescaling gives real input lengths.};
-    \node[flow,text width=10.7cm,below=of b] (c) {\textbf{An angular constraint}\\
-      Couple the orientations and constrain three dot-product parameters.};
+    \node[flow,text width=10.7cm,below=of b] (c) {\textbf{A weighted reciprocal bound}\\
+      Finite increments and offset budgets bound the weighted parameters.};
     \node[flow,text width=10.7cm,below=of c] (d) {\textbf{Running-time bounds}\\
-      Optimize weighted parameters, then use spectral duality and recursion.};
+      Use spectral duality and recursion; padding gives the thin range.};
     \draw[arrow] (a) -- (b); \draw[arrow] (b) -- (c); \draw[arrow] (c) -- (d);
   \end{tikzpicture}
   \end{center}
@@ -411,10 +406,7 @@
     \rank(\cmm{q}{q}{q})\le R
     \quad\Longrightarrow\quad \omega\le\log_q R.
   $}
-  \source{Historical viewpoint:
-  \href{https://theoryofcomputing.org/articles/v017a001/v017a001.pdf}{Alman (2021), Section 1};
-  tensor/rank framework: \cite{spectra} and Sections 2, 6 of the note.
-  Dimensions are positive integers; $q\ge2$ is fixed. Linear-map costs are
+  \source{Linear-map costs are
   included; the exponent convention absorbs logarithmic factors.}
 \end{frame}
 
@@ -447,8 +439,7 @@
   \end{columns}
   \medskip
   \takeaway{$\displaystyle T\ge S\quad\Longrightarrow\quad
-    \rank(S)\le\rank(T).$\newline
-    The same bilinear products suffice after the substitutions.}
+    \rank(S)\le\rank(T).$}
   \source{Section 2. The notation $T\ge S$ means that $T$ restricts to $S$.
   Substitutions on the formal output labels specify the linear decoding
   of outputs. Here the zero second row lets us retain only $c_{11},c_{12}$.}
@@ -484,9 +475,6 @@
   \takeaway{$\displaystyle
     \rank(T\oplus U)\le\rank(T)+\rank(U).
   $}
-  \source{Section 2. Every term from either rank decomposition is still a
-  rank-one term in the combined variable spaces. In the example, $c_1,c_2$
-  are formal output labels; their coefficients are the two scalar products.}
 \end{frame}
 
 % Toolkit 7. Derive block composition and mention general rank submultiplicativity.
@@ -643,8 +631,10 @@
 
 % Toolkit 12. Introduce characters before convolution values and their parameters.
 \begin{frame}{Tensor characters turn constructions into inequalities}
-  A \textbf{tensor character} $\lambda$ assigns a nonnegative real number
-  $\lambda(T)$ to each tensor $T$, with these four rules:
+  Rank and asymptotic rank are subadditive and submultiplicative.
+  Our counting argument uses \textbf{exact addition and multiplication}.
+  \par\medskip
+  A \textbf{tensor character} $\lambda$ assigns nonnegative values with these rules:
   \par\medskip
   \begin{center}
     \renewcommand{\arraystretch}{1.5}
@@ -658,9 +648,8 @@
   \medskip
   \takeaway{Every character gives a lower bound on asymptotic rank:
     $\displaystyle\lambda(T)\le\widetilde R(T)$.}
-  \source{Section 3. The rules give $\lambda(T)\le\rank(T)$, since
-  $\rank(T)$ independent scalar products restrict to $T$. Applying this to
-  powers gives $\lambda(T)^N=\lambda(T^{\otimes N})\le\rank(T^{\otimes N})$;
+  \source{Section 3; rank properties:~\cite[Section 4.1]{spectra}.
+  The rules give $\lambda(T)^N=\lambda(T^{\otimes N})\le\rank(T^{\otimes N})$;
   take $N$-th roots and the limit.}
 \end{frame}
 
@@ -1177,235 +1166,95 @@
   are nondecreasing and bounded; $a(s)\le c_{ij}$ and $b(s)\le c_{ik}$.}
 \end{frame}
 
-% Turn the profile bounds into explicit relative-growth bounds before combining them.
-\begin{frame}{The profile bounds force relative growth}
-  \textbf{Derivative sketch.} Assume $p_i,p_j>0$ and differentiable $g=g_{ij}$.
+% Finite increments give relative growth without differentiating the profiles.
+\begin{frame}{Finite increments give relative growth}
+  Assume $p_i>0$. The common-slope lemma gives, for $s,t>0$,
   \[
-    P'_{ij}(t)\ge L_i,\quad P_{ij}(t)\le L_i(t+c_{ij})
-    \quad\Longrightarrow\quad
-    \frac{P'_{ij}(t)}{P_{ij}(t)}\ge\frac1{t+c_{ij}}.
+    P_{ij}(s+t)\ge P_{ij}(s)+L_it,\qquad
+    P_{ij}(s)\le L_i(s+c_{ij}).
   \]
-  Homogeneity gives $g(r,s)=r\,P_{ij}(s/r)^{p_i}$; differentiate in $s$:
+  Divide the first inequality by $P_{ij}(s)>0$ and use the second:
   \[
-    \frac{\partial_s g}{g}
-      =\frac{p_i}{r}\frac{P'_{ij}(s/r)}{P_{ij}(s/r)}
-      \ge\frac{p_i/r}{s/r+c_{ij}}
-      =\frac{p_i}{s+c_{ij}r}.
+    \frac{P_{ij}(s+t)}{P_{ij}(s)}
+    \ge1+\frac{L_it}{P_{ij}(s)}
+    \ge1+\frac{t}{s+c_{ij}}.
   \]
-  Exchange inputs and apply the same bounds with $i,j$ swapped.
-  With $P_{ji}(t)=g_{ji}(1,t)^{1/p_j}$,
-  \[
-    g(r,s)=g_{ji}(s,r)=s\,P_{ji}(r/s)^{p_j}
-    \quad\Longrightarrow\quad
-    \frac{\partial_r g}{g}\ge\frac{p_j}{r+c_{ji}s}.
-  \]
-  \source{Lemma 5.1 and Proposition 5.2, Appendix G.
-  Concavity gives $P'_{ij}\ge L_i$; the affine bound controls the denominator.
-  The finite-increment proof is in backup.}
+  Since $g_{ij}(r,s)=rP_{ij}(s/r)^{p_i}$, homogeneity gives
+  \takeaway{$\displaystyle
+    \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
+    \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}
+    \qquad(r,s,t>0).
+  $}
+  \source{Lemma 5.1 and Proposition 5.2.
+  The lower bound applies to every positive finite increment.}
 \end{frame}
 
-\begin{frame}{The two relative-growth bounds share a budget}
-  \textbf{Derivative sketch.} For differentiable $g=g_{ij}$, differentiate
-  $g(tr,ts)=t\,g(r,s)$ at $t=1$:
+\begin{frame}{Homogeneity gives the pair inequality}
+  Assume $p_i,p_j>0$. Increase $r$ by $\varepsilon r$, then $s$ by
+  $\varepsilon s$. Input interchange gives the first increment bound:
   \[
-    r\,\partial_r g+s\,\partial_s g=g
-    \quad\Longrightarrow\quad
-    r\frac{\partial_r g}{g}+s\frac{\partial_s g}{g}=1.
+  \begin{aligned}
+    1+\varepsilon
+    &=\frac{g_{ij}((1+\varepsilon)r,(1+\varepsilon)s)}{g_{ij}(r,s)}\\
+    &\ge
+    \left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
+    \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
+  \end{aligned}
   \]
-  Insert the two derivative lower bounds from the preceding slide:
+  Take logarithms, divide by $\varepsilon$, and let $\varepsilon\downarrow0$:
   \takeaway{$\displaystyle
-    1\ge\frac{p_jr}{r+c_{ji}s}+\frac{p_is}{s+c_{ij}r}
+    \frac{p_is}{s+c_{ij}r}+\frac{p_jr}{r+c_{ji}s}\le1
     \qquad(r,s>0).
   $}
+  \source{Proposition 5.2. The only limit used is
+  $\log(1+\varepsilon x)/\varepsilon\to x$.
+  For $p_i=0$, set its two offsets to zero; pairs involving it satisfy the
+  bound directly because the remaining summand is at most $p_j\le1$.}
+\end{frame}
+
+% Choose the three length ratios to match the desired objective.
+\begin{frame}{The weighted reciprocal bound}
+  For any positive weights $w_1,w_2,w_3$, our target is
+  \takeaway{$\displaystyle
+    \sum_iw_ip_i\le
+    \frac14\left(\sum_i\frac1{w_i}\right)
+             \left(\sum_{i<j}w_iw_j\right).
+  $}
   \medskip
-  Optimize over $r/s$ to obtain a constraint between $p_i,p_j$
-  and their offsets.
-  \source{Proposition 5.2 and Appendix G. The rigorous proof derives the same inequality
-  using finite increments, as shown in backup. This growth argument treats positive parameters.}
+  For each unordered pair $\{i,j\}$, set $r=1/w_i$, $s=1/w_j$
+  in the pair inequality and multiply by $w_iw_j$:
+  \[
+    w_iw_j\ge
+    \frac{p_iw_i^2}{w_i/w_j+c_{ij}}
+    +\frac{p_jw_j^2}{w_j/w_i+c_{ji}}.
+  \]
+  We will sum the three inequalities and use $c_{ij}+c_{ik}\le1$.
+  \source{Proposition 5.3. The offsets are fixed independently of the
+  chosen lengths and weights. No equality among the parameters is assumed.}
 \end{frame}
 
-% Optimize the relative-growth inequality over every positive input ratio.
-\begin{frame}{A quadratic bounds each pair of offsets}
-  Set $t=r/s>0$ and clear the positive denominators in the preceding inequality:
+\begin{frame}{The reciprocal inequality eliminates the offsets}
+  Summing over the three unordered pairs and grouping by $p_i$ gives
   \[
-    \underbrace{(1-p_j)c_{ij}}_{A}t^2
-    +\underbrace{(1-p_i-p_j+c_{ij}c_{ji})}_{B}t
-    +\underbrace{(1-p_i)c_{ji}}_{C}\ge0.
+    \sum_{i<j}w_iw_j\ge
+    \sum_i p_iw_i^2\left(
+      \frac1{w_i/w_j+c_{ij}}+\frac1{w_i/w_k+c_{ik}}\right).
   \]
-  Here $A,C\ge0$, and the inequality holds for every $t>0$.
-  Divide by $t$ and optimize:
+  Here $j,k$ are the other indices in the summand indexed by $i$.
+  For positive $x,y$,
   \[
-    B\ge-\inf_{t>0}(At+C/t)=-2\sqrt{AC}.
+    \frac1x+\frac1y\ge\frac4{x+y}.
   \]
-  Substitution and completing the square give
+  Apply this and $c_{ij}+c_{ik}\le1$:
   \[
-    \left(\sqrt{c_{ij}c_{ji}}+
-      \sqrt{(1-p_i)(1-p_j)}\right)^2\ge p_ip_j.
+    \sum_{i<j}w_iw_j
+    \ge4\sum_i\frac{p_iw_i^2}{w_i/w_j+w_i/w_k+1}
+    =\frac{4\sum_iw_ip_i}{\sum_{\ell=1}^3 1/w_\ell}.
   \]
-  \takeaway{$\displaystyle
-    \sqrt{c_{ij}c_{ji}}\ge
-    \sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}.
-  $}
-  \source{Proposition 5.2, Appendix G. We use $0\le p_i\le1$ and $c_{ij}\ge0$.
-  The infimum formula also covers zero $A$ or $C$.}
+  This proves the weighted bound.
+  \source{Proposition 5.3. All denominators are positive, and $p_i\ge0$
+  preserves each lower bound.}
 \end{frame}
-
-% First state the numerical problem in the original parameters and offsets.
-\begin{frame}{The optimization problem before substitution}
-  Fix weights $a,b,c\ge0$. The numerical problem is
-  \[
-  \begin{aligned}
-    \text{maximize}\quad &W(p):=ap_1+bp_2+cp_3\\[5pt]
-    \text{subject to}\quad &0\le p_i\le1,\\[3pt]
-      &c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1,\\[3pt]
-      &\sqrt{c_{ij}c_{ji}}\ge
-        \sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}.
-  \end{aligned}
-  \]
-  The constraints hold for all distinct $i,j,k\in\{1,2,3\}$.
-  \par\medskip
-  \takeaway{We seek an upper bound on $W$ for every feasible tuple.
-  Next write $p_i=\cos^2\theta_i$.}
-  \source{The variables are the three parameters and six offsets; the weights are fixed.
-  These numerical constraints are the only hypotheses used below.}
-\end{frame}
-
-% Then state the equivalent optimization in angle variables.
-\begin{frame}{The optimization problem in the angles}
-  Set $p_i=\cos^2\theta_i$. For fixed weights $a,b,c\ge0$, the problem is
-  \[
-  \begin{aligned}
-    \text{maximize}\quad &W(\theta):=a\cos^2\theta_1+b\cos^2\theta_2+c\cos^2\theta_3\\[5pt]
-    \text{subject to}\quad &0\le\theta_i\le\pi/2,\\[3pt]
-      &c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1,\\[3pt]
-      &\sqrt{c_{ij}c_{ji}}\ge\cos(\theta_i+\theta_j).
-  \end{aligned}
-  \]
-  The constraints hold for all distinct $i,j,k\in\{1,2,3\}$.
-  \par\medskip
-  \takeaway{First eliminate the offsets to obtain a constraint on the angles.
-  Then bound the objective $W$.}
-  \source{The variables are the three angles and six offsets; the weights are fixed.
-  These are exactly the numerical constraints after the substitution $p_i=\cos^2\theta_i$.}
-\end{frame}
-
-% A direct symmetric factorization replaces the auxiliary weights and contradiction argument.
-\begin{frame}{The constraints force the angle-sum bound}
-  \takeaway{\textbf{Goal: prove}\quad $\displaystyle
-    S:=\theta_1+\theta_2+\theta_3\ge\frac\pi2.$}
-  \smallskip
-  If some $\theta_i\ge\pi/2$, we are done; otherwise all $\theta_i<\pi/2$.
-  \par\smallskip
-  Multiply each pairwise bound by $2\cos\theta_i\cos\theta_j$ and use AM--GM:
-  \[
-    2\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
-      \le c_{ij}\cos^2\theta_i+c_{ji}\cos^2\theta_j.
-  \]
-  Sum over pairs, use $c_{ij}+c_{ik}\le1$, and factor:
-  \[
-  \begin{aligned}
-    0&\ge2\sum_{i<j}\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
-      -\sum_i\cos^2\theta_i\\
-      &=\cos S\underbrace{\sum_i\cos\theta_i\cos(\theta_j-\theta_k)}_{>0}
-        \quad\Longrightarrow\quad S\ge\pi/2.
-  \end{aligned}
-  \]
-  \source{This proves Proposition 5.2 using the constraints alone.
-  The factorization follows from cosine addition. In the last sum, $j,k$
-  are the other indices; each cosine is positive since
-  $\theta_i<\pi/2$ and $|\theta_j-\theta_k|<\pi/2$.}
-\end{frame}
-
-% Reduce symmetrically to the angular boundary and introduce the three normals.
-\begin{frame}{The angular boundary gives triangle geometry}
-  Since scaling down the angles only increases $W(\theta)$, we may assume
-  $\sum_i\theta_i=\pi/2$ for an upper bound.
-  We relax the original constraints to maximizing
-  $W(\theta)=\sum_i a_i\cos^2\theta_i$ over all nonnegative angles with this sum,
-  where $(a_1,a_2,a_3)=(a,b,c)$.
-  \par\medskip
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.56\textwidth}
-      Take a triangle with angles $2\theta_i$.
-      \par\medskip
-      Let $n_i$ be the outward unit normal to the side opposite $2\theta_i$.
-      The angle between $n_j,n_k$ is $\pi-2\theta_i$, so
-      \[
-        n_j\cdot n_k=-\cos(2\theta_i).
-      \]
-    \end{column}
-    \begin{column}{0.40\textwidth}
-      \centering
-      \begin{tikzpicture}[x=1cm,y=1cm,font=\small]
-        \coordinate (A) at (0,1.9);
-        \coordinate (B) at (-1.25,0);
-        \coordinate (C) at (1.6,0);
-        \filldraw[fill=pale,draw=ink,thick] (A)--(B)--(C)--cycle;
-        \node at (0,1.51) {$2\theta_1$};
-        \node at (-.64,.23) {$2\theta_2$};
-        \node at (.96,.23) {$2\theta_3$};
-        \draw[arrow] (.175,0)--(.175,-.65) node[right] {$n_1$};
-        \draw[arrow] (.8,.95)--(1.38,1.44) node[right] {$n_2$};
-        \draw[arrow] (-.625,.95)--(-1.21,1.34) node[left] {$n_3$};
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
-  \source{For any original tuple of sum $S\ge\pi/2$, scaling by $\pi/(2S)$
-  reaches this boundary with an objective at least as large.
-  Degenerate triangles follow by continuity.}
-\end{frame}
-
-% A symmetric squared-norm identity proves the weighted trigonometric bound.
-\begin{frame}{A squared norm bounds the weighted objective}
-  For $a,b,c>0$, set
-  \[
-    \ell_1=\sqrt{\frac{bc}{a}},\qquad
-    \ell_2=\sqrt{\frac{ca}{b}},\qquad
-    \ell_3=\sqrt{\frac{ab}{c}}.
-  \]
-  Their pairwise products are the weights:
-  $\ell_2\ell_3=a$, $\ell_3\ell_1=b$, $\ell_1\ell_2=c$.
-  Set $v=\ell_1n_1+\ell_2n_2+\ell_3n_3$. Using the normal-vector identity,
-  \[
-    \|v\|^2=\sum\nolimits_i\ell_i^2
-      -2\sum\nolimits_i a_i\cos(2\theta_i).
-  \]
-  Since $\cos^2\theta_i=(1+\cos(2\theta_i))/2$, define
-  \[
-    E=E(a,b,c):=\frac{a+b+c}{2}
-      +\frac14\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
-  \]
-  \takeaway{$\displaystyle
-    W=E-\frac14\|v\|^2\le E.
-  $}
-  \source{An elementary proof of the Wolstenholme step~\cite{wolstenholme}
-  in Section 6. All three angles enter the same squared-norm identity.}
-\end{frame}
-
-% Start with the thin-case hypothesis and derive its stronger bound directly.
-\begin{frame}{The thin case gives $W\le a+b$}
-  Assume the \textbf{thin case}: $a\ge b\ge c>0$ and $c\le\frac{ab}{a+b}$.
-  Then
-  \[
-    \ell_3-\ell_1-\ell_2
-      =\frac{ab-ac-bc}{\sqrt{abc}}\ge0.
-  \]
-  Since each $n_i$ is a unit vector, the triangle inequality gives
-  \[
-    \|v\|\ge\ell_3-\|\ell_1n_1+\ell_2n_2\|
-      \ge\ell_3-\ell_1-\ell_2.
-  \]
-  Insert this lower bound into $W=E-\|v\|^2/4$:
-  \par\medskip
-  \takeaway{$\displaystyle
-    W\le E-\frac{(\ell_3-\ell_1-\ell_2)^2}{4}
-      =E-\frac{(ab-ac-bc)^2}{4abc}=a+b.
-  $}
-  \source{The case $c=0$ follows directly from $0\le p_i\le1$.
-  Equality at the threshold $c=ab/(a+b)$ is included.}
-\end{frame}
-
-
 
 \begin{frame}{Character bounds give arithmetic algorithms}
   \textbf{Published spectral input:}
@@ -1425,6 +1274,44 @@
   \source{Theorem 3.2~\cite{strassen,spectra} and Lemma 6.1.
   Linear combinations cost $O(\ell R^\ell)$ over $\ell$ recursion levels.
   The exponent statement does not provide a practical small-base implementation.}
+\end{frame}
+
+\begin{frame}{Substitute the shape into the weighted bound}
+  For $a,b,c>0$, take $w=(a,b,c)$ and
+  $(p_1,p_2,p_3)=(p_Y,p_Z,p_X)$. For every character,
+  \[
+  \begin{aligned}
+    ap_1+bp_2+cp_3
+    &\le\frac14\left(\frac1a+\frac1b+\frac1c\right)(ab+ac+bc)\\[3pt]
+    &=\frac{a+b+c}{2}
+      +\frac14\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
+  \end{aligned}
+  \]
+  The character-to-algorithm implication now gives
+  \takeaway{$\displaystyle
+    \omega(a,b,c)\le\frac{a+b+c}{2}
+      +\frac14\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
+  $}
+  \source{Proposition 5.3 and Lemma 6.1.
+  Zero character parameters were included in the pair inequality;
+  this bound holds for every positive shape, including the thin threshold.}
+\end{frame}
+
+\begin{frame}{The thin case follows by padding}
+  Assume $a\ge b>0$ and put
+  \[
+    c_0=\frac{ab}{a+b}.
+  \]
+  Padding makes $\omega$ nondecreasing in each argument.
+  For $0\le c\le c_0$,
+  \takeaway{$\displaystyle
+    \omega(a,b,c)
+    \le\omega(a,b,c_0)
+    \le a+b.
+  $}
+  \source{Proof of Theorem 1.1. The bound on the preceding slide applies
+  at $c_0>0$. The matching size lower bound gives
+  $\omega(a,b,c)=a+b$ throughout the thin range.}
 \end{frame}
 
 \begin{frame}{Applications through established tradeoffs}
@@ -1457,18 +1344,18 @@
       Finite separation adapts its shared-leg construction.\par\medskip
       \textbf{Standard tools}\par\medskip
       Multinomial counting, spectral duality, interpolation,
-      squared norms, and the triangle inequality.
+      the reciprocal inequality, and padding.
     \end{column}
     \begin{column}{0.48\textwidth}
       \textbf{Rectangular analysis}\par\medskip
       Keep all orientations; replicate and rescale convolution profiles;
-      couple six offsets; optimize the weighted angular constraint.\par\medskip
+      couple six offsets; sum the pair inequalities at reciprocal lengths.\par\medskip
       \textbf{Lean correspondence}\par\medskip
       The main bounds are checked with the published spectral theorem
       supplied explicitly as a hypothesis.
     \end{column}
   \end{columns}
-  \vspace{5mm}
+  \vspace{3mm}
   \takeaway{$\displaystyle c\le\frac{ab}{a+b}\ \Longrightarrow\
   \omega(a,b,c)=a+b\qquad(a\ge b\ge c\ge0)$.}
   \source{The note makes no priority claim for standard tools or finite construction variants.
@@ -2012,34 +1899,31 @@
   interpolation construction.}
 \end{frame}
 
-\begin{frame}{Backup: the growth inequality without differentiability}
-  The slope and affine bounds imply, for positive $r,s,t$,
+\begin{frame}{Backup: zero character parameters}
+  The common-slope lemma supplies the offsets in row $i$ when $p_i>0$.
+  When $p_i=0$, define
   \[
-    \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
-    \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
+    c_{ij}=c_{ik}=0.
   \]
-  Increase $r$ by $\varepsilon r$, then $s$ by $\varepsilon s$:
+  Every row still has nonnegative offsets with sum at most one.
+  A pair involving $p_i=0$ satisfies, for all $r,s>0$,
   \[
-  \begin{aligned}
-    1+\varepsilon
-    &=\frac{g_{ij}((1+\varepsilon)r,(1+\varepsilon)s)}{g_{ij}(r,s)}\\
-    &\ge\left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
-      \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
-  \end{aligned}
+    \frac{p_is}{s+c_{ij}r}+\frac{p_jr}{r+c_{ji}s}
+    =\frac{p_jr}{r+c_{ji}s}\le p_j\le1.
   \]
-  Take logarithms, divide by $\varepsilon$, and let $\varepsilon\downarrow0$:
-  \[
-    1\ge\frac{p_jr}{r+c_{ji}s}+\frac{p_is}{s+c_{ij}r}.
-  \]
-  \source{Appendix G, equation (G.2) and its consequence.
-  Only the explicit elementary lower bound is differentiated; the profile itself is not.}
+  Pairs with two positive parameters use the finite-increment proof.
+  \takeaway{The weighted reciprocal bound applies to every character,
+  including zero parameters.}
+  \source{Propositions 5.2--5.3. No reciprocal power or common slope
+  is assigned to a zero-parameter row.}
 \end{frame}
 
 \begin{frame}{Backup: formalization and provenance}
   \textbf{Proof routes and scope.}\par\medskip
   Pinned finite splitting certificates and local-polynomial replication
   differ from the manuscript's exact constructions. The formalization also
-  checks field descent; the slides follow the note's complex-field presentation.
+  retains the angular route to weighted bounds and checks field descent;
+  the slides follow the note's complex-field presentation.
   Applications are not formalized.
   \medskip
   \begin{beamercolorbox}[sep=0.7em,wd=\linewidth]{takeaway}
@@ -2065,13 +1949,10 @@
     \bibitem[3]{spectra} A. Wigderson and J. Zuiddam.
       \emph{Asymptotic spectra: theory, applications and extensions} (2026).
       DOI: \doi{10.1090/bull/1880}.
-    \bibitem[4]{wolstenholme} J. Liu.
-      \emph{An improved result of a weighted trigonometric inequality in acute triangles with applications} (2020).
-      DOI: \doi{10.7153/jmi-2020-14-11}.
-    \bibitem[5]{convolution} C. Ju and E. Solomonik.
+    \bibitem[4]{convolution} C. Ju and E. Solomonik.
       \emph{Derivation and analysis of fast bilinear algorithms for convolution} (2020).
       DOI: \doi{10.1137/19M1301059}.
-    \bibitem[6]{interpolation} M. Christandl, A. K. Jensen and J. Zuiddam.
+    \bibitem[5]{interpolation} M. Christandl, A. K. Jensen and J. Zuiddam.
       \emph{Tensor rank is not multiplicative under the tensor product} (2018).
       DOI: \doi{10.1016/j.laa.2017.12.020}.
   \end{thebibliography}
@@ -2080,25 +1961,25 @@
 \begin{frame}{References: algorithmic tradeoffs}
   \footnotesize
   \begin{thebibliography}{12}
-    \bibitem[7]{zwick} U. Zwick.
+    \bibitem[6]{zwick} U. Zwick.
       \emph{All pairs shortest paths using bridging sets and rectangular matrix multiplication} (2002).
       DOI: \doi{10.1145/567112.567114}.
-    \bibitem[8]{aw} J. Alman and V. Vassilevska Williams.
+    \bibitem[7]{aw} J. Alman and V. Vassilevska Williams.
       \emph{Truly subquadratic 3SUM and truly subcubic APSP via triangles in sparse lopsided graphs} (2026).
       DOI: \doi{10.48550/arXiv.2610.06783}.
-    \bibitem[9]{lca} F. Grandoni, G. F. Italiano, A. Łukasiewicz, N. Parotsidis and P. Uznański.
+    \bibitem[8]{lca} F. Grandoni, G. F. Italiano, A. Łukasiewicz, N. Parotsidis and P. Uznański.
       \emph{All-pairs LCA in DAGs: breaking through the $O(n^{2.5})$ barrier} (2021).
       DOI: \doi{10.1137/1.9781611976465.18}.
-    \bibitem[10]{hamming} K. Labib, P. Uznański and D. Wolleb-Graf.
+    \bibitem[9]{hamming} K. Labib, P. Uznański and D. Wolleb-Graf.
       \emph{Hamming distance completeness} (2019).
       DOI: \doi{10.4230/LIPIcs.CPM.2019.14}.
-    \bibitem[11]{dominance} R. Yuster.
+    \bibitem[10]{dominance} R. Yuster.
       \emph{Efficient algorithms on sets of permutations, dominance, and real-weighted APSP} (2009).
       DOI: \doi{10.1137/1.9781611973068.103}.
-    \bibitem[12]{witnesses} K. Cohen and R. Yuster.
+    \bibitem[11]{witnesses} K. Cohen and R. Yuster.
       \emph{On minimum witnesses for Boolean matrix multiplication} (2014).
       DOI: \doi{10.1007/s00453-012-9742-3}.
-    \bibitem[13]{sparse} R. Yuster and U. Zwick.
+    \bibitem[12]{sparse} R. Yuster and U. Zwick.
       \emph{Fast sparse matrix multiplication} (2005).
       DOI: \doi{10.1145/1077464.1077466}.
   \end{thebibliography}

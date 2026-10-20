@@ -17,15 +17,17 @@ The proof recaps two polynomial splittings from the recent nine-fourths
 result by OpenAI and adapts its finite separation construction.
 Polynomial division and ordinary evaluation replicate a convolution;
 multinomial counting and rescaling give continuous profiles whose affine
-bounds constrain three dot-product parameters:
-$\sum_i\arccos\sqrt{p_i}\ge\pi/2$.
+bounds give offset budgets and a pair inequality for three dot-product
+parameters. Finite increments establish the pair inequality without
+differentiating the profiles. Choosing lengths reciprocal to the desired
+weights and applying $1/x+1/y\ge4/(x+y)$ gives the weighted bound.
 The main text presents the real-length analysis; appendices contain
 the complete counting, approximation, and slope proofs.
 Strassen's spectral theorem turns the resulting character bounds into
 asymptotic rank bounds. The note defines tensor characters, cites the
 theorem, and explains the passage from rank to running time.
-A squared-norm identity for triangle normals gives bounds for
-$\omega(a,b,c)$, including
+Substituting the shape exponents gives bounds for $\omega(a,b,c)$.
+Padding to $c=ab/(a+b)$ gives
 the exact exponent $a+b$ when $a\ge b\ge c\ge0$ and $c\le\frac{ab}{a+b}$;
 the displayed rectangular curve follows as a corollary.
 Consequences include
@@ -43,7 +45,12 @@ The [Lean formalization](lean/README.md) checks the main rectangular bounds,
 including the curve and size-optimal equality, with the published spectral
 theorem supplied explicitly as a hypothesis. The [proof map](lean/PROOF-MAP.md)
 records the correspondence and coverage; `lean/` includes a pinned Pixi
-environment and build instructions.
+environment and build instructions. It retains the angular proof route;
+the new reciprocal presentation has been reviewed mathematically but has
+not been separately formalized.
+
+The [proof review](notes/reciprocal-proof-simplification.md) records the
+finite-increment, weighted reciprocal, and padding simplifications.
 
 Build from this directory with TeX Live and `latexmk`:
 

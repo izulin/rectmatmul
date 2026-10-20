@@ -2,7 +2,7 @@
 
 [Presentation PDF](rectangular-slides.pdf) · [Beamer source](rectangular-slides.tex)
 
-51 main slides and twenty-four holdout slides for a TCS talk.
+48 main slides and twenty-four holdout slides for a TCS talk.
 Slides 1–8 retain the human-reviewed source; slides 9 onward remain drafts
 for human review. After the proof roadmap on
 slide 9, slides 10–22 introduce the tools used in the proof:
@@ -46,38 +46,38 @@ concrete shared-variable example to explain the
 power-sum rule on slide 26. Slides 27–31 give its proof: group sector words
 by multiplicity, state the finite-separation lemma, apply it and reorder,
 evaluate a character on one group, then sum the estimates and take roots.
-The six-slide separation proof is retained in holdout slides 53–58.
+The six-slide separation proof is retained in holdout slides 50–55.
 Slides 32–33 state the two-sector and three-sector lemmas, including the
 shared-leg and disjoint-sector structure. All polynomial-space semantics,
 tensor-product explanations, source/target maps, and proofs are in backup:
-slides 59–63 for two sectors and slides 64–69 for three sectors.
+slides 56–60 for two sectors and slides 61–66 for three sectors.
 Slide 34 derives the character inequalities from the two lemmas. Replication
 and rescaling share one slide (35). Slides 36–38 state the concavity and
 coupled tripling inequalities for `P=P_ij` and `Q=P_ik`, show that their
 limiting slopes exist and agree, then prove the common slope is positive
 by iterating tripling for `R=P+Q`. Slide 39 visualizes the residual budget, defines both limiting offsets,
 and gives the resulting affine bounds.
-The backup slides retain profile size bounds, input interchange,
-character monotonicity under degeneration, and the finite-increment proof. Slide 40 derives relative-growth lower bounds from the
-profile slope and affine bounds, then uses input interchange for the
-other derivative. Slide 41 combines them with the differentiated homogeneity
-identity to obtain the ratio bound, without assuming an angular conclusion.
-These slides explicitly label the derivative sketch;
-the finite-increment proof is in backup. Slide 42 derives the pairwise
-constraint. Slide 43 first states the complete optimization problem in
-`p_i` and `c_ij`: maximize `W(p)=a*p_1+b*p_2+c*p_3` subject to the parameter
-ranges, offset budgets, and pairwise product bounds. Slide 44 then uses
-`p_i=cos(theta_i)^2` to state the equivalent problem in `theta_i` and `c_ij`: maximize
-`W(theta)=a*cos(theta_1)^2+b*cos(theta_2)^2+c*cos(theta_3)^2`, with the angle
-ranges, offset budgets, and `sqrt(c_ij*c_ji)>=cos(theta_i+theta_j)` displayed. The proof from this point uses only
-these numerical hypotheses. Slide 45 states its target
-`theta_1+theta_2+theta_3>=pi/2` at the start, then gives a direct symmetric proof: weight the pairwise bounds by the cosines, sum using
-the row budgets, and factor the resulting expression into `cos(S)` times a
-positive factor. Slides 46–48 give a symmetric weighted
-proof: scale all angles to the boundary, introduce the outward normals of
-the doubled-angle triangle, expand a squared norm, and apply the triangle
-inequality for the thin case. Complexities suppress `+o(1)` in the
-exponent, as in the note.
+The backup slides retain profile size bounds, input interchange, and
+character monotonicity under degeneration. The main proof now proceeds as follows:
+
+- Slide 40 derives the finite-increment growth bound from the common slope
+  and affine upper bound.
+- Slide 41 increases the two input lengths successively, uses homogeneity,
+  and takes the elementary logarithm limit to obtain the pair inequality.
+- Slides 42–43 choose lengths reciprocal to arbitrary positive weights,
+  sum over pairs, and apply `1/x + 1/y >= 4/(x+y)` with the offset budgets.
+  No auxiliary name is introduced for the sum of reciprocal weights.
+- Slide 44 recalls the character-to-algorithm implication.
+- Slide 45 substitutes the shape weights to obtain `omega(a,b,c) <= E(a,b,c)`
+  for every positive shape.
+- Slide 46 obtains the thin branch by padding to `c0 = a*b/(a+b)` and
+  substituting `E(a,b,c0) = a+b`. It includes `c=0` and treats `b=0` directly.
+
+Zero character parameters are handled by assigning zero offsets to their
+rows. A pair involving a zero parameter satisfies the pair inequality
+because its other summand is at most one. The dedicated backup slide
+explains this boundary case. Complexities suppress `+o(1)` in the exponent,
+as in the note.
 
 Suggested pacing:
 
@@ -88,11 +88,11 @@ Suggested pacing:
 | 23–26 | Convolution, character values, and the power-sum rule | 4 |
 | 27–31 | Proof of the power-sum inequality | 5 |
 | 32–34 | Splitting lemma statements and character inequalities | 2 |
-| 35–49 | Rescaling, common slopes, angular constraint, and the arithmetic exponent | 14 |
-| 50–51 | Applications and contribution | 2 |
+| 35–46 | Rescaling, common slopes, reciprocal bound, and padding | 11 |
+| 47–48 | Applications and contribution | 2 |
 
 Sources and provenance are included in the deck. The numerical application
-bounds are those in the manuscript; later research notes are not incorporated.
+bounds are those in the manuscript; later application research results are not incorporated.
 The curve figure is reused from `../rectangular-exponent-curve.pdf`.
 
 Slide 13 uses “Strassen-type” for the general bilinear framework, including
@@ -193,7 +193,7 @@ private leg variables in each resulting sector. The source note identifies
 the root-of-unity filter of length `2M` and the subsequent epsilon weights,
 with a link to the six proof slides in holdout.
 
-Holdout slides 53–58 give the complete construction from the paper's appendix.
+Holdout slides 50–55 give the complete construction from the paper's appendix.
 They follow the existing rank-three proof on the first holdout slide (52).
 Their mathematical content is unchanged:
 
@@ -238,11 +238,11 @@ as also explained in backup. The expanded suggested pacing totals 47 minutes.
 Slide 32 states the two-sector degeneration for `r >= 1, s >= 2`:
 `C_ij(r,s) tensor B_i(2)` degenerates to `T_+ + T_-`, with the two
 sectors isomorphic to `C_ij(r,s+1)` and `C_ij(r,s-1)`. The coordinate
-interpretation and proof are in backup slides 59–63 and treat arbitrary
-parameters, using orientation `X,Y`. Backup slide 59 defines the polynomial
+interpretation and proof are in backup slides 56–60 and treat arbitrary
+parameters, using orientation `X,Y`. Backup slide 56 defines the polynomial
 spaces and source/target maps. Both the source and target are bilinear in the first polynomial `f` and a
 second input consisting of a pair of independent polynomials.
-Slide 60 explicitly gives the two bilinear factors, pairs corresponding
+Slide 57 explicitly gives the two bilinear factors, pairs corresponding
 spaces, and evaluates the product on `f tensor 1` and
 `a tensor e_0 + b tensor e_1` to obtain `(f*a,f*b)`.
 The parameters `r,s,2` specify dimensions; `B_X(2)` has a scalar first
@@ -250,16 +250,16 @@ input and a vector second input.
 
 The backup proof gives the input and output linear maps:
 
-1. Slide 61 takes independent inputs with `deg f < r`, `deg p <= s`,
+1. Slide 58 takes independent inputs with `deg f < r`, `deg p <= s`,
    `deg h <= s-2`, and writes `p_s = [t^s]p`. For nonzero `eps`, it encodes
    `a = p - p_s*t^s - eps^(-1)*t*h` and
    `b = eps^(-1)*h + p_s*t^(s-1)`. Both have degree less than `s`.
    Compute `U=f*a` and `V=f*b` using the tensor in the lemma's left side.
-2. Slide 62 sets `m=r+s-2` and gives linear output maps
+2. Slide 59 sets `m=r+s-2` and gives linear output maps
    `P=U+t*V` and `H_eps=eps*(V-([t^m]V)*t^m)`. The output lengths are
    `r+s` and `r+s-2`. It proves `P=f*p` and
    `[t^m]V = p_s*f_(r-1)` from `deg(f*h) <= m-1`.
-3. Slide 63 derives the exact formula
+3. Slide 60 derives the exact formula
    `H_eps=f*h+eps*p_s*t^(s-1)*(f-f_(r-1)*t^(r-1))`.
    The coefficients converge to the pair `(f*p,f*h)`, whose independent
    second inputs have lengths `s+1,s-1`. The first leg is shared and the
@@ -268,8 +268,8 @@ The backup proof gives the input and output linear maps:
 
 Slide 33 states the three-sector degeneration for `r,s >= 1`:
 `C_ij(r,3s+r-1)` degenerates to `T_1 + T_2 + T_3`. The coordinate
-interpretation and proof are in backup slides 64–69. Slide 64 introduces
-the input/output spaces and sector orientations. Slide 65 fixes
+interpretation and proof are in backup slides 61–66. Slide 61 introduces
+the input/output spaces and sector orientations. Slide 62 fixes
 `X,Y` as inputs and `Z` as output for every sector. Write the second
 input as `g=g_L+t^s*q+t^(2s+r-1)*g_R`, with lengths `s,r+s-1,s`.
 The target map is `(f,(g_L,q,g_R)) -> (f*g_L,M_f(q),f*g_R)`, where
@@ -280,22 +280,22 @@ that reading, with the first-input coefficients reversed, gives the
 
 The backup proof supplies these maps and block identifications:
 
-1. Slide 66 sets `n=3s+r-1` and expands the tensor as
+1. Slide 63 sets `n=3s+r-1` and expands the tensor as
    `sum_(a=0)^(r-1) sum_(b=0)^(n-1) x_a*y_b*z_(a+b)`.
    It gives the full three-interval partitions of the Y and Z coordinates.
    Encode the second input as
    `g_eps=g_L+eps*t^s*q+t^(2s+r-1)*g_R`; divide the middle output block by
    `eps` and retain the outer output blocks. These are the middle-Y
    scaling by `eps` and middle-Z scaling by `eps^(-1)`.
-2. Slide 67 proves the zero pattern: left Y forces left Z, and right Y
+2. Slide 64 proves the zero pattern: left Y forces left Z, and right Y
    forces right Z, by the bounds on `a`. Its block table lists every
    possible multiplier (`0`, `1`, or `eps`). Thus no supported term has
    negative epsilon degree, and the limit keeps exactly the three matched
    blocks. The two outer blocks are `T_1,T_2`; the middle is `T_3`.
-3. Slide 68 writes both outer tensors in full. The left is `C_XY(r,s)`;
+3. Slide 65 writes both outer tensors in full. The left is `C_XY(r,s)`;
    translating the right Y and Z indices by `A=2s+r-1` identifies the right
    with a second copy. These maps keep the first-leg basis unchanged.
-4. Slide 69 writes a middle output index as `c=s+r-1+v` and the first index
+4. Slide 66 writes a middle output index as `c=s+r-1+v` and the first index
    as `a=r-1-u`; then `b=c-a=s+u+v`. This gives the full middle block
    `sum_(u,v) x_(r-1-u)*y_(s+u+v)*z_(s+r-1+v)`.
    Read the Z coefficients as an input polynomial `h` and the Y
@@ -338,98 +338,15 @@ Slides 36–39 expand the common-slope argument from Lemma 5.1 and Appendix G:
    `c_ij=lim a(s)` and `c_ik=lim b(s)` exist. Their sum is at most one;
    bounding each residual by its limit gives the affine bounds.
 
-Slide 40 supplies the intermediate calculation for the angular argument.
-For differentiable `g=g_ij` and positive `p_i,p_j`, the profile bounds give
-`P_ij'(t)/P_ij(t) >= 1/(t+c_ij)`. Homogeneity writes
-`g(r,s)=r*P_ij(s/r)^p_i`; the chain rule gives
-`partial_s(g)/g >= p_i/(s+c_ij*r)`. Input interchange and the reversed
-profile `P_ji` give `partial_r(g)/g >= p_j/(r+c_ji*s)`.
-Slide 41 explicitly invokes these two bounds when combining them with
-Euler's identity. Its conclusion is the ratio bound; it does not announce
-the angular result before the numerical proof. The finite-increment
-argument remains in holdout.
+Slides 40–46 implement the three proof simplifications recorded in
+[the manuscript review](../notes/reciprocal-proof-simplification.md).
+The finite-increment proof is now in the main talk. The weighted bound
+uses only the pair inequality, the three offset budgets, and the elementary
+reciprocal inequality. The thin case uses monotonicity of omega by padding;
+no continuity assumption on omega is needed. The old derivative sketch,
+quadratic elimination, angular argument, and triangle-normal optimization
+are removed from this presentation.
 
-Slides 42–45 organize the optimization and prove the angular constraint:
-
-1. Slide 42 sets `t=r/s`, displays the quadratic with coefficients A,B,C,
-   and uses `B >= -inf_(t>0)(A*t+C/t) = -2*sqrt(A*C)`. Completing the
-   square gives the lower bound on `sqrt(c_ij*c_ji)`.
-2. Slide 43 states the problem before substitution: maximize
-   `W(p)=a*p_1+b*p_2+c*p_3` over the three parameters and six offsets,
-   with `0<=p_i<=1`, nonnegative offsets satisfying `c_ij+c_ik<=1`, and
-   `sqrt(c_ij*c_ji)>=sqrt(p_i*p_j)-sqrt((1-p_i)*(1-p_j))` for all distinct
-   indices. The weights `a,b,c` are fixed and nonnegative.
-3. Slide 44 makes the substitution `p_i=cos(theta_i)^2` and explicitly
-   states the equivalent optimization: maximize
-   `W(theta)=a*cos(theta_1)^2+b*cos(theta_2)^2+c*cos(theta_3)^2` over the
-   three angles and six offsets, for fixed nonnegative weights. The
-   constraints are `0<=theta_i<=pi/2`, nonnegative offsets with
-   `c_ij+c_ik<=1`, and `sqrt(c_ij*c_ji)>=cos(theta_i+theta_j)`, for all
-   distinct indices. All angle endpoints are included.
-4. Slide 45 begins with the goal `S=sum_i theta_i>=pi/2`, then proves it
-   by one direct calculation. If an angle is at least pi/2, the conclusion is
-   immediate. Otherwise every cosine is positive. Multiplying the pairwise
-   bounds by `2*cos(theta_i)*cos(theta_j)`, applying AM–GM, and summing with
-   the row budgets shows that
-   `D=2*sum_(i<j) cos(theta_i+theta_j)*cos(theta_i)*cos(theta_j)-sum_i cos(theta_i)^2`
-   is nonpositive. Cosine addition factors this expression as
-   `D=cos(S)*sum_i cos(theta_i)*cos(theta_j-theta_k)`, where `S=sum_i theta_i`
-   and j,k are the other indices. The second factor is positive, so
-   `cos(S)<=0`; since `0<=S<3*pi/2`, we obtain `S>=pi/2`. This proves
-   Proposition 5.2 directly from the numerical constraints. The auxiliary
-   variables and the contradiction step are removed.
-
-Slides 46–48 replace the cited weighted inequality and the separate
-thin-range monotonicity argument with one symmetric vector proof:
-
-1. Slide 46 starts with the monotonicity reduction: scaling down the
-   angles only increases `W(theta)`, so for an upper bound it suffices to
-   maximize over the relaxed region of all nonnegative angles with sum
-   pi/2. Every original feasible tuple scales into this region with an
-   objective at least as large. A diagram then introduces the outward unit
-   normal `n_i` opposite angle `2*theta_i` of the resulting triangle, so
-   `n_j dot n_k = -cos(2*theta_i)`.
-2. Slide 47 defines `ell_1=sqrt(b*c/a)` and its cyclic counterparts.
-   Since `ell_2*ell_3=a` cyclically, expansion gives
-   `W=E(a,b,c)-norm(sum_i ell_i*n_i)^2/4`.
-3. Slide 48 starts by assuming the thin case `a>=b>=c>0` and
-   `c<=ab/(a+b)`. Thus `ell_3-ell_1-ell_2=(a*b-a*c-b*c)/sqrt(a*b*c)>=0`.
-   The triangle inequality bounds the norm below by this nonnegative gap.
-   Inserting it into the squared-norm identity gives
-   `W<=E-(a*b-a*c-b*c)^2/(4*a*b*c)=a+b`. Threshold equality is included;
-   the zero-weight case follows directly from `0<=p_i<=1`.
-
-The backup section contains twenty-four slides (52–75):
-
-- Slide 52 proves the degeneration target has rank three.
-- Slides 53–58 give the finite-separation construction.
-- Slides 59–63 explain the two-sector tensor semantics and prove the lemma:
-  source/target maps (59), the tensor-product interpretation (60), then
-  input encoding, output decoding, and the limit (61–63).
-- Slides 64–69 explain and prove the three-sector lemma: spaces and sector
-  orientations (64), a fixed-output interpretation (65), then the four
-  coordinate proof slides (66–69). The main statements link to each group.
-- Slide 70 retains profile size bounds, coordinatewise monotonicity,
-  input interchange, and powered concavity in the first length.
-- Slide 71 applies the interpolation restriction from slide 20 directly
-  to a character and takes N-th roots to prove `lambda(S) <= lambda(T)`.
-- Slide 72 gives the growth inequality without differentiability.
-- Slide 73 retains proof-route differences, field descent, scope, and
-  the full provenance statement.
-- Slides 74–75 contain the references.
-
-The redundant multinomial summary and rectangular-specialization backup
-are removed. The repeated formalization summary is omitted from slide 73.
-
-With Pixi and TeX Live (`latexmk`, `pdflatex`, Beamer, PGF/TikZ, Latin Modern):
-
-```sh
-cd slides
-pixi run --locked build
-pixi run --locked preview
-```
-
-The pinned Pixi environment supplies PDF rendering tools. TeX tools use the
-existing installation on `PATH`. Build intermediates and previews stay in
-the ignored `build/` directory. The bibliography is inlined; BibTeX is not
-needed.
+The Lean formalization retains its earlier angular proof route. Its main
+statements agree with the manuscript, but this new presentation has not
+been separately formalized.

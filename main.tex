@@ -44,7 +44,7 @@ rectangular products and prove
 In particular, $\omega(1,\frac{1}{2},1)=2$ and the dual exponent satisfies
 $\alpha\ge \frac{1}{2}$. The proof uses explicit degenerations of convolution tensors,
 multinomial counting, and Strassen's spectral theorem.
-An angular constraint on three dot-product parameters gives both the
+An elementary weighted reciprocal bound on three dot-product parameters gives both the
 rectangular curve and a bound for $\omega(a,b,c)$, with exact exponent
 $a+b$ whenever $a\ge b\ge c\ge0$ and $c\le\frac{ab}{a+b}$.
 As an application, Zwick's algorithm
@@ -149,12 +149,11 @@ combine polynomial products and apply a tensor character to them.
 A character assigns numerical sizes that add on direct sums,
 multiply on tensor products, and cannot increase under restriction.
 Multinomial counting gives concavity and growth inequalities for these
-sizes. Rescaling, common slopes, and affine bounds
-then give $\sum_i\arccos\sqrt{p_i}\ge\pi/2$ for the character's three
-dot-product parameters.
+sizes. Rescaling, common slopes, and affine bounds give three offset
+budgets and a pair inequality for the character's dot-product parameters.
 
-Second, a squared-norm identity for triangle normals bounds weighted sums
-of these parameters.
+Second, the inequality $1/x+1/y\ge4/(x+y)$ bounds weighted sums of these
+parameters. Padding gives the thin branch from its boundary value.
 We apply Strassen's spectral
 theorem: the largest character value equals asymptotic tensor rank.
 We state precisely the form of this theorem we use, then show how the
@@ -168,9 +167,8 @@ of that reference. All three constructions are proved in the appendices.
 Multinomial counting then gives the required power-sum inequality.
 The replication construction, rescaling, and coupling of six
 affine offsets supply the rectangular extension.
-The weighted bound is proved by an elementary identity for triangle
-normals. Dropping its nonnegative squared-norm term recovers the classical
-Wolstenholme inequality \cite[Equation~(1)]{liu-2020-weighted-trigonometric}.
+The weighted bound follows by choosing convolution lengths reciprocal to
+the weights and applying $1/x+1/y\ge4/(x+y)$ to each offset budget.
 Strassen's spectral theorem is a standard input; a modern exposition is
 \cite{wigderson-zuiddam-2025-asymptotic-spectra}. We cite it rather than
 reproduce its proof. We make no priority claim for the standard tools or
@@ -280,13 +278,19 @@ We give the full proof in Appendix~\ref{app:replication}.
 
 \section{Tensor characters and counting}\label{sec:discrete}
 
-To use the preceding constructions, we assign numerical values to tensors
-using tensor characters. The splittings and separation give concavity
-and tripling inequalities for their convolution values, which we rescale
-in the next section. We also identify the three parameters that determine
-their matrix-multiplication values and state Strassen's theorem: bounding
-every character value will give an asymptotic rank bound in
-Section~\ref{sec:exponents}.
+Rank is subadditive on direct sums and submultiplicative on tensor
+products. The same is true of asymptotic rank, and equality can fail even
+asymptotically~\cite[Section~4.1]{wigderson-zuiddam-2025-asymptotic-spectra}.
+Our counting argument uses exact addition and multiplication of numerical
+values. Tensor characters provide these identities while remaining
+monotone under restriction. Strassen's theorem then recovers asymptotic
+rank as the largest character value, so bounding every character suffices.
+
+The splittings and separation give concavity and tripling inequalities
+for the characters' convolution values, which we rescale in the next
+section. We also identify the three parameters that determine their
+matrix-multiplication values; Section~\ref{sec:exponents} turns bounds on
+these parameters into running-time bounds.
 
 A \emph{tensor character} is a function $\lambda$ from tensors to
 nonnegative real numbers satisfying
@@ -482,17 +486,17 @@ extension. Appendix~\ref{app:counting-rescaling} includes that argument
 and verifies that rounding the lengths in \eqref{eq:rescaled-profile}
 does not change the limit.
 
-\section{Common slopes and the angular constraint}\label{sec:slopes}
+\section{Common slopes and weighted bounds}\label{sec:slopes}
 
 With the profile properties from Lemma~\ref{lem:homogeneous}, we can now
-relate the three dot-product parameters $p_i\in[0,1]$. Comparing the growth
-of differently oriented convolutions leads to the angular constraint in
-Proposition~\ref{prop:angular-cap}. This is the only result from this
-section needed for the running-time bounds in Section~\ref{sec:exponents}.
+relate the three dot-product parameters $p_i\in[0,1]$. Finite increments
+give a pair inequality; choosing its lengths to match the desired weights
+then gives Proposition~\ref{prop:weighted-bound}. This weighted bound is
+the input to the running-time analysis in Section~\ref{sec:exponents}.
 
 Index the three tensor legs by $1,2,3$.
-Full proofs of this section's slope and growth
-claims are in Appendix~\ref{app:slopes-angular}.
+The full proof of the common-slope lemma is in
+Appendix~\ref{app:slopes}.
 
 \begin{lemma}[Common slopes and affine bounds]\label{lem:intercepts}
 Fix $i$ with $p_i>0$, and let $j,k$ be the other legs. The functions
@@ -517,70 +521,73 @@ common limiting line, and their normalized vertical offsets are
 nondecreasing with sum at most one. Their limits are $c_{ij},c_{ik}$.
 This explains both the affine bounds and the constraint on their sum.
 
-\begin{proposition}[Angular constraint]\label{prop:angular-cap}
-The dot-product parameters of every tensor character satisfy
-\begin{equation}\label{eq:angular-cap}
- \sum_{i=1}^3\arccos\sqrt{p_i}\ge\frac{\pi}{2}.
+For a row with $p_i=0$, define $c_{ij}=c_{ik}=0$. Thus every row has
+nonnegative offsets satisfying \eqref{eq:intercept-budgets}.
+
+\begin{proposition}[Pair inequality]\label{prop:pair-bound}
+For every distinct $i,j$ and all real $r,s>0$,
+\begin{equation}\label{eq:ratio-bound}
+ 1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
+ .
 \end{equation}
 \end{proposition}
 
-\begin{proof}[Proof outline]
-If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-parameters are positive. For this outline, suppose $g=g_{ij}$ is
-differentiable. The increment and upper bounds in
-Lemma~\ref{lem:intercepts} give $P'_{ij}(t)\ge L_i$ and
-$P_{ij}(t)\le L_i(t+c_{ij})$. Homogeneity gives
-$g(r,s)=rP_{ij}(s/r)^{p_i}$, so, also interchanging the inputs,
+\begin{proof}
+If either parameter is zero, the other summand is at most its parameter,
+which is at most one. Otherwise the increment and affine bounds give
 \[
-\begin{aligned}
- \frac{\partial_s g(r,s)}{g(r,s)}
- &=\frac{p_i}{r}\frac{P'_{ij}(s/r)}{P_{ij}(s/r)}
- \ge\frac{p_i}{s+c_{ij}r},\\
- \frac{\partial_r g(r,s)}{g(r,s)}
- &=\frac{p_j}{s}\frac{P'_{ji}(r/s)}{P_{ji}(r/s)}
- \ge\frac{p_j}{r+c_{ji}s}.
-\end{aligned}
+ \frac{P_{ij}(s+t)}{P_{ij}(s)}
+ \ge1+\frac{L_it}{P_{ij}(s)}\ge1+\frac{t}{s+c_{ij}}.
 \]
-Differentiating $g(tr,ts)=t\,g(r,s)$ at $t=1$ gives
+Using homogeneity, we obtain
+\begin{equation}\label{eq:finite-increment}
+ \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
+ \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
+\end{equation}
+Increase $r$ by $\varepsilon r$, then $s$ by $\varepsilon s$.
+Input interchange and homogeneity give
 \[
- r\frac{\partial_r g(r,s)}{g(r,s)}
- +s\frac{\partial_s g(r,s)}{g(r,s)}=1.
+ 1+\varepsilon\ge
+ \left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
+ \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
 \]
-Substituting the two lower bounds yields
-\begin{equation}\label{eq:ratio-bound}
- 1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
- \qquad(r,s>0).
-\end{equation}
-Appendix~\ref{app:slopes-angular} obtains the same inequality using
-finite increments, without assuming differentiability.
-Clearing denominators gives a quadratic in $r/s$. Its nonnegativity
-for every positive ratio implies
-\begin{equation}\label{eq:intercept-products}
- \sqrt{c_{ij}c_{ji}}\ge
- \left(\sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}\right)_+,
-\end{equation}
-where $(z)_+=\max\{z,0\}$.
+Taking logarithms, dividing by $\varepsilon$, and letting
+$\varepsilon\downarrow0$ proves \eqref{eq:ratio-bound}.
+\end{proof}
 
-Put $\theta_i=\arccos\sqrt{p_i}\in[0,\pi/2)$ and
-$S=\theta_1+\theta_2+\theta_3$. Equation~\eqref{eq:intercept-products}
-and AM--GM give, for each pair,
-\[
- 2\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
- \le c_{ij}\cos^2\theta_i+c_{ji}\cos^2\theta_j.
-\]
-Summing, using \eqref{eq:intercept-budgets}, and applying cosine addition gives
-\begin{equation}\label{eq:angular-quadratic-form}
-\begin{aligned}
- 0&\ge2\sum_{i<j}\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
-       -\sum_i\cos^2\theta_i\\
-  &=\cos S\sum_i\cos\theta_i\cos(\theta_j-\theta_k),
-\end{aligned}
+\begin{proposition}[Weighted reciprocal bound]\label{prop:weighted-bound}
+For every tensor character and every $w_1,w_2,w_3>0$,
+\begin{equation}\label{eq:weighted-bound}
+ \sum_{i=1}^3w_ip_i\le
+ \frac14\left(\sum_{i=1}^3\frac1{w_i}\right)
+ \left(\sum_{i<j}w_iw_j\right).
 \end{equation}
-where $j,k$ are the other two indices in the last sum. Every term of that
-sum is positive, since $\cos\theta_i>0$ and
-$|\theta_j-\theta_k|<\pi/2$. Thus $\cos S\le0$; as $0\le S<3\pi/2$,
-we obtain $S\ge\pi/2$. Appendix~\ref{app:slopes-angular} supplies the
-finite-increment argument and the quadratic calculation.
+\end{proposition}
+
+\begin{proof}
+For each unordered pair $\{i,j\}$, set $r=1/w_i$, $s=1/w_j$ in
+\eqref{eq:ratio-bound} and multiply by $w_iw_j$:
+\[
+ w_iw_j\ge
+ \frac{p_iw_i^2}{w_i/w_j+c_{ij}}+
+ \frac{p_jw_j^2}{w_j/w_i+c_{ji}}.
+\]
+Summing the three inequalities and grouping by $p_i$ yields
+\[
+ \sum_{i<j}w_iw_j\ge
+ \sum_i p_iw_i^2\left(
+ \frac1{w_i/w_j+c_{ij}}+\frac1{w_i/w_k+c_{ik}}\right),
+\]
+where $j,k$ are the other indices in the summand indexed by $i$.
+
+For positive $x,y$, $1/x+1/y\ge4/(x+y)$. Applying this and
+\eqref{eq:intercept-budgets} gives
+\[
+ \sum_{i<j}w_iw_j
+ \ge4\sum_i\frac{p_iw_i^2}{w_i/w_j+w_i/w_k+1}
+ =\frac{4\sum_iw_ip_i}{\sum_{\ell=1}^3 1/w_\ell},
+\]
+which proves \eqref{eq:weighted-bound}.
 \end{proof}
 
 \section{From character bounds to running times}\label{sec:exponents}\label{sec:general}
@@ -591,9 +598,8 @@ algorithms. The other ingredients are the matrix-tensor formula
 (Theorem~\ref{thm:spectral}). For a given matrix shape, we bound a weighted
 sum of the three parameters for every character; the theorem then bounds
 asymptotic rank. We first show how this rank bound gives a running-time
-bound, then apply the angular constraint from
-Proposition~\ref{prop:angular-cap} to obtain the general-shape bound and
-the rectangular curve.
+bound, then apply Proposition~\ref{prop:weighted-bound} and padding to
+obtain the general-shape bound and the rectangular curve.
 
 \begin{lemma}[Character bounds give algorithms]\label{lem:cost-conversion}
 Fix $\mathbf h=(h_X,h_Y,h_Z)\ge0$. If the dot-product parameters of
@@ -637,50 +643,27 @@ and hence the lemma under our exponent convention. All choices of $N$,
 $K$, and the finite identity precede the limit $n\to\infty$.
 \end{proof}
 
-It remains to bound these weighted sums using the angular constraint.
+We now substitute the shape exponents into the weighted reciprocal bound.
 
 \begin{proof}[Proof of Theorem~\ref{cor:general-exponents}]
-Reorder the character's dot-product parameters so that the objective is
-$ap_1+bp_2+cp_3$. If $c=0$, the bound $a+b$ follows from $0\le p_i\le1$.
-Assume now $c>0$ and write $p_i=\cos^2\theta_i$, with
-$\theta_i\in[0,\pi/2]$. Proposition~\ref{prop:angular-cap} gives
-$S:=\sum_i\theta_i\ge\pi/2$. Scaling every angle by $\pi/(2S)$ only
-increases the objective. It therefore suffices to bound
-$W(\theta)=a\cos^2\theta_1+b\cos^2\theta_2+c\cos^2\theta_3$ over the
-relaxed region $\theta_i\ge0$, $\sum_i\theta_i=\pi/2$.
-
-First take all angles positive. Let $n_i\in\mathbb R^2$ be the outward
-unit normal to the side opposite angle $2\theta_i$ of a triangle with
-these angles. Then $n_j\cdot n_k=-\cos(2\theta_i)$. Define the coefficients
+If $b=0$, then $c=0$ and direct multiplication gives exponent $a$.
+Assume $a,b>0$. First take $c>0$ and order the parameters as
+$(p_1,p_2,p_3)=(p_Y,p_Z,p_X)$. Proposition~\ref{prop:weighted-bound}
+with $w=(a,b,c)$ gives, for every character,
 \[
- \ell_1=\sqrt{\frac{bc}{a}},\qquad
- \ell_2=\sqrt{\frac{ac}{b}},\qquad
- \ell_3=\sqrt{\frac{ab}{c}},
-\]
-so $\ell_2\ell_3=a$, $\ell_3\ell_1=b$, and $\ell_1\ell_2=c$.
-Expanding the squared norm of $v:=\sum_i\ell_i n_i$ gives
-\begin{equation}\label{eq:weighted-norm-identity}
- W(\theta)=E(a,b,c)-\frac14\|v\|^2,\qquad
- E(a,b,c):=\frac{a+b+c}{2}
+ ap_1+bp_2+cp_3\le E(a,b,c):=
+ \frac{a+b+c}{2}
  +\frac14\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
-\end{equation}
-In particular, $W(\theta)\le E(a,b,c)$.
-
-In the thin case $c\le ab/(a+b)$,
-\[
- \ell_3-\ell_1-\ell_2=\frac{ab-ac-bc}{\sqrt{abc}}\ge0.
 \]
-The triangle inequality gives $\|v\|\ge\ell_3-\ell_1-\ell_2$, so the
-same identity yields
-\[
- W(\theta)\le E(a,b,c)-\frac{(ab-ac-bc)^2}{4abc}=a+b.
-\]
-Continuity covers zero angles and degenerate triangles. This proves both
-branches, including the threshold equality.
+Lemma~\ref{lem:cost-conversion}, with $\mathbf h=(c,a,b)$, therefore gives
+$\omega(a,b,c)\le E(a,b,c)$ for every positive $c$.
 
-We have bounded the objective for every tensor character.
-Lemma~\ref{lem:cost-conversion}, with target
-$\mathbf h=(c,a,b)$, gives \eqref{eq:general-exponents}.
+For the thin branch, put $c_0=ab/(a+b)>0$. Padding makes $\omega$
+nondecreasing in each argument, so for $0\le c\le c_0$,
+\[
+ \omega(a,b,c)\le\omega(a,b,c_0)\le E(a,b,c_0)=a+b.
+\]
+This includes the threshold and completes both branches.
 \end{proof}
 
 \begin{proof}[Proof of Corollary~\ref{thm:curve}]
@@ -829,13 +812,6 @@ Karim Labib, Przemys{\l}aw Uzna\'{n}ski, and Daniel Wolleb-Graf.
   pages 14:1--14:17. Schloss Dagstuhl -- Leibniz-Zentrum f{\"u}r Informatik,
   2019.
 \newblock DOI: \doi{10.4230/LIPIcs.CPM.2019.14}.
-
-\bibitem{liu-2020-weighted-trigonometric}
-Jian Liu.
-\newblock An improved result of a weighted trigonometric inequality in acute
-  triangles with applications.
-\newblock {\em Journal of Mathematical Inequalities}, 14(1):147--160, 2020.
-\newblock DOI: \doi{10.7153/jmi-2020-14-11}.
 
 \bibitem{openai-2026-matrix-nine-fourths}
 {OpenAI}.
@@ -1217,10 +1193,9 @@ $r,s$ from below and use continuity. This proves the limit formula
 \eqref{eq:rescaled-profile}, and completes the lemma.
 \end{proof}
 
-\section{Common slopes and the angular constraint}\label{app:slopes-angular}
+\section{Common slopes and affine bounds}\label{app:slopes}\label{app:slopes-angular}
 
-Here we justify the common slopes and offsets, then derive the angular
-constraint using finite increments rather than derivatives.
+Here we justify the common slopes and offset budgets used in Section~\ref{sec:slopes}.
 
 \begin{proof}[Proof of Lemma~\ref{lem:intercepts}]
 Write $P=P_{ij}$ and $Q=P_{ik}$. For $s>1$, the nonnegative secant
@@ -1258,83 +1233,4 @@ Taking limits gives $c_{ij}+c_{ik}\le1$, and bounding each residual by
 its limit gives the affine upper bounds.
 \end{proof}
 
-\begin{proof}[Proof of Proposition~\ref{prop:angular-cap}]
-If some $p_i=0$, its summand is already $\pi/2$. Assume all three
-parameters are positive. Lemma~\ref{lem:intercepts}
-gives six offsets and their three bounds
-\[
- c_{ij}\ge0,\qquad c_{ij}+c_{ik}\le1.
-\]
-The increment and affine bounds give
-\[
- \frac{P_{ij}(s+t)}{P_{ij}(s)}
- \ge1+\frac{L_it}{P_{ij}(s)}\ge1+\frac{t}{s+c_{ij}}.
-\]
-Using homogeneity, we obtain
-\begin{equation}\label{eq:finite-increment}
- \frac{g_{ij}(r,s+t)}{g_{ij}(r,s)}
- \ge\left(1+\frac{t}{s+c_{ij}r}\right)^{p_i}.
-\end{equation}
-Increase $r$ by $\varepsilon r$, then $s$ by $\varepsilon s$.
-Input interchange supplies the first bound and
-\eqref{eq:finite-increment} supplies the second:
-\[
-\begin{aligned}
- 1+\varepsilon
- &=\frac{g_{ij}((1+\varepsilon)r,(1+\varepsilon)s)}{g_{ij}(r,s)}\\
- &\ge\left(1+\frac{\varepsilon r}{r+c_{ji}s}\right)^{p_j}
-       \left(1+\frac{\varepsilon s}{s+c_{ij}(1+\varepsilon)r}\right)^{p_i}.
-\end{aligned}
-\]
-Take logarithms, divide by $\varepsilon$, and let
-$\varepsilon\downarrow0$.
-The elementary limit $\log(1+\varepsilon x)/\varepsilon\to x$ gives
-\[
- 1\ge\frac{p_i s}{s+c_{ij}r}+\frac{p_j r}{r+c_{ji}s}
- \qquad(r,s>0).
-\]
-With $t=r/s$, this is equivalent to
-\[
- (1-p_j)c_{ij}t^2+
- (1-p_i-p_j+c_{ij}c_{ji})t+(1-p_i)c_{ji}\ge0
- \qquad(t>0).
-\]
-A quadratic $At^2+Bt+C$ with $A,C\ge0$ is nonnegative on $t>0$
-exactly when $B\ge-2\sqrt{AC}$. Indeed, divide by $t$ and use
-$\inf_{t>0}(At+C/t)=2\sqrt{AC}$; if $A$ or $C$ is zero, the
-infimum is zero, approached at an endpoint. Thus
-writing $x=\sqrt{c_{ij}c_{ji}}$ gives
-$\bigl(x+\sqrt{(1-p_i)(1-p_j)}\bigr)^2\ge p_ip_j$, or
-\[
- \sqrt{c_{ij}c_{ji}}\ge
- \left(\sqrt{p_ip_j}-\sqrt{(1-p_i)(1-p_j)}\right)_+,
-\]
-where $(z)_+=\max\{z,0\}$.
-
-Put $\theta_i=\arccos\sqrt{p_i}\in[0,\pi/2)$ and
-$S=\theta_1+\theta_2+\theta_3$. The pairwise bounds and AM--GM give
-\[
- 2\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
- \le c_{ij}\cos^2\theta_i+c_{ji}\cos^2\theta_j.
-\]
-Summing over pairs and using the three row budgets gives
-\[
- 2\sum_{i<j}\cos(\theta_i+\theta_j)\cos\theta_i\cos\theta_j
- \le\sum_i\cos^2\theta_i.
-\]
-For the other two indices $j,k$, cosine addition gives the identity
-\[
- \cos(\theta_i+\theta_j)\cos\theta_j
- +\cos(\theta_i+\theta_k)\cos\theta_k-\cos\theta_i
- =\cos S\cos(\theta_j-\theta_k).
-\]
-Multiplying by $\cos\theta_i$ and summing factors the preceding
-nonpositive difference as
-\[
- 0\ge\cos S\sum_i\cos\theta_i\cos(\theta_j-\theta_k).
-\]
-Every term in the sum is positive because $\theta_i<\pi/2$ and
-$|\theta_j-\theta_k|<\pi/2$. Hence $\cos S\le0$. Since
-$0\le S<3\pi/2$, this gives $S\ge\pi/2$ as required.
-\end{proof}
 \end{document}
