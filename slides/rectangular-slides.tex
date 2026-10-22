@@ -1034,7 +1034,7 @@
     P(s):=P_{ij}(s)=g_{ij}(1,s)^{1/p_i},\qquad
     Q(s):=P_{ik}(s)=g_{ik}(1,s)^{1/p_i}.
   \]
-  Both profiles are positive and nondecreasing. Their inequalities are
+  Both profiles are positive and nondecreasing for real $s>0$. Their inequalities are
   \par\medskip
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.48\textwidth}
@@ -1089,29 +1089,26 @@
   Monotonicity makes the secants nonnegative; concavity makes them decrease.}
 \end{frame}
 
-% Iterate the coupled inequalities to exclude a zero common slope.
-\begin{frame}{Iterated tripling makes the common slope positive}
-  Put $R=P+Q>0$. Adding the tripling inequalities gives
+% Compare concave secants directly to exclude a zero common slope.
+\begin{frame}{Concavity gives the sum bound directly}
+  Put $R=P+Q>0$. For $0<u<S$, concavity and tripling give
   \[
-    R(3s+1)\ge3R(s),\qquad
-    \lim_{s\to\infty}\frac{R(s)}s=2L_i.
+    \frac{P(S)-P(u)}{S-u}
+    \ge\frac{P(3S+1)-P(S)}{2S+1}
+    \ge\frac{R(S)}{2S+1}.
   \]
-  Fix $s>0$. Iterate at
+  The same bound holds for $Q$. Adding and rearranging,
   \[
-    s_0=s,\quad s_{n+1}=3s_n+1
+    R(S)-R(u)\ge\frac{2(S-u)R(S)}{2S+1}
     \quad\Longrightarrow\quad
-    s_n=3^n\left(s+\tfrac12\right)-\tfrac12.
+    \frac{R(u)}{2u+1}\le\frac{R(S)}{2S+1}.
   \]
-  Then $R(s_n)\ge3^nR(s)$.
-  Since $R(s_n)/s_n\to2L_i$ and $s_n/3^n\to s+\tfrac12$,
-  \[
-    R(s)\le\lim_{n\to\infty}\frac{R(s_n)}{3^n}
-      =2L_i\left(s+\tfrac12\right)=L_i(2s+1).
-  \]
-  \takeaway{$\displaystyle L_i\ge\frac{R(s)}{2s+1}>0$:
-    the common slope is positive.}
+  Send $S\to\infty$, using $R(S)/(2S+1)\to L_i$:
+  \takeaway{$\displaystyle R(u)\le L_i(2u+1)$,\quad hence
+    $\displaystyle L_i\ge\frac{R(u)}{2u+1}>0$.}
   \source{Proof of Lemma 5.1, Appendix G.
-  The same estimate $P(s)+Q(s)\le L_i(2s+1)$ will bound the offsets.}
+  Concavity compares the secant on $[u,S]$ with the later secant on $[S,3S+1]$.
+  The sum bound will also control the offsets.}
 \end{frame}
 
 \begin{frame}{The two residuals share a budget of one}

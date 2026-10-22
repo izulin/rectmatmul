@@ -4,8 +4,44 @@
 
 48 main slides and twenty-four holdout slides for a TCS talk.
 Slides 1–8 retain the human-reviewed source; slides 9 onward remain drafts
-for human review. After the proof roadmap on
-slide 9, slides 10–22 introduce the tools used in the proof:
+for human review.
+
+## Common-slope proof
+
+The original global common-slope argument is retained. Slide 38 now
+compares concave secants directly instead of iterating tripling. For
+`R=P+Q` and `0<u<S`, adding the two secant bounds gives
+`R(u)/(2u+1) <= R(S)/(2S+1)`. Sending `S` to infinity yields
+`R(u) <= L_i*(2u+1)` and proves `L_i>0`. The residual limits, global
+increment bounds, pair inequality, and weight substitution keep their
+original form. The paper's Section 5 summary and Appendix G use the
+same argument.
+
+The finite-cutoff comparison slide and its six replacement slides have
+been removed after review, and the original slide numbers are restored.
+The profiles on slide 36 explicitly have real arguments: they use the
+rescaling from slide 35 / Lemma 4.1, whose proof is in Appendix F.
+
+The proof and separate review are recorded in
+[QS-GLOBAL-SUM](../../research/proofs/quantitative-rectangular-boundary-size.md#qs-global-sum-remove-iteration-while-keeping-the-global-formulation).
+
+Validation on 2026-10-21: the 72-page slide PDF and the 16-page paper PDF
+build without TeX warnings or overflow messages. Comparison against the
+original deck confirms that only slides 36 (real-domain clarification)
+and 38 (the direct proof) have changed frame bodies; slides 1–8 are
+unchanged. The revised slides and Appendix G were visually checked.
+
+## Build
+
+Build from this directory with `pixi run build`; `pixi run preview` also
+renders every page under `build/preview/`. The build uses `latexmk` and
+TeX Live with Beamer, Latin Modern, AMS math, booktabs, and TikZ/PGF.
+The Pixi environment supplies Python, PyMuPDF, and Pillow for previews.
+
+## Talk outline
+
+After the proof roadmap on slide 9, slides 10–22 introduce the tools
+used in the proof:
 
 1. The ordinary eight block products and the question of reducing their number
    by using linear combinations of the inputs.
@@ -55,7 +91,7 @@ Slide 34 derives the character inequalities from the two lemmas. Replication
 and rescaling share one slide (35). Slides 36–38 state the concavity and
 coupled tripling inequalities for `P=P_ij` and `Q=P_ik`, show that their
 limiting slopes exist and agree, then prove the common slope is positive
-by iterating tripling for `R=P+Q`. Slide 39 visualizes the residual budget, defines both limiting offsets,
+by comparing concave secants for `R=P+Q`. Slide 39 visualizes the residual budget, defines both limiting offsets,
 and gives the resulting affine bounds.
 The backup slides retain profile size bounds, input interchange, and
 character monotonicity under degeneration. The main proof now proceeds as follows:
@@ -328,9 +364,11 @@ Slides 36–39 expand the common-slope argument from Lemma 5.1 and Appendix G:
    so its finite limit exists and equals `lim P(s)/s`; similarly for Q.
    Dividing tripling by s gives `3*L_P >= 2*L_P+L_Q` and its reverse,
    establishing `L_P=L_Q=L_i >= 0`.
-3. Slide 38 sets `R=P+Q`, iterates `R(3*s+1) >= 3*R(s)` along
-   `s_n=3^n*(s+1/2)-1/2`, and uses `R(s_n)/s_n -> 2*L_i` to obtain
-   `R(s) <= L_i*(2*s+1)`. Since R is positive, `L_i > 0`.
+3. Slide 38 sets `R=P+Q`. For `0<u<S`, concavity bounds each secant on
+   `[u,S]` below by its secant on `[S,3*S+1]`, and tripling bounds the
+   latter below by `R(S)/(2*S+1)`. Adding and rearranging gives
+   `R(u)/(2*u+1) <= R(S)/(2*S+1)`. Letting S tend to infinity gives
+   `R(u) <= L_i*(2*u+1)`, hence `L_i > 0`.
 4. Slide 39 rewrites the sum estimate as `a(s)+b(s) <= 1`, where
    `a(s)=P(s)/L_i-s` and `b(s)=Q(s)/L_i-s`. A stacked diagram shows their
    shared budget and limiting offsets. Both residuals are nonnegative,

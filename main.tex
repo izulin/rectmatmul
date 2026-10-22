@@ -59,7 +59,7 @@ $O(n^{2.4999})$ running time.
 
 \noindent\textbf{Disclaimer.} This note, its proofs, analysis and writeup
 were obtained fully through OpenAI Codex (GPT-6.1). The author has read and analyzed this note in full
-and takes full responsibility for its contents, and takes no credit for this work.
+and takes full responsibility for its contents.
 
 The initial motivation for this note was to explore whether the methods
 of the groundbreaking matrix-multiplication result
@@ -168,11 +168,9 @@ Multinomial counting then gives the required power-sum inequality.
 The replication construction, rescaling, and coupling of six
 affine offsets supply the rectangular extension.
 The weighted bound follows by choosing convolution lengths reciprocal to
-the weights and applying $1/x+1/y\ge4/(x+y)$ to each offset budget.
+the weights and applying standard techniques to offset budget.
 Strassen's spectral theorem is a standard input; a modern exposition is
-\cite{wigderson-zuiddam-2025-asymptotic-spectra}. We cite it rather than
-reproduce its proof. We make no priority claim for the standard tools or
-the finite construction variants. Section~\ref{sec:applications}
+\cite{wigderson-zuiddam-2025-asymptotic-spectra}. Section~\ref{sec:applications}
 substitutes the bounds into known algorithmic tradeoffs.
 
 \section{Polynomial products and finite constructions}\label{sec:constructions}
@@ -243,17 +241,26 @@ hold for every permutation of the legs.
 \begin{lemma}[Finite separation and polynomial splittings]\label{lem:openai-inputs}
 \leavevmode
 \begin{enumerate}
-\item If $T$ has $M$ matched sectors sharing leg $i$, then
+\item \textup{[cf.\ Proposition~3.1 in~\cite{openai-2026-matrix-nine-fourths}]}
+If $T$ has $M$ matched sectors sharing leg $i$, then
 \begin{equation}\label{eq:finite-separation}
  (2M)T\degen\bigoplus_{h=1}^M\bigl(T_h\otimes B_i(M)\bigr).
 \end{equation}
 The sectors on the right are independent on all three legs.
-\item For $r\ge1$ and $s\ge2$, $C_{ij}(r,s)\otimes B_i(2)$ degenerates
-to two matched sectors sharing leg $i$, namely
-$C_{ij}(r,s+1)$ and $C_{ij}(r,s-1)$.
-\item For $r,s\ge1$, $C_{ij}(r,3s+r-1)$ degenerates to three matched
-sectors sharing leg $i$: two copies of $C_{ij}(r,s)$ and one copy of
-$C_{ik}(r,s)$.
+\item \textup{[cf.\ Lemma~4.1 in~\cite{openai-2026-matrix-nine-fourths}]}
+For $r\ge1$ and $s\ge2$,
+\[
+ C_{ij}(r,s)\otimes B_i(2)
+ \degen C_{ij}(r,s+1)+C_{ij}(r,s-1),
+\]
+where the two terms on the right are matched sectors sharing leg $i$.
+\item \textup{[cf.\ Lemma~4.2 in~\cite{openai-2026-matrix-nine-fourths}]}
+For $r,s\ge1$,
+\[
+ C_{ij}(r,3s+r-1)
+ \degen C_{ij}(r,s)+C_{ij}(r,s)+C_{ik}(r,s),
+\]
+where the three terms on the right are matched sectors sharing leg $i$.
 \end{enumerate}
 \end{lemma}
 
@@ -332,7 +339,7 @@ The \emph{asymptotic rank} of $T$ is
 The limit exists because tensor rank is submultiplicative; apply the
 subadditive-sequence form of Fekete's lemma to its logarithm.
 
-\begin{theorem}[Strassen's spectral theorem]\label{thm:spectral}
+\begin{theorem}[Strassen's spectral theorem; cf.\ {\cite[Theorem~3.8]{strassen-1988-asymptotic-spectrum}}]\label{thm:spectral}
 For every nonzero tensor $T$ over $\CC$,
 \begin{equation}\label{eq:spectral}
  \widetilde R(T)=\max_{\lambda}\lambda(T),
@@ -388,7 +395,7 @@ This gives
  M\left(\bigotimes_h T_h^{\otimes n_h}\right)\otimes B_i(M).
 \end{equation}
 
-\begin{lemma}[Multinomial power-sum inequality]\label{lem:power-sum}
+\begin{lemma}[Multinomial power-sum inequality; cf.\ {\cite[Corollary~3.2]{openai-2026-matrix-nine-fourths}}]\label{lem:power-sum}
 If $T\degen\sum_{h=1}^s T_h$ is a splitting into matched sectors
 sharing leg $i$ and $p_i>0$, then
 \begin{equation}\label{eq:power-sum}
@@ -398,7 +405,9 @@ For fully independent summands, $T\degen\bigoplus_h T_h$ gives
 $\lambda(T)\ge\sum_h\lambda(T_h)$ directly by additivity.
 \end{lemma}
 
-The counting idea is to sum over all multiplicities. With
+The bound~\eqref{eq:power-sum} is the power-sum form of the cited
+shared-leg entropy inequality, obtained by optimizing over the sector
+probabilities. Our proof sums over all multiplicities. With
 $a_h=\lambda(T_h)^{1/p_i}$, applying the character to
 \eqref{eq:type-shared} and using the multinomial theorem gives
 \[
@@ -417,7 +426,7 @@ Rank bounds and restrictions give
 and coordinatewise monotonicity. The equality merely interchanges the
 two polynomial inputs of the same convolution.
 
-\begin{lemma}[Powered concavity and tripling]\label{lem:discrete}
+\begin{lemma}[Powered concavity and tripling; cf.\ {\cite[Lemmas~4.1 and~4.2]{openai-2026-matrix-nine-fourths}}]\label{lem:discrete}
 For $p_i>0$, the sequence $s\mapsto f_{ij}(r,s)^{1/p_i}$ is concave,
 and for all integers $r,s\ge1$,
 \begin{equation}\label{eq:discrete-tripling}
@@ -428,6 +437,8 @@ where $i,j,k$ are distinct. For $p_j>0$, the sequence
 $r\mapsto f_{ij}(r,s)^{1/p_j}$ is also concave.
 \end{lemma}
 
+These are the individual-character forms of the cited inequalities,
+retaining the tensor-leg orientations before symmetrization.
 For example, the two-sector splitting gives
 \[
  2f_{ij}(r,s)^{1/p_i}
@@ -480,11 +491,10 @@ All lengths and scale factors here may be arbitrary positive reals.
 
 The discrete inequalities thus become inequalities about homogeneous
 curves. The additive $-1$ in \eqref{eq:discrete-tripling} disappears at
-this scale. The proof first compares rational lengths at a common integer
-scale; homogeneity and monotonicity then give continuity and the real
-extension. Appendix~\ref{app:counting-rescaling} includes that argument
-and verifies that rounding the lengths in \eqref{eq:rescaled-profile}
-does not change the limit.
+this scale. The proof uses replication to identify the limit with a
+supremum over integer lengths. Linear interpolation then transfers
+discrete concavity to the limit. Appendix~\ref{app:counting-rescaling}
+gives the details.
 
 \section{Common slopes and weighted bounds}\label{sec:slopes}
 
@@ -515,8 +525,10 @@ and likewise for $P_{ik}$.
 
 Concavity gives each curve a limiting slope. The coupled tripling
 inequalities force the two slopes to agree. Writing $R=P_{ij}+P_{ik}$,
-they also give $R(3s+1)\ge3R(s)$; iteration yields
-$R(s)\le L_i(2s+1)$. Consequently the two curves stay above their
+concavity and tripling give
+$R(s)/(2s+1)\le R(S)/(2S+1)$ for $0<s<S$. Letting $S\to\infty$
+yields $R(s)\le L_i(2s+1)$ and $L_i>0$.
+Consequently the two curves stay above their
 common limiting line, and their normalized vertical offsets are
 nondecreasing with sum at most one. Their limits are $c_{ij},c_{ik}$.
 This explains both the affine bounds and the constraint on their sum.
@@ -592,56 +604,14 @@ which proves \eqref{eq:weighted-bound}.
 
 \section{From character bounds to running times}\label{sec:exponents}\label{sec:general}
 
-We can now turn the parameter constraint into matrix-multiplication
-algorithms. The other ingredients are the matrix-tensor formula
-\eqref{eq:mm-character} and Strassen's spectral theorem
-(Theorem~\ref{thm:spectral}). For a given matrix shape, we bound a weighted
-sum of the three parameters for every character; the theorem then bounds
-asymptotic rank. We first show how this rank bound gives a running-time
-bound, then apply Proposition~\ref{prop:weighted-bound} and padding to
-obtain the general-shape bound and the rectangular curve.
+We use the standard rectangular consequence of Strassen's spectral
+theorem and the rank-to-arithmetic correspondence.
 
-\begin{lemma}[Character bounds give algorithms]\label{lem:cost-conversion}
+\begin{corollary}[Standard spectral criterion; cf.\ {\cite[Corollary~3.30 and Example~2.21]{wigderson-zuiddam-2025-asymptotic-spectra}}]\label{lem:cost-conversion}
 Fix $\mathbf h=(h_X,h_Y,h_Z)\ge0$. If the dot-product parameters of
 every tensor character satisfy $\sum_i h_ip_i\le E$, then
 $\omega(h_Y,h_Z,h_X)\le E$.
-\end{lemma}
-
-\begin{proof}
-The zero target is trivial. For a fixed integer $N\ge2$, put
-$D_i=\lceil N^{h_i}\rceil$ and $M_N=\bigotimes_i B_i(D_i)$. Since
-$D_i\le2N^{h_i}$ and $0\le p_i\le1$, every character satisfies
-\[
- \lambda(M_N)=\prod_i D_i^{p_i}
- \le8N^{\sum_i h_ip_i}\le8N^E.
-\]
-Theorem~\ref{thm:spectral} therefore gives
-\begin{equation}\label{eq:shape-asymptotic-rank}
- \widetilde R(M_N)\le8N^E.
-\end{equation}
-
-Fix any positive exponent slack $\eta$. First choose $N$ so large that
-$8<N^{\eta/2}$. The infimum defining $\widetilde R(M_N)$ then gives
-a fixed integer $K$ and an exact rank decomposition with
-\[
- R:=\rank(M_N^{\otimes K})\le N^{K(E+\eta)}.
-\]
-This is a finite bilinear algorithm for matrix dimensions
-$(D_Y^K,D_Z^K,D_X^K)$. Apply it recursively $\ell$ times to blocks.
-By \eqref{eq:mm-factorization}, the resulting dimensions are
-$(D_Y^{K\ell},D_Z^{K\ell},D_X^{K\ell})$ and there are $R^\ell$
-scalar multiplications.
-
-Each input and output dimension, viewed as a number of scalar entries,
-is at most $R$, by the corresponding matrix-rank lower bound. Thus the
-linear substitutions and additions over all recursion levels use
-$O(\ell R^\ell)$ operations. Given input size $n$, choose
-$\ell=\lceil\log_N n/K\rceil$ and pad to these dimensions. They cover
-the target shape because $D_i^{K\ell}\ge n^{h_i}$, while
-$R^\ell=O(n^{E+\eta})$. This proves the bound for every positive slack,
-and hence the lemma under our exponent convention. All choices of $N$,
-$K$, and the finite identity precede the limit $n\to\infty$.
-\end{proof}
+\end{corollary}
 
 We now substitute the shape exponents into the weighted reciprocal bound.
 
@@ -655,7 +625,7 @@ with $w=(a,b,c)$ gives, for every character,
  \frac{a+b+c}{2}
  +\frac14\left(\frac{ab}{c}+\frac{ac}{b}+\frac{bc}{a}\right).
 \]
-Lemma~\ref{lem:cost-conversion}, with $\mathbf h=(c,a,b)$, therefore gives
+Corollary~\ref{lem:cost-conversion}, with $\mathbf h=(c,a,b)$, therefore gives
 $\omega(a,b,c)\le E(a,b,c)$ for every positive $c$.
 
 For the thin branch, put $c_0=ab/(a+b)>0$. Padding makes $\omega$
@@ -1099,98 +1069,62 @@ coordinate. The three-sector splitting and the same lemma give
 \end{proof}
 
 \begin{proof}[Proof of Lemma~\ref{lem:homogeneous}]
-Initially let $r,s>0$ be rational, and define
-\begin{equation}\label{eq:rational-rescaled-profile}
- g_{ij}(r,s)=
- \sup_{\substack{q\in\mathbb Q_{>0}\\qr,qs\in\mathbb Z_{>0}}}
- \frac{f_{ij}(qr,qs)}{q}.
+For real $r,s>0$, define
+\begin{equation}\label{eq:rescaled-envelope}
+ G_{ij}(r,s)=\sup_{a,b\in\mathbb Z_{>0}}
+ f_{ij}(a,b)\min\left\{\frac ra,\frac sb\right\}.
 \end{equation}
-Replication gives $f_{ij}(m,m)\ge m$, and monotonicity therefore gives
-$f_{ij}(r,s)\ge\min\{r,s\}$ for integer lengths.
-The bounds and input interchange follow from \eqref{eq:profile-rank}
-and the lower bound above. Replacing $q$ by $q/t$ proves homogeneity.
+Since $f_{ij}(1,1)=1$ and $f_{ij}(a,b)\le a+b-1$,
+$\min\{r,s\}\le G_{ij}(r,s)\le r+s$.
 
-The crucial point is that finitely many supremum values can be
-approached at one common scale. Choose scales $q_h$ approximating
-the desired values, and choose $Q$ so that every $Q/q_h$ is a positive
-integer. By \eqref{eq:profile-replication},
+Fix nonnegative integers $u,v$, and put
+$A_n=\lceil nr\rceil+u$, $B_n=\lceil ns\rceil+v$.
+For fixed positive integers $a,b$, let
+$k_n=\lfloor n\min\{r/a,s/b\}\rfloor$.
+For all sufficiently large $n$, $k_n\ge1$; replication and monotonicity,
+followed by \eqref{eq:rescaled-envelope}, give
 \[
- \frac{f_{ij}(Qr,Qs)}{Q}
- \ge\frac{f_{ij}(q_hr,q_hs)}{q_h}.
+ \frac{k_n}{n}f_{ij}(a,b)
+ \le\frac{f_{ij}(A_n,B_n)}n
+ \le G_{ij}(r,s)
+       \max\left\{\frac{A_n}{nr},\frac{B_n}{ns}\right\}.
 \]
-Replacing $Q$ by an integer multiple preserves all these approximations
-and can clear any additional rational denominators. Monotonicity now follows by
-comparing lengths at a common scale.
+The maximum tends to one. Taking lower and upper limits, then the
+supremum over $a,b$, proves that the middle expression converges to
+$G_{ij}(r,s)$. Thus $g_{ij}=G_{ij}$, and fixed nonnegative integer shifts
+of either rounded length do not change the limit.
 
-For concavity, take $s=\tau s_1+(1-\tau)s_2$, with rational
-$0\le\tau\le1$. Approach $g_{ij}(r,s_1)$ and $g_{ij}(r,s_2)$ at
-one scale $Q$, with $Qr,Qs_1,Qs_2,Qs$ integers. Discrete concavity gives
-\[
- \left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
- \ge\tau\left(\frac{f_{ij}(Qr,Qs_1)}{Q}\right)^{1/p_i}
- +(1-\tau)\left(\frac{f_{ij}(Qr,Qs_2)}{Q}\right)^{1/p_i}.
-\]
-Bound the left side by $g_{ij}(r,s)^{1/p_i}$ and let the approximation
-error tend to zero. Input interchange gives the other coordinate.
-
-For tripling, monotonicity first enlarges the discrete source length
-$3s+r-1$ to $3s+r$. At a common scale $Q$,
-\[
- \left(\frac{f_{ij}(Qr,Q(3s+r))}{Q}\right)^{1/p_i}
- \ge2\left(\frac{f_{ij}(Qr,Qs)}{Q}\right)^{1/p_i}
- +\left(\frac{f_{ik}(Qr,Qs)}{Q}\right)^{1/p_i}.
-\]
-Approach the two right-hand suprema simultaneously; the left side is
-bounded by $g_{ij}(r,3s+r)^{1/p_i}$. This proves
-\eqref{eq:general-tripling}.
-
-To extend the profiles to real lengths, we first compare two positive
-rational pairs $(r,s)$ and $(r',s')$. Put
-\[
- a=\min\left\{\frac{r'}r,\frac{s'}s\right\},\qquad
- b=\max\left\{\frac{r'}r,\frac{s'}s\right\}.
-\]
-Homogeneity and monotonicity give
-\[
- a\,g_{ij}(r,s)\le g_{ij}(r',s')\le b\,g_{ij}(r,s).
-\]
-Together with $g_{ij}(r,s)\le r+s$, this implies
+Homogeneity, monotonicity, and input interchange follow directly from
+\eqref{eq:rescaled-envelope}. For positive pairs $(r,s),(r',s')$, they give
 \begin{equation}\label{eq:profile-continuity}
- |g_{ij}(r',s')-g_{ij}(r,s)|
- \le\frac{r+s}{\min\{r,s\}}
-       \max\{|r'-r|,|s'-s|\}.
+ \min\left\{\frac{r'}r,\frac{s'}s\right\}g_{ij}(r,s)
+ \le g_{ij}(r',s')
+ \le\max\left\{\frac{r'}r,\frac{s'}s\right\}g_{ij}(r,s),
 \end{equation}
-The coefficient is bounded on every closed bounded region that stays
-away from the coordinate axes. Approximating a positive real pair by
-rationals therefore gives a unique continuous extension. All the rational
-bounds, homogeneity, monotonicity, input interchange, and powered
-concavity extend by continuity. So does \eqref{eq:general-tripling}.
+which proves continuity by letting $(r',s')\to(r,s)$.
 
-We finally check that this extension agrees with the limit in
-\eqref{eq:rescaled-profile}. For positive integers $A,B$, the scale $q=1$ in
-\eqref{eq:rational-rescaled-profile} gives $f_{ij}(A,B)\le g_{ij}(A,B)$.
-Thus for arbitrary real $r,s>0$,
+For $p_i>0$ and fixed $r>0$, linearly interpolate the nondecreasing
+concave sequence $b\mapsto f_{ij}(\lceil nr\rceil,b)^{1/p_i}$.
+Evaluating the interpolant at $ns+1$ and dividing by $n^{1/p_i}$ gives
+a concave function of $s>0$, lying between
 \[
- \frac{f_{ij}(\lceil mr\rceil,\lceil ms\rceil)}m
- \le g_{ij}\left(\frac{\lceil mr\rceil}m,
-                 \frac{\lceil ms\rceil}m\right)
- \longrightarrow g_{ij}(r,s),
+ \left(\frac{f_{ij}(\lceil nr\rceil,\lceil ns\rceil)}n\right)^{1/p_i}
+ \quad\text{and}\quad
+ \left(\frac{f_{ij}(\lceil nr\rceil,\lceil ns\rceil+1)}n\right)^{1/p_i}.
 \]
-using homogeneity and continuity.
+Both converge to $g_{ij}(r,s)^{1/p_i}$, so this pointwise limit is
+concave. Input interchange gives concavity in the first coordinate
+when $p_j>0$.
 
-For the reverse bound, fix positive rationals $r_0<r$, $s_0<s$ and
-an admissible scale $q$ with $qr_0,qs_0$ positive integers.
-Put $k=\lfloor m/q\rfloor$. For all sufficiently large $m$, $k\ge1$,
-and $kqr_0\le\lceil mr\rceil$, $kqs_0\le\lceil ms\rceil$.
-Monotonicity and replication give
+Finally, for $p_i>0$,
 \[
- \frac{f_{ij}(\lceil mr\rceil,\lceil ms\rceil)}m
- \ge\frac{k}{m}f_{ij}(qr_0,qs_0).
+ 3\lceil ns\rceil+\lceil nr\rceil-1
+ \le\lceil n(3s+r)\rceil+3.
 \]
-Since $k/m\to1/q$, taking the lower limit and then the supremum over
-$q$ gives a lower bound $g_{ij}(r_0,s_0)$. Let $r_0,s_0$ approach
-$r,s$ from below and use continuity. This proves the limit formula
-\eqref{eq:rescaled-profile}, and completes the lemma.
+Apply \eqref{eq:discrete-tripling} at $\lceil nr\rceil,\lceil ns\rceil$,
+enlarge its left-hand second length to $\lceil n(3s+r)\rceil+3$,
+divide by $n^{1/p_i}$, and take limits. This proves
+\eqref{eq:general-tripling}.
 \end{proof}
 
 \section{Common slopes and affine bounds}\label{app:slopes}\label{app:slopes-angular}
@@ -1210,12 +1144,22 @@ $L_Q=\lim Q(s)/s$. Dividing the coupled inequalities
 by $s$ and passing to infinity gives $L_P\ge L_Q$ and $L_Q\ge L_P$.
 Call their common value $L_i$.
 
-Their sum $R=P+Q$ satisfies $R(3s+1)\ge3R(s)$. Iterating at
-$s_m=3^m(s+\frac{1}{2})-\frac{1}{2}$ gives
+Set $R=P+Q$. For real $0<u<S$, concavity and the coupled inequalities give
+\[
+ \frac{P(S)-P(u)}{S-u}
+ \ge\frac{P(3S+1)-P(S)}{2S+1}
+ \ge\frac{R(S)}{2S+1},
+\]
+and the same bound holds with $Q$ in place of $P$.
+Adding and rearranging yields
+\[
+ \frac{R(u)}{2u+1}\le\frac{R(S)}{2S+1}.
+\]
+Letting $S\to\infty$ and using $R(S)/(2S+1)\to L_i$ gives
 \begin{equation}\label{eq:sum-majorant}
- R(s)\le\lim_{m\to\infty}3^{-m}R(s_m)=L_i(2s+1).
+ R(u)\le L_i(2u+1)\qquad(u>0).
 \end{equation}
-Since $R(s)>0$, we have $L_i>0$. For $v>u>0$, concavity bounds
+Since $R(u)>0$, we have $L_i>0$. For $v>u>0$, concavity bounds
 the secant slope $(P(v)-P(u))/(v-u)$ below by every later secant slope;
 sending its far endpoint to infinity gives
 \[
